@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="./../../../plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Gestion de Lineas" class="h1" />
+
+			<h:panelGrid columns="2" rendered="${!lineaBean.form}">
+				<h:commandButton value="Nueva Linea"
+					actionListener="${lineaBean.verFormNuevo(true)}" />
+			</h:panelGrid>
+
+
+			<p:panel rendered="${lineaBean.form}"
+				header="Informacion de la Linea" style="width: 100%">
+				<h:panelGrid columns="3">
+					<h:outputLabel value="Codigo" rendered="#{lineaBean.edit}" />
+					<h:inputText id="codDept" rendered="#{lineaBean.edit}"
+						disabled="${lineaBean.edit}" value="${lineaBean.objeto.idLinea}"
+						required="true"
+						requiredMessage="Por favor digita un codigo valido" />
+					<p:message for="codDept" rendered="#{lineaBean.edit}" />
+
+					<h:outputLabel value="Numero" />
+					<h:inputText id="nomDept" value="${lineaBean.objeto.linNumero}"
+						required="true"
+						requiredMessage="Por favor digita un numero valido" />
+					<p:message for="nomDept" />
+
+					<h:outputLabel value="Fecha Registro" />
+					<p:calendar id="fechPlan" 
+						value="${lineaBean.objeto.fecha}" required="true"
+						requiredMessage="Por favor selecciona una fecha" />
+					<p:message for="fechPlan" />
+
+					<h:outputLabel value="Linea corte" />
+					<h:inputText id="fechaVencimiento"
+						value="${lineaBean.objeto.linCorte}" required="true"
+						requiredMessage="Por favor digita un corte" />
+					<p:message for="fechaVencimiento" />
+
+					<h:outputLabel value="Empresa" />
+					<p:selectOneMenu id="empresaLinea" value="${lineaBean.empresa}"
+						required="true" requiredMessage="Por favor selecciona una empresa">
+						<f:selectItems value="${selectorEmpresa.items}" />
+					</p:selectOneMenu>
+					<p:message for="empresaLinea" />
+
+					<h:outputLabel value="Estado" />
+					<p:selectOneMenu id="estadoLinea" value="${lineaBean.estadoLinea}"
+						required="true" requiredMessage="Por favor selecciona un estado">
+						<f:selectItems value="${selectorEstadoLinea.items}" />
+					</p:selectOneMenu>
+					<p:message for="estadoLinea" />
+
+					<h:outputLabel value="Plan" />
+					<p:selectOneMenu id="selectPlan" required="true"
+						value="#{lineaBean.idPlan}"
+						requiredMessage="Por favor seleccione un plan">
+						<f:selectItems value="#{selectorPlan.items}" />
+						<p:ajax process="@this" update="@this" event="change"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="selectPlan"></p:message>
+
+					<h:outputLabel value="SimCard" />
+					<bsi:buscar codValue="#{lineaBean.objeto.simcard.idSimcard}"
+						displayValue="#{lineaBean.objeto.simcard.simIccid}"
+						buscarListener="#{lineaBean.buscadorSimCard.mostrar}"></bsi:buscar>
+					<bsi:pnlBuscador buscador="#{lineaBean.buscadorSimCard}"></bsi:pnlBuscador>
+
+					<h:outputLabel value="Sucursal" rendered="#{lineaBean.edit}" />
+					<p:selectOneMenu disabled="true" rendered="#{lineaBean.edit}"
+						value="#{lineaBean.idSucursal}" id="idSucursal" required="true"
+						requiredMessage="Selecciona una sucursal">
+						<f:selectItems value="#{selectorSucursal.items}" />
+					</p:selectOneMenu>
+					<p:message for="idSucursal" rendered="#{lineaBean.edit}"></p:message>
+
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<h:commandButton value="Aceptar" action="#{lineaBean.aceptar()}" />
+					<h:commandButton value="Cancelar" immediate="true"
+						action="#{lineaBean.reglaNavegacion()}" />
+				</h:panelGrid>
+
+			</p:panel>
+
+			<h:commandButton rendered="${!lineaBean.form}"
+				value="Descargar en pdf" image="/imagenes/pdf.png"
+				actionListener="#{printerBean.exportXls('lineas','informe_lineas','xls')}"></h:commandButton>
+			<p:dataTable  paginator="true" rows="10" lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" rendered="${!lineaBean.form}" style="width: 100%"
+				value="#{lineaBean.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column style="width: 10%" headerText="Codigo"
+					filterBy="${item.idLinea}" filterMatchMode="contains"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.idLinea}" />
+				</p:column>
+				<p:column headerText="Numero linea" styleClass="styleColumn"
+					filterBy="${item.linNumero}" filterMatchMode="contains">
+					<p:outputLabel value="${item.linNumero}" />
+				</p:column>
+				<p:column headerText="Corte" styleClass="styleColumn"
+					filterBy="${item.linCorte}" filterMatchMode="contains">
+					<p:outputLabel value="${item.linCorte}" />
+				</p:column>
+				<p:column headerText="Fecha Registro" styleClass="styleColumn">
+					<p:calendar value="${item.fecha}" pattern="dd/MM/yyyy"
+						disabled="true" />
+				</p:column>
+				<p:column headerText="Estado"
+					sortBy="${item.estadoLineaidEstadoLinea.estLinNombre}"
+					styleClass="styleColumn"
+					filterBy="${item.estadoLineaidEstadoLinea.estLinNombre}"
+					filterMatchMode="contains">
+					<p:outputLabel
+						value="${item.estadoLineaidEstadoLinea.estLinNombre}" />
+				</p:column>
+
+				<p:column headerText="Plan" sortBy="${item.plan.plaNombre}"
+					styleClass="styleColumn" filterBy="${item.plan.plaNombre}"
+					filterMatchMode="contains">
+					<p:outputLabel value="${item.plan.plaNombre}" />
+				</p:column>
+
+				<p:column headerText="SimCard" sortBy="${item.simcard.simIccid}"
+					styleClass="styleColumn" filterBy="${item.simcard.simIccid}"
+					filterMatchMode="contains">
+					<p:outputLabel value="${item.simcard.simIccid}" />
+				</p:column>
+
+				<p:column headerText="Sucursal" sortBy="${item.sucursal.idSucursal}"
+					styleClass="styleColumn" filterBy="${item.simcard.simIccid}"
+					filterMatchMode="contains">
+					<p:outputLabel value="${item.simcard.sucursal.sucNombre}" />
+				</p:column>
+
+
+
+				<p:column headerText="Empresa"
+					sortBy="${item.empresaidEmpresa.empNombre}"
+					styleClass="styleColumn"
+					filterBy="${item.empresaidEmpresa.empNombre}"
+					filterMatchMode="contains">
+					<p:outputLabel value="${item.empresaidEmpresa.empNombre}" />
+				</p:column>
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${lineaBean.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.linNumero}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.linNumero}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${lineaBean.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar"
+								onclick="pnl${item.linNumero}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

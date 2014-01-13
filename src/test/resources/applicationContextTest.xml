@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:faces="http://www.springframework.org/schema/faces"
+	xmlns:int-security="http://www.springframework.org/schema/integration/security"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:sec="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd       
+     http://www.springframework.org/schema/mvc 
+     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+     http://www.springframework.org/schema/context 
+     http://www.springframework.org/schema/context/spring-context-3.0.xsd        
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd       
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx.xsd       
+     http://www.springframework.org/schema/jee
+     http://www.springframework.org/schema/jee/spring-jee-2.5.xsd">
+
+
+
+
+
+	<context:component-scan base-package="co.icesi.troca" />
+
+	<context:annotation-config></context:annotation-config>
+	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="finalize">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/trocadero" />
+		<property name="user" value="root" />
+		<property name="password" value="jsepee1855" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="minPoolSize" value="5" />
+	</bean>
+
+
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<!-- Specific properties for Hibernate are in persistence.xml file, but 
+					also can be placed here and removed from persistence.xml file. -->
+			</bean>
+		</property>
+		<property name="dataSource" ref="pooledDataSource" />
+		<property name="persistenceUnitName" value="persistenceUnit" />
+	</bean>
+
+
+	<!-- <jee:jndi-lookup id="jdniDatasource" -->
+	<!-- jndi-name="java:comp/env/jdbc/troca" -->
+	<!-- expected-type="javax.sql.DataSource" ></jee:jndi-lookup> -->
+
+	<bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<tx:annotation-driven />
+
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+
+
+	<!--#lectura del fichero administrable -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+		<property name="locations">
+			<list>
+				<value>classpath:mail.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--#Configuración del servicio de Spring: MailSernder -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.port}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="javaMailProperties">
+			<props>
+				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
+				<prop key="mail.smtp.auth">true</prop>
+				<!-- Use TLS to encrypt communication with SMTP server -->
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+
+	<!--#Configuración de nuestro servicio:MailService -->
+	<bean id="mailService" class="co.innovate.rentavoz.mail.impl.MailServiceImpl">
+		<property name="active" value="true" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="from" value="elmerdiazlazo@gmail.com" />
+
+	</bean>
+
+	<!-- This bean sets up the Velocity environment for us based on a root path 
+		for templates. Optionally, a properties file can be specified for more control 
+		over the Velocity environment, but the defaults are pretty sane for file 
+		based template loading. -->
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+	</bean>
+
+
+
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">class</prop>
+				<prop key="class.resource.loader.class">org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+				</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- View resolvers can also be configured with ResourceBundles or XML files. 
+		If you need different view resolving based on Locale, you have to use the 
+		resource bundle resolver. -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".vm" />
+	</bean>
+
+	<!-- resource security Note: Access-denied-page is invoked when user is 
+		AUTHENTICATED but is not AUTHORIZED to access protected resources. When user 
+		is NOT AUTHENTICATED, he is moved into form-login instead of access-denied-page. -->
+	<!-- <sec:http auto-config="true" access-denied-page="/faces/accessDenied.xhtml"> -->
+	<!-- <sec:form-login login-page="/faces/login.xhtml" /> -->
+	<!-- <sec:intercept-url pattern="/faces/admin/**" access="ROLE_ADMIN" /> -->
+	<!-- </sec:http> -->
+
+	<!-- method security -->
+
+	<!-- <sec:global-method-security -->
+	<!-- secured-annotations="enabled" jsr250-annotations="enabled"> -->
+	<!-- </sec:global-method-security> -->
+
+	<!-- <sec:authentication-manager alias="authenticationManager"> -->
+	<!-- <sec:authentication-provider -->
+	<!-- user-service-ref="userDetailsService" /> -->
+	<!-- </sec:authentication-manager> -->
+
+</beans>

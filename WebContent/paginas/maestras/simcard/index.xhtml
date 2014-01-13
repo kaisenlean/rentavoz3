@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="./../../../plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Gestion de Simcard's" class="h1" />
+
+			<h:panelGrid columns="2" rendered="${!simcardBean.form}">
+				<h:commandButton value="Nueva SimCard"
+					actionListener="${simcardBean.verFormNuevo(true)}" />
+			</h:panelGrid>
+
+
+			<p:panel rendered="${simcardBean.form}" id="panel"
+				header="Informacion de la SimCard" style="width: 100%">
+				<p:focus context="panel" />
+				<h:panelGrid columns="3">
+
+
+					<h:outputLabel value="ICC" />
+					<p:inputText size="40" id="nomDept"
+						onkeypress="if (event.keyCode == 13) { jQuery('##btnAceptar').click(); return false;}"
+						value="${simcardBean.objeto.simIccid}" required="true"
+						requiredMessage="Por favor digita un ICC valido" />
+					<p:message for="nomDept" />
+
+					<h:outputLabel value="Fecha" />
+					<p:calendar id="fechPlan" 
+						value="${simcardBean.objeto.fecha}" required="true"
+						requiredMessage="Por favor selecciona una fecha de creacion" />
+					<p:message for="fechPlan" />
+
+					<h:outputLabel value="Estado" />
+					<p:selectOneMenu value="#{simcardBean.estadoSim}" required="true"
+						requiredMessage="Por favor seleccione un estado"
+						id="estadoSimCard">
+						<f:selectItems value="#{selectorEstadosSimcard.items}" />
+					</p:selectOneMenu>
+					<p:message for="estadoSimCard" />
+
+
+					<h:outputLabel value="Sucursal" />
+					<p:selectOneMenu style="widht:90px" value="#{simcardBean.sucursal}"
+						required="true"
+						requiredMessage="Por favor seleccione una sucursal"
+						id="sucursalId">
+						<f:selectItems value="#{selectorSucursal.items}" />
+					</p:selectOneMenu>
+					<p:message for="sucursalId" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<h:commandButton value="Aceptar"
+						action="${simcardBean.guardarSim()}" id="btnAceptar" />
+					<h:commandButton value="Cancelar" immediate="true"
+						action="${simcardBean.reglaNavegacion()}" />
+				</h:panelGrid>
+
+			</p:panel>
+
+			<h:commandButton rendered="${!simcardBean.form}"
+				value="Descargar en pdf" image="/imagenes/pdf.png"
+				actionListener="#{printerBean.exportXls('simcard','informe_simcards','xls')}"></h:commandButton>
+			<p:dataTable paginator="true" rows="10" lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" rendered="${!simcardBean.form}" style="width: 100%"
+				value="#{simcardBean.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column style="width: 10%" headerText="Codigo"
+					filterBy="${item.idSimcard}" filterMatchMode="contains"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.idSimcard}" />
+				</p:column>
+				<p:column headerText="ICC" styleClass="styleColumn"
+					filterBy="${item.simIccid}" filterMatchMode="contains">
+					<p:outputLabel value="${item.simIccid}" />
+				</p:column>
+				<p:column headerText="Sucursal" styleClass="styleColumn"
+					filterBy="${item.sucursal.sucNombre}" filterMatchMode="contains">
+					<p:outputLabel value="${item.sucursal.sucNombre}" />
+				</p:column>
+				<p:column headerText="Estado" styleClass="styleColumn"
+					filterBy="${item.estadoAsString}" filterMatchMode="contains">
+					<p:outputLabel value="${item.estadoAsString}" />
+				</p:column>
+				<p:column headerText="Fecha de creación" styleClass="styleColumn"
+					filterBy="${item.fecha}" filterMatchMode="contains">
+					<p:calendar value="${item.fecha}" disabled="true"
+						pattern="dd/MM/yyyy" />
+				</p:column>
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${simcardBean.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.idSimcard}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.idSimcard}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${simcardBean.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar"
+								onclick="pnl${item.idSimcard}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
