@@ -20,11 +20,18 @@
 
 	<dependencies>
 
-<dependency>
-  <groupId>net.sf.jasperreports</groupId>
-  <artifactId>jasperreports</artifactId>
-  <version>5.1.0</version>
-</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit-dep</artifactId>
+			<version>4.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>5.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.omnifaces</groupId>
 			<artifactId>omnifaces</artifactId>
@@ -107,6 +114,11 @@
 		<!-- <version>2.0.8</version> -->
 		<!-- </dependency> -->
 
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+		</dependency>
 
 
 		<dependency>
@@ -150,11 +162,11 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>3.0.5.RELEASE</version>
-		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework</groupId> -->
+		<!-- <artifactId>spring-test</artifactId> -->
+		<!-- <version>3.0.5.RELEASE</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -310,7 +322,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.0</version>
-			<scope>test</scope>
 		</dependency>
 
 
@@ -344,6 +355,9 @@
 
 	</dependencies>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<!-- <sourceDirectory>src/main/java</sourceDirectory> -->
 		<!-- <resources> -->
