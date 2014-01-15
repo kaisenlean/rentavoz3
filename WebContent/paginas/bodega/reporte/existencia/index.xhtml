@@ -16,7 +16,7 @@
 				<h:outputText value="Item :" />
 				<p:autoComplete size="100" style="width:400px"
 					id="buscadorItemExistencia" var="it" itemLabel="#{it}"
-					itemValue="#{it.id}"
+					itemValue="#{it}"
 					converter="#{beanReporteExistencias.autocompleteItem.conversorClientes}"
 					value="#{beanReporteExistencias.autocompleteItem.seleccionado}"
 					completeMethod="#{beanReporteExistencias.autocompleteItem.completarBusqueda}">

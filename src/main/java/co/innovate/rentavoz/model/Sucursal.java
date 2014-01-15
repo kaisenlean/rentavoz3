@@ -74,10 +74,10 @@ public class Sucursal implements Serializable {
 	@JoinColumn(name = "Ciudad_idCiudad", referencedColumnName = "idCiudad")
 	@ManyToOne(optional = false)
 	private Ciudad ciudadidCiudad;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
-	private List<SucursalSimcard> sucursalSimcardList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
-	private List<SucursalTercero> sucursalTerceroList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
+//	private List<SucursalSimcard> sucursalSimcardList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
+//	private List<SucursalTercero> sucursalTerceroList;
 
 	public Sucursal() {
 	}
@@ -152,23 +152,23 @@ public class Sucursal implements Serializable {
 		this.ciudadidCiudad = ciudadidCiudad;
 	}
 
-	@XmlTransient
-	public List<SucursalSimcard> getSucursalSimcardList() {
-		return sucursalSimcardList;
-	}
-
-	public void setSucursalSimcardList(List<SucursalSimcard> sucursalSimcardList) {
-		this.sucursalSimcardList = sucursalSimcardList;
-	}
-
-	@XmlTransient
-	public List<SucursalTercero> getSucursalTerceroList() {
-		return sucursalTerceroList;
-	}
-
-	public void setSucursalTerceroList(List<SucursalTercero> sucursalTerceroList) {
-		this.sucursalTerceroList = sucursalTerceroList;
-	}
+//	@XmlTransient
+//	public List<SucursalSimcard> getSucursalSimcardList() {
+//		return sucursalSimcardList;
+//	}
+//
+//	public void setSucursalSimcardList(List<SucursalSimcard> sucursalSimcardList) {
+//		this.sucursalSimcardList = sucursalSimcardList;
+//	}
+//
+//	@XmlTransient
+//	public List<SucursalTercero> getSucursalTerceroList() {
+//		return sucursalTerceroList;
+//	}
+//
+//	public void setSucursalTerceroList(List<SucursalTercero> sucursalTerceroList) {
+//		this.sucursalTerceroList = sucursalTerceroList;
+//	}
 
 	@Override
 	public int hashCode() {

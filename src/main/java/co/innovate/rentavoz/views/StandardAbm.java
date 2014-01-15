@@ -15,6 +15,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.hibernate.Hibernate;
+
 import co.innovate.rentavoz.services.GenericService;
 
 /**
@@ -69,8 +71,10 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 
 	@PostConstruct
 	public void init() {
+	
 		edit = false;
-		listado = getFacade().findAll();
+//		listado = getFacade().findAll();
+		Hibernate.initialize(objeto);
 		model=new ListaDataModel<T, PK>() {
 
 			/**
@@ -121,7 +125,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 			if (preAction()) {
 
 				if (edit) {
-					getFacade().save(objeto);
+					objeto=getFacade().save(objeto);
 //					RequestContext
 //							.getCurrentInstance()
 //							.execute(
@@ -132,7 +136,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 					postAction();
 					return reglaNavegacion();
 				} else {
-					getFacade().save(objeto);
+					objeto=getFacade().save(objeto);
 //					RequestContext
 //							.getCurrentInstance()
 //							.execute(

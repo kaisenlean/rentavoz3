@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -28,7 +29,7 @@ public class BodegaItem implements Serializable {
 	@Column(unique = true, nullable = false)
 	private int id;
 
-	@Column(length = 200)
+	@Lob
 	private String descripcion;
 
 	@Column(length = 255)
@@ -47,7 +48,13 @@ public class BodegaItem implements Serializable {
 
 	@Column(name = "cantidad_imei")
 	private int cantidadImei;
+	
+	@Column(name="precio_venta")
+	private Double precioVenta;
 
+	
+	@Column(name="precio_venta_mayoristas")
+	private Double precioVentaMayoristas;
 
 	
 	
@@ -239,4 +246,42 @@ public class BodegaItem implements Serializable {
 	public void setValorTotalEstimado(double valorTotalEstimado) {
 		this.valorTotalEstimado = valorTotalEstimado;
 	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/01/2014
+	 * @return the precioVenta
+	 */
+	public Double getPrecioVenta() {
+		return precioVenta;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/01/2014
+	 * @param precioVenta the precioVenta to set
+	 */
+	public void setPrecioVenta(Double precioVenta) {
+		this.precioVenta = precioVenta;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/01/2014
+	 * @return the precioVentaMayoristas
+	 */
+	public Double getPrecioVentaMayoristas() {
+		return precioVentaMayoristas;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/01/2014
+	 * @param precioVentaMayoristas the precioVentaMayoristas to set
+	 */
+	public void setPrecioVentaMayoristas(Double precioVentaMayoristas) {
+		this.precioVentaMayoristas = precioVentaMayoristas;
+	}
+	
+	
 }

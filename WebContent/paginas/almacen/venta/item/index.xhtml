@@ -18,7 +18,7 @@
 					style="font-weight: bolder;font-size:16px" />
 				<h:outputLabel value="#{login.valorCaja}"
 					style="font-weight: bolder;font-size:16px;color:red">
-					<f:convertNumber type="currency" />
+					<f:convertNumber currencyCode="COP" currencySymbol="$" type="currency" />
 				</h:outputLabel>
 			</div>
 			<h:panelGrid columns="2" cellspacing="5" cellpadding="5">
@@ -210,7 +210,7 @@
 					value="Valor a Pagar" />
 				<h:outputText style="font-weight: bolder;color:red;font-size: 18px;"
 					value="#{beanVentaItem.venta.valorPagar}">
-					<f:convertNumber type="currency" />
+					<f:convertNumber currencyCode="COP" currencySymbol="$" type="currency" />
 				</h:outputText>
 
 			</h:panelGrid>
@@ -228,7 +228,7 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="2">
-				<p:commandButton ajax="false" onblur="btnDespues.click();"
+				<p:commandButton ajax="false" 
 					value="Guardar Venta" action="#{beanVentaItem.guardarVenta()}"
 					process="@this,txtDescuento" update="@form">
 

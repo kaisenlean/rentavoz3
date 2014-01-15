@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.Sucursal;
 
@@ -48,14 +48,16 @@ public class BodegaSalida implements Serializable {
 	@Column(length=255)
 	private String observacion;
 
+	@ManyToOne
 	@JoinColumn(name="sucursal_destino")
 	private Sucursal sucursalDestino;
 
+	@ManyToOne
 	@JoinColumn(name="sucursal_origen")
 	private Sucursal sucursalOrigen;
 
 	//bi-directional many-to-one association to BodegaSalidaReferencia
-	@OneToMany(mappedBy="bodegaSalida",cascade={CascadeType.ALL})
+	@Transient
 	private List<BodegaSalidaReferencia> bodegaSalidaReferencias=new ArrayList<BodegaSalidaReferencia>();
 
 	public BodegaSalida() {

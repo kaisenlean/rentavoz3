@@ -33,22 +33,22 @@
 						for="nroFacturaIngreso"></p:message>
 
 					<h:outputText value="Fecha de Ingreso" />
-					<p:calendar id="fechaIngreso"
+					<p:calendar readonly="#{beanIngresoBodega.edit}" id="fechaIngreso"
 						value="#{beanIngresoBodega.objeto.fechaIngreso}"
-						pattern="MM/dd/yyyy HH:mm"></p:calendar>
+						></p:calendar>
 					<p:message for="fechaIngreso"></p:message>
 
 					<h:outputLabel value="Item a registrar :" />
-					<p:selectOneMenu id="selItemReg"
+					<p:selectOneMenu disabled="#{beanIngresoBodega.edit}" id="selItemReg"
 						value="#{beanIngresoBodega.selItem}">
 						<p:ajax event="change" process="@this"
-							listener="#{beanIngresoBodega.cambioItem}"></p:ajax>
+							listener="#{beanIngresoBodega.cambioItem}" update="@all"></p:ajax>
 						<f:selectItems value="#{selectorItem.items}"></f:selectItems>
 					</p:selectOneMenu>
 					<p:message for="selItemReg" />
 
 					<h:outputLabel value="Bodega de registro :" />
-					<p:selectOneMenu id="selSuc"
+					<p:selectOneMenu disabled="#{beanIngresoBodega.edit}" id="selSuc"
 						value="#{beanIngresoBodega.selSucursal}">
 						<p:ajax event="change" process="@this"></p:ajax>
 						<f:selectItems value="#{selectorSucursal.items}"></f:selectItems>
@@ -57,7 +57,7 @@
 
 
 					<h:outputText value="Proveedor" />
-					<p:autoComplete size="100" style="width:800px"
+					<p:autoComplete disabled="#{beanIngresoBodega.edit}" size="100" style="width:800px"
 						id="proveedorIngreso"
 						value="#{beanIngresoBodega.autocompleteProveedor.query}"
 						completeMethod="#{beanIngresoBodega.autocompleteProveedor.completarBusqueda}">
@@ -78,28 +78,28 @@
 						value="#{beanIngresoBodega.objeto.personaCompra}"></h:inputText>
 					<p:message for="compradorIngreso"></p:message>
 
-					<h:outputText value="Color" />
-					<h:inputText id="color" value="#{beanIngresoBodega.objeto.color}"></h:inputText>
-					<p:message for="color"></p:message>
+					<h:outputText  rendered="#{!beanIngresoBodega.edit}" value="Color" />
+					<h:inputText rendered="#{!beanIngresoBodega.edit}" id="color" value="#{beanIngresoBodega.objeto.color}"></h:inputText>
+					<p:message rendered="#{!beanIngresoBodega.edit}" for="color"></p:message>
 
 
-					<h:outputText value="Precio de compra" />
-					<h:inputText id="precioCompra"
+					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Precio de compra" />
+					<h:inputText rendered="#{!beanIngresoBodega.edit}" id="precioCompra"
 						value="#{beanIngresoBodega.objeto.precioCompra}"></h:inputText>
-					<p:message for="precioCompra"></p:message>
+					<p:message rendered="#{!beanIngresoBodega.edit}" for="precioCompra"></p:message>
 
 
-					<h:outputText value="Precio de Venta" />
-					<h:inputText id="precioVenta"
+					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Precio de Venta" />
+					<h:inputText rendered="#{!beanIngresoBodega.edit}" readonly="true" id="precioVenta"
 						value="#{beanIngresoBodega.objeto.precioVenta}"></h:inputText>
-					<p:message for="precioVenta"></p:message>
+					<p:message rendered="#{!beanIngresoBodega.edit}" for="precioVenta"></p:message>
 
 
 
-					<h:outputText value="Precio de Venta Mayoristas" />
-					<h:inputText id="precioVentaMayoristas"
+					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Precio de Venta Mayoristas" />
+					<h:inputText rendered="#{!beanIngresoBodega.edit}" readonly="true" id="precioVentaMayoristas"
 						value="#{beanIngresoBodega.objeto.precioVentaMayoristas}"></h:inputText>
-					<p:message for="precioVentaMayoristas"></p:message>
+					<p:message  rendered="#{!beanIngresoBodega.edit}" for="precioVentaMayoristas"></p:message>
 
 
 
@@ -127,7 +127,7 @@
 					</h:panelGrid>
 					<h:outputText
 						value="Cantidad de existencias #{beanIngresoBodega.objeto.bodegaExistencias.size()}" />
-					<p:dataTable rows="20" paginator="true" id="taablata"
+					<p:dataTable  rows="20" paginator="true" id="taablata"
 						value="#{beanIngresoBodega.objeto.bodegaExistencias}"
 						var="existencia">
 						<!-- 						<p:column headerText="Imagen"> -->
@@ -158,9 +158,11 @@
 
 			</p:panel>
 
-			<p:dataTable rendered="#{!beanIngresoBodega.form}"
-				value="#{beanIngresoBodega.listado}" var="ingreso" rows="30"
-				paginator="true">
+			<p:dataTable paginator="true"  lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"  rendered="#{!beanIngresoBodega.form}"
+				value="#{beanIngresoBodega.model}" var="ingreso" rows="30"
+				>
 				<p:column headerText="Codigo" filterBy="#{ingreso.id}"
 					filterMatchMode="contains">
 					<h:outputText value="#{ingreso.id}" />

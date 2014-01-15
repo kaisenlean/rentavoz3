@@ -9,7 +9,7 @@
 
 
 	<ui:define name="content">
-		<h:form>
+		<h:form acceptcharset="ISO-8859-1">
 			<h:outputLabel value="Gestion de Items de Bodega" class="h1" />
 			<h:panelGrid columns="2" rendered="#{!beanBodegaItem.form}">
 				<h:commandButton value="Nuevo Item de Bodega "
@@ -44,19 +44,19 @@
 						requiredMessage="Por favor digita un nombre válido" />
 					<p:message for="colItem" />
 
-					<!-- 						<h:outputLabel value="Color : " /> -->
-					<!-- 					<h:inputText id="nomDept" value="#{beanBodegaItem.objeto.color}" -->
-					<!-- 						required="true" -->
-					<!-- 						requiredMessage="Por favor digita un nombre válido" /> -->
-					<!-- 					<p:message for="nomDept" /> -->
+											<h:outputLabel value="Precio de  Venta : " />
+										<h:inputText id="nomDept" value="#{beanBodegaItem.objeto.precioVenta}"
+											required="true"
+											requiredMessage="Por favor digita un nombre válido" />
+										<p:message for="nomDept" />
 
 
 
-					<!-- 						<h:outputLabel value="Precio de  Venta : " /> -->
-					<!-- 					<h:inputText id="prcVenta" value="#{beanBodegaItem.objeto.precioVenta}" -->
-					<!-- 						required="false" -->
-					<!-- 						requiredMessage="Por favor digita un precio de venta válido" /> -->
-					<!-- 					<p:message for="prcVenta" /> -->
+											<h:outputLabel value="Precio de  Venta Mayoristas : " />
+										<h:inputText id="prcVenta" value="#{beanBodegaItem.objeto.precioVentaMayoristas}"
+											required="false"
+											requiredMessage="Por favor digita un precio de venta válido" />
+										<p:message for="prcVenta" />
 
 					<h:outputLabel value="Días de Garantía : " />
 					<h:inputText id="diasGarantia"
@@ -94,8 +94,10 @@
 				</h:panelGrid>
 			</p:panel>
 
-			<p:dataTable rendered="#{!beanBodegaItem.form}" style="width: 100%"
-				value="#{beanBodegaItem.listado}" var="item" paginator="true"
+			<p:dataTable  lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" rendered="#{!beanBodegaItem.form}" style="width: 100%"
+				value="#{beanBodegaItem.model}" var="item" paginator="true"
 				rows="30" emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"
 					filterBy="#{item.id}" filterMatchMode="contains"

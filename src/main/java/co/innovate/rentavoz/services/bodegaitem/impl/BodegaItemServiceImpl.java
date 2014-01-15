@@ -20,22 +20,27 @@ import co.innovate.rentavoz.services.impl.GenericServiceImpl;
  * @project rentavoz3
  * @class BodegaItemService
  * @date 13/01/2014
- *
+ * 
  */
 @Service("bodegaItemService")
-public class BodegaItemServiceImpl extends GenericServiceImpl<BodegaItem, Integer> implements Serializable , BodegaItemService{
+public class BodegaItemServiceImpl extends
+		GenericServiceImpl<BodegaItem, Integer> implements Serializable,
+		BodegaItemService {
 
 	/**
 	 * 13/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * serialVersionUID
+	 *         serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Autowired
 	private BodegaItemDao bodegaItemDao;
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.services.impl.GenericServiceImpl#getDao()
 	 */
 	@Override
@@ -43,28 +48,52 @@ public class BodegaItemServiceImpl extends GenericServiceImpl<BodegaItem, Intege
 		return bodegaItemDao;
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.services.bodegaitem.BodegaItemService#existReferencia(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.services.bodegaitem.BodegaItemService#existReferencia
+	 * (java.lang.String)
 	 */
 	@Override
 	public boolean existReferencia(String ref) {
 		return bodegaItemDao.existReferencia(ref);
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.services.bodegaitem.BodegaItemService#findByCriterio(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.services.bodegaitem.BodegaItemService#findByCriterio
+	 * (java.lang.String)
 	 */
 	@Override
 	public List<BodegaItem> findByCriterio(String param) {
 		return bodegaItemDao.findByCriterio(param);
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.services.bodegaitem.BodegaItemService#findByNombre(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.services.bodegaitem.BodegaItemService#findByNombre
+	 * (java.lang.String)
 	 */
 	@Override
 	public BodegaItem findByNombre(String nombre) {
 		return bodegaItemDao.findByNombre(nombre);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.services.bodegaitem.BodegaItemService#updatePrecios
+	 * (co.innovate.rentavoz.model.bodega.BodegaItem)
+	 */
+	@Override
+	public void updatePrecios(BodegaItem bodegaItem) {
+		bodegaItemDao.updatePrecios(bodegaItem);
 	}
 
 }

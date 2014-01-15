@@ -46,4 +46,12 @@ public interface BodegaItemService extends GenericService<BodegaItem, Integer>{
 	* @return
 	*/
 	BodegaItem findByNombre(String nombre);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 15/01/2014
+	* @param bodegaItem
+	*/
+	void updatePrecios(BodegaItem bodegaItem);
 }

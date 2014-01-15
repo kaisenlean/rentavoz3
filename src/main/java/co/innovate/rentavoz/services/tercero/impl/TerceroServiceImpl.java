@@ -67,7 +67,7 @@ public class TerceroServiceImpl extends GenericServiceImpl<Tercero, Integer> imp
 	 */
 	@Override
 	public List<Tercero> findByCriterioProveedor(String criterio) {
-		return findByCriterioProveedor(criterio);
+		return terceroDao.findByCriterioProveedor(criterio);
 	}
 
 	/* (non-Javadoc)

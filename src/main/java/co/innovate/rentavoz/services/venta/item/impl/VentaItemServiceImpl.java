@@ -1,0 +1,43 @@
+/**
+ * 
+ */
+package co.innovate.rentavoz.services.venta.item.impl;
+
+import java.io.Serializable;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import co.innovate.rentavoz.model.venta.VentaItem;
+import co.innovate.rentavoz.repositories.GenericRepository;
+import co.innovate.rentavoz.repositories.venta.item.VentaItemDao;
+import co.innovate.rentavoz.services.impl.GenericServiceImpl;
+import co.innovate.rentavoz.services.venta.item.VentaItemService;
+
+/**
+ * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @project rentavoz3
+ * @class VentaItemServiceImpl
+ * @date 15/01/2014
+ *
+ */
+@Service("ventaItemService")
+public class VentaItemServiceImpl extends GenericServiceImpl<VentaItem, Integer> implements VentaItemService,Serializable{
+
+	/**
+	 * 15/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
+	private VentaItemDao ventaItemDao;
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.impl.GenericServiceImpl#getDao()
+	 */
+	@Override
+	public GenericRepository<VentaItem, Integer> getDao() {
+		return ventaItemDao;
+	}
+
+}

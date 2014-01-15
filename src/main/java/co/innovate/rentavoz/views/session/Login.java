@@ -17,13 +17,13 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 
-import co.innovate.rentavoz.commons.BaseBean;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.caja.CajaService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.usuario.UsuarioService;
+import co.innovate.rentavoz.views.BaseBean;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

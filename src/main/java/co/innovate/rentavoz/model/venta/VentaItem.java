@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -52,6 +53,7 @@ public class VentaItem implements Serializable {
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
+	@ManyToOne
 	@JoinColumn(name = "cliente")
 	private Tercero cliente;
 
@@ -105,6 +107,7 @@ public class VentaItem implements Serializable {
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
+	@ManyToOne
 	@JoinColumn(name="vendedor")
 	private Tercero vendedor;
 
@@ -114,6 +117,7 @@ public class VentaItem implements Serializable {
 	 * co.com.rentavoz.model.jpa
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
+	@ManyToOne
 	@JoinColumn(name="cuenta")
 	private Cuentas cuenta;
 	

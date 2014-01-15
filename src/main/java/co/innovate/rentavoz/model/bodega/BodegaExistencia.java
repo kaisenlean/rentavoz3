@@ -60,6 +60,7 @@ public class BodegaExistencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private EstadoExistenciaEnum estado;
 	
+	@ManyToOne
 	@JoinColumn(name="sucursal")
 	private Sucursal sucursal;
 	@Transient

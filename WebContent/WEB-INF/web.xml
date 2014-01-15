@@ -16,6 +16,14 @@
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 
 
@@ -72,14 +80,14 @@
 	</servlet-mapping>
 
 
-<!-- 	<error-page> -->
-<!-- 		<error-code>500</error-code> -->
-<!-- 		<location>/500.jsf</location> -->
-<!-- 	</error-page> -->
-<!-- 	<error-page> -->
-<!-- 		<error-code>404</error-code> -->
-<!-- 		<location>/404.jsf</location> -->
-<!-- 	</error-page> -->
+	<!-- <error-page> -->
+	<!-- <error-code>500</error-code> -->
+	<!-- <location>/500.jsf</location> -->
+	<!-- </error-page> -->
+	<!-- <error-page> -->
+	<!-- <error-code>404</error-code> -->
+	<!-- <location>/404.jsf</location> -->
+	<!-- </error-page> -->
 	<resource-ref>
 		<description>Connection Pool</description>
 		<res-ref-name>jdbc/rentavoz</res-ref-name>

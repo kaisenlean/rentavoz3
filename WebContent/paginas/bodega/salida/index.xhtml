@@ -33,7 +33,7 @@
 
 					<h:outputText value="Fecha de Salida" />
 					<p:calendar id="fechaIngreso"
-						value="#{beanSalidaItem.objeto.fechaSalida}" pattern="dd/MM/yyyy"></p:calendar>
+						value="#{beanSalidaItem.objeto.fechaSalida}"></p:calendar>
 					<p:message for="fechaIngreso"></p:message>
 
 
@@ -112,8 +112,10 @@
 
 			</p:panel>
 
-			<p:dataTable rendered="#{!beanSalidaItem.form}"
-				value="#{beanSalidaItem.listado}" var="ingreso" rows="25"
+			<p:dataTable lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" rendered="#{!beanSalidaItem.form}"
+				value="#{beanSalidaItem.model}" var="ingreso" rows="25"
 				paginator="true">
 				<p:column headerText="Codigo" filterBy="#{ingreso.id}"
 					filterMatchMode="contains">

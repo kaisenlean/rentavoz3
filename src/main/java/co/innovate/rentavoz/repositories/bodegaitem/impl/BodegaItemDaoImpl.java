@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -30,14 +32,16 @@ public class BodegaItemDaoImpl extends
 
 	/**
 	 * 13/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * REFERENCIA2
+	 *         REFERENCIA2
 	 */
 	private static final String REFERENCIA2 = "referencia";
 	/**
 	 * 13/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * NOMBRE2
+	 *         NOMBRE2
 	 */
 	private static final String NOMBRE2 = "nombre";
 	/**
@@ -77,8 +81,7 @@ public class BodegaItemDaoImpl extends
 	 */
 	@Override
 	public List<BodegaItem> findByCriterio(String param) {
-		Criterion criterion = Restrictions
-				.disjunction()
+		Criterion criterion = Restrictions.disjunction()
 				.add(Restrictions.like(NOMBRE2, param, MatchMode.ANYWHERE))
 				.add(Restrictions.like(REFERENCIA2, param, MatchMode.ANYWHERE));
 
@@ -93,11 +96,30 @@ public class BodegaItemDaoImpl extends
 	@Override
 	public BodegaItem findByNombre(String nombre) {
 		Criterion criterion = Restrictions.eq(NOMBRE2, nombre);
-		List<BodegaItem> lista= findByCriteria(BigInteger.ZERO.intValue(), BigInteger.ONE.intValue(), criterion);
+		List<BodegaItem> lista = findByCriteria(BigInteger.ZERO.intValue(),
+				BigInteger.ONE.intValue(), criterion);
 		if (lista.isEmpty()) {
 			return null;
 		}
 		return lista.get(BigInteger.ZERO.intValue());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.repositories.bodegaitem.BodegaItemDao#updatePrecios
+	 * (co.innovate.rentavoz.model.bodega.BodegaItem)
+	 */
+	@Override
+	public void updatePrecios(BodegaItem bodegaItem) {
+		Query query = getEntityManager()
+				.createQuery(
+						"update BodegaExistencia b set b.precioVenta = :precioVenta , b.precioVentaMayoristas = :mayoristas where b.bodegaItemBean = :item");
+		query.setParameter("precioVenta", bodegaItem.getPrecioVenta());
+		query.setParameter("mayoristas", bodegaItem.getPrecioVentaMayoristas());
+		query.setParameter("item", bodegaItem);
+		query.executeUpdate();
 	}
 
 }
