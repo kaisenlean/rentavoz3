@@ -304,7 +304,7 @@ public class PrinterBean  extends BaseBean{
 		try {
 			
 			Class.forName("com.mysql.jdbc.Driver");
-			String oracleURL = "jdbc:mysql://127.0.0.1:3306/Minutos";
+			String oracleURL = "jdbc:mysql://127.0.0.1:3306/rentavoz_dimin";
 			connection = DriverManager.getConnection(oracleURL, "root",
 					"jsepee1855");
 			connection.setAutoCommit(false);
