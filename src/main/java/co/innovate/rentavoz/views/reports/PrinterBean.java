@@ -31,7 +31,7 @@ import co.innovate.rentavoz.views.BaseBean;
  */
 @ManagedBean
 @ApplicationScoped
-public class PrinterBean  extends BaseBean{
+public  class PrinterBean  extends BaseBean{
 
 	/**
 	 * 9/08/2013
@@ -141,12 +141,13 @@ public class PrinterBean  extends BaseBean{
                 
 		JasperExportManager.exportReportToPdfStream(jasperPrint,
 				servletOutputStream);
-
 		FacesContext.getCurrentInstance().responseComplete();
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	
 	

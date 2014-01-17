@@ -228,16 +228,14 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="2">
-				<p:commandButton ajax="false" 
-					value="Guardar Venta" action="#{beanVentaItem.guardarVenta()}"
-					process="@this,txtDescuento" update="@form">
-
-
+				<p:commandButton    
+					value="Guardar Venta" ajax="false" actionListener="#{beanVentaItem.guardarVenta()}"
+					process="@this,txtDescuento" update="@all">
 				</p:commandButton>
 
-				<p:commandButton value="Nueva Venta" rendered="true"
+				<p:commandButton ajax="false"  value="Nueva Venta" rendered="true"
 					widgetVar="btnDespues" id="btnDespues" process="@this"
-					update="@all" actionListener="#{beanVentaItem.init()}"></p:commandButton>
+					update="@all" actionListener="#{beanVentaItem.printReport()}"></p:commandButton>
 			</h:panelGrid>
 		</h:form>
 

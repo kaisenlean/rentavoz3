@@ -17,4 +17,5 @@ public interface SessionParams {
 	String ENTITY_BACK ="entityBack";
 	String TASK_CODE="taskCode";
 	String TASK_CODE_ENTITY="taskCodeEntity";
+	
 }

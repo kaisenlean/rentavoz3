@@ -1,6 +1,7 @@
 package co.innovate.rentavoz.views.venta.item;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
+import co.innovate.rentavoz.views.SessionParams;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 import co.innovate.rentavoz.views.reports.PrinterBean;
 import co.innovate.rentavoz.views.session.Login;
@@ -40,7 +42,16 @@ import co.innovate.rentavoz.views.session.Login;
 @ViewScoped
 public class BeanVentaItem extends BaseBean implements Serializable {
 
+	
+	
 	/**
+	 * 15/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * vt
+	 */
+	private VentaItem vt;
+	/**
+	 * 
 	 * 29/10/2013
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -48,6 +59,14 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	
+	/**
+	 * 15/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * ventas
+	 */
+	List<VentaItem> ventas= new ArrayList<VentaItem>();
+	
 	/**
 	 * 29/10/2013
 	 * 
@@ -147,8 +166,10 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 		tercero = new Tercero();
 		cuota = new VentaItemCuota();
+		
 		autocompleteTercero = new AutocompleteTercero() {
 
+			
 			@Override
 			public void postSelect() {
 				tercero = getSeleccionado();
@@ -159,6 +180,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 				return terceroService;
 			}
 		};
+		autocompleteTercero.setQuery("");
 	}
 
 	/**
@@ -170,7 +192,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 		tercero.setTipo(TipoTerceroEnum.CLIENTE_MINORISTA);
 
-		terceroService.save(tercero);
+		tercero=terceroService.save(tercero);
 
 		autocompleteTercero.setSeleccionado(tercero);
 
@@ -213,7 +235,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 * @date 29/10/2013
  */
-	public String guardarVenta() {
+	public void guardarVenta() {
 		venta.setValorPagar(venta.getValorPagar()-venta.getDescuento());
 		venta.setCuenta(cuentasService.findById(idCuenta));
 		venta.setCliente(autocompleteTercero.getSeleccionado());
@@ -232,22 +254,27 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		
 		try {
 			
-			VentaItem vt=ventaItemEjb.registrarVenta(venta);
-		
+			 vt=ventaItemEjb.registrarVenta(venta);
 			init();
 			login.updateValorCaja();
-//			runJavascript("Se ha registrado una nueva venta");
-			List<VentaItem> ventas= new ArrayList<VentaItem>();
 			ventas.add(vt);
 			venta=new VentaItem();
-			printerBean.exportPdf("facturaIndividual_1", "factura_"+vt.getIdVenta(),null,ventas);
-			return("/paginas/almacen/venta/item/index.jsf");
+			addAttribute(SessionParams.ENTITY_BACK, vt);
+			goTo("/paginas/almacen/venta/item/respuesta.jsf");
 		} catch (Exception e) {
 			mensajeError(e.toString());
-			return "";
 		}
 	}
 	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 15/01/2014
+	*/
+	public void printReport(){
+		
+		printerBean.exportPdf("facturaIndividual_1", "factura_"+vt.getIdVenta(),null,ventas);
+	}
 	
 
 	/**
@@ -311,6 +338,8 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		venta.setFecha(new Date());
 		venta.setEstado(EstadoVentaItemEnum.ACTIVO);
 		venta.setVendedor(login.getTercero());
+		venta.setValorPagar(BigInteger.ZERO.doubleValue());
+		venta.setObservacion("");
 	}
 
 	/**

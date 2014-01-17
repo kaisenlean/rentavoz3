@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 
 import co.innovate.rentavoz.model.Menu;
 import co.innovate.rentavoz.services.menu.MenuService;
+import co.innovate.rentavoz.views.BaseBean;
 
 /**
  * 
@@ -25,17 +26,17 @@ import co.innovate.rentavoz.services.menu.MenuService;
  * 
  */
 
-@ManagedBean(eager = true)
+@ManagedBean
 @SessionScoped
-public class AdministradorMenus implements Serializable {
+public class AdministradorMenus extends BaseBean implements Serializable {
 
 	/**
-	 * 23/07/2013
-	 * 
+	 * 16/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 *         serialVersionUID
+	 * serialVersionUID
 	 */
-	private static final long serialVersionUID = 988905964589622257L;
+	private static final long serialVersionUID = 1L;
+
 	private List<Menu> menus;
 	
 	@ManagedProperty(value="#{menuService}")
@@ -79,6 +80,10 @@ public class AdministradorMenus implements Serializable {
 		this.listener = listener;
 	}
 
+	public void cargar(String direccion){
+		
+		goTo(direccion);
+	}
 	
 
 	/**

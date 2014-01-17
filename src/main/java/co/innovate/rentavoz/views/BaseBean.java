@@ -6,6 +6,7 @@ package co.innovate.rentavoz.views;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.primefaces.context.RequestContext;
 
@@ -128,11 +129,10 @@ public class BaseBean{
 	}
 
 	
-	@SuppressWarnings("unused")
 	public void goTo(String dir){
 		ExternalContext ctx = FacesContext.getCurrentInstance()
 				.getExternalContext();
-//		String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+		String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
 		try {
 
@@ -140,7 +140,7 @@ public class BaseBean{
 			// si se usa una HttpServletResponse fallará.
 			// Sin embargo, como ya está fuera del ciclo de vida
 			// de JSF se debe usar la ruta completa -_-U
-//			ctx.redirect(ctxPath + "/");
+			ctx.redirect(ctxPath + "/"+dir);
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}
