@@ -58,7 +58,7 @@
 
 			</p:panel>
 
-			<p:dataTable rendered="${!bancoBean.form}" style="width: 100%"
+			<p:dataTable rows="#{opcionLoader.numRows}" rendered="${!bancoBean.form}" style="width: 100%"
 				value="#{bancoBean.listado}" var="item"
 				emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"

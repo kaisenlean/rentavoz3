@@ -72,9 +72,9 @@
 			<h:commandButton rendered="${!beanSucursal.form}"
 				value="Descargar en pdf" image="/imagenes/pdf.png"
 				actionListener="#{printerBean.exportXls('sucursales','informe_sucursales','xls')}"></h:commandButton>
-			<p:dataTable paginator="true" rows="10" lazy="true"
+			<p:dataTable paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" rendered="${!beanSucursal.form}" style="width: 100%"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!beanSucursal.form}" style="width: 100%"
 				value="#{beanSucursal.model}" var="item"
 				emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"

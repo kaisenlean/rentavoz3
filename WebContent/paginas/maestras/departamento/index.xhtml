@@ -42,9 +42,9 @@
 			<h:commandButton rendered="${!departamentoBean.form}"
 				value="Descargar en pdf" image="/imagenes/pdf.png"
 				actionListener="#{printerBean.exportXls('departamentos','informe_departamentos','pdf')}"></h:commandButton>
-			<p:dataTable  paginator="true" rows="10" lazy="true"
+			<p:dataTable  paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" rendered="${!departamentoBean.form}" style="width: 100%"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!departamentoBean.form}" style="width: 100%"
 				value="#{departamentoBean.model}" var="item"
 				emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"

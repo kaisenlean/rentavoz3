@@ -221,7 +221,7 @@ getObjeto().setFechaSalida(new Date());
 		
 		if (!isEdit()) {
 			generarNumeroFactura();
-			for (BodegaSalidaReferencia sr : getObjeto().getBodegaSalidaReferencias()) {
+			for (BodegaSalidaReferencia sr : salidaReferencias) {
 				BodegaExistencia be=sr.getBodegaExistencia();
 				be.setEstado(EstadoExistenciaEnum.DISPONIBLE);
 				be.setSucursal(getObjeto().getSucursalDestino());

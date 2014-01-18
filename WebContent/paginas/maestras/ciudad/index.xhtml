@@ -54,9 +54,9 @@
 
 
 
-			<p:dataTable paginator="true" rows="10" lazy="true"
+			<p:dataTable paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" rendered="#{!beanCiudad.form}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="#{!beanCiudad.form}"
 				style="width: 100%" value="#{beanCiudad.model}" var="item"
 				emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"

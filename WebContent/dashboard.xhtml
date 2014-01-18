@@ -4,14 +4,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<h:outputStylesheet name="default.css" library="css" />
 	<h:outputStylesheet name="tableLayout.css" library="css" />
 
-	<title>Rentavoz 2.0</title>
+	<title>Rentavoz 3.0</title>
 </h:head>
 
 <h:body style="font-size: 11px">
@@ -55,7 +56,7 @@
 						style="font-weight: bolder;font-size:16px" />
 					<h:outputLabel value="#{login.valorCaja}"
 						style="font-weight: bolder;font-size:16px;color:red">
-						<f:convertNumber  currencySymbol="$"  currencyCode="COP" type="currency" />
+						<f:convertNumber  currencySymbol="$"   type="currency" />
 					</h:outputLabel>
 
 				</div>
@@ -65,76 +66,21 @@
 
 					<h:panelGrid style="margin-left:5%" columns="4" cellspacing="3"
 						rendered="#{login.session}" cellpadding="3">
-						<p:panel header="Configuracion" style="width:100px">
+						
+						<c:forEach var="menuitem" items="#{administradorMenus.menuPrincipal}">
+						
+						
+						<p:panel header="#{menuitem.label}" style="width:100px">
 							<h:commandLink action="/inicio.jsf">
 								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/configuracion.png"></h:graphicImage>
-								<f:setPropertyActionListener value="config"
+									url="/imagenes/dashboard/#{menuitem.icono}"></h:graphicImage>
+								<f:setPropertyActionListener value="#{menuitem.parametro}"
 									target="${administradorMenus.padre}" />
 								<f:actionListener binding="#{administradorMenus.listener}" />
 							</h:commandLink>
 						</p:panel>
-						<p:panel header="Almacen" style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/almacen.png"></h:graphicImage>
-								<f:setPropertyActionListener value="almacen"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
-
-						<p:panel header="Inventario" style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/inventario.png"></h:graphicImage>
-								<f:setPropertyActionListener value="bodega"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
-
-						<p:panel header="Reportes" style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/reportes.png"></h:graphicImage>
-								<f:setPropertyActionListener value="almacen"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
-
-
-						<p:panel header="Contable " style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/contable.png"></h:graphicImage>
-								<f:setPropertyActionListener value="almacen"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
-
-
-						<p:panel header="Gastos " style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/gastos.png"></h:graphicImage>
-								<f:setPropertyActionListener value="almacen"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
-
-						<p:panel header="Alarmas" style="width:100px">
-							<h:commandLink action="/inicio.jsf">
-								<h:graphicImage style="margin-left:10%"
-									url="/imagenes/dashboard/alarma.png"></h:graphicImage>
-								<f:setPropertyActionListener value="almacen"
-									target="${administradorMenus.padre}" />
-								<f:actionListener binding="#{administradorMenus.listener}" />
-							</h:commandLink>
-						</p:panel>
+						</c:forEach>
+						
 
 
 
@@ -145,7 +91,7 @@
 
 
 				<h:panelGrid style="float: right;margin-top: -10%">
-					<p:graphicImage url="/imagenes/coinv.png"></p:graphicImage>
+					<p:graphicImage url="/imagenes/#{opcionLoader.imagenEmpresa}"></p:graphicImage>
 					<h:outputLabel value="Mi bandeja de tareas" styleClass="h1" />
 					<div>
 						<p:dataTable value="#{tareaBean.tareas}" var="tarea">

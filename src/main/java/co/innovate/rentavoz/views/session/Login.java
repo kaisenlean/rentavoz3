@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
@@ -47,6 +48,9 @@ public class Login extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{cajaService}")
 	private CajaService cajaService;
+	
+	
+	
 
 	private Usuario user;
 	private String usuario;
@@ -57,6 +61,7 @@ public class Login extends BaseBean implements Serializable {
 	private double valorCaja;
 
 	private Logger log = Logger.getAnonymousLogger();
+
 
 	/**
 	 * 
@@ -143,8 +148,8 @@ public class Login extends BaseBean implements Serializable {
 	public void logOut() {
 		ExternalContext ctx = FacesContext.getCurrentInstance()
 				.getExternalContext();
-		// String ctxPath = ((ServletContext)
-		// ctx.getContext()).getContextPath();
+		 String ctxPath = ((ServletContext)
+		 ctx.getContext()).getContextPath();
 
 		try {
 			// Usar el contexto de JSF para invalidar la sesión,
@@ -155,7 +160,7 @@ public class Login extends BaseBean implements Serializable {
 			// si se usa una HttpServletResponse fallará.
 			// Sin embargo, como ya está fuera del ciclo de vida
 			// de JSF se debe usar la ruta completa -_-U
-			// ctx.redirect(ctxPath + "/");
+			 ctx.redirect(ctxPath + "/");
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}

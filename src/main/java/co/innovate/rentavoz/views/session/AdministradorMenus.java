@@ -31,13 +31,20 @@ import co.innovate.rentavoz.views.BaseBean;
 public class AdministradorMenus extends BaseBean implements Serializable {
 
 	/**
+	 * 17/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * MENU_RAIZ
+	 */
+	private static final String MENU_RAIZ = "root";
+
+	/**
 	 * 16/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<Menu> menus;
+	private List<Menu> menus=new ArrayList<Menu>();
 	
 	@ManagedProperty(value="#{menuService}")
 	private MenuService menuService;
@@ -46,8 +53,11 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 	private MenuListener listener;
 	private String padre;
 
+	private List<Menu> menuPrincipal= new ArrayList<Menu>();
 	@PostConstruct
 	public void init() {
+
+		menuPrincipal=(menuService.findTodosByPadre(MENU_RAIZ));
 		listener = new MenuListener() {
 
 			@Override
@@ -56,11 +66,12 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 				cargarMenus(padre);
 			}
 		};
-		try {
-			menus = menuService.findAll();
-		} catch (Exception e) {
-			menus = new ArrayList<Menu>();
-		}
+		
+//		try {
+//			menus = menuService.findAll();
+//		} catch (Exception e) {
+//			menus = new ArrayList<Menu>();
+//		}
 	}
 
 	public void cargarMenus(String padre) {
@@ -130,6 +141,24 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 	 */
 	public void setPadre(String padre) {
 		this.padre = padre;
+	}
+
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 17/01/2014
+	* @return the menuPrincipal
+	*/
+	public List<Menu> getMenuPrincipal() {
+		return menuPrincipal;
+	}
+
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 17/01/2014
+	* @param menuPrincipal the menuPrincipal to set
+	*/
+	public void setMenuPrincipal(List<Menu> menuPrincipal) {
+		this.menuPrincipal = menuPrincipal;
 	}
 
 	// </editor-fold>

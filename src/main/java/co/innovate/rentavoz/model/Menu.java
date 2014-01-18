@@ -43,6 +43,10 @@ public class Menu implements Serializable {
 	@Column(name = "padre")
 	private String padre;
 
+	
+	@Column
+	private String parametro;
+	
 	@Transient
 	private boolean seleccionado;
 	
@@ -131,6 +135,27 @@ public class Menu implements Serializable {
 	public void setPadre(String padre) {
 		this.padre = padre;
 	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/01/2014
+	 * @return the parametro
+	 */
+	public String getParametro() {
+		return parametro;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/01/2014
+	 * @param parametro the parametro to set
+	 */
+	public void setParametro(String parametro) {
+		this.parametro = parametro;
+	}
+	
+	
 
 	@Override
 	public int hashCode() {

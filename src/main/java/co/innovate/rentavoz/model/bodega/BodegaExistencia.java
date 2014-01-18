@@ -63,6 +63,7 @@ public class BodegaExistencia implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="sucursal")
 	private Sucursal sucursal;
+	
 	@Transient
 	private int idItem;
 	

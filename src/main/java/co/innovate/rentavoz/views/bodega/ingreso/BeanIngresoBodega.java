@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import co.innovate.rentavoz.model.Sucursal;
+import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
 import co.innovate.rentavoz.model.bodega.BodegaIngreso;
 import co.innovate.rentavoz.model.bodega.BodegaItem;
@@ -82,7 +84,30 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	private BodegaExistencia existemp = new BodegaExistencia();
 
 	private List<BodegaExistencia> existencias = new ArrayList<BodegaExistencia>();
+	
+	private Tercero tercero=new Tercero();
 
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 18/01/2014
+	*/
+	public void guardarTercero(){
+		try {
+			
+			tercero =terceroService.save(tercero);
+			tercero.setTipo(TipoTerceroEnum.VENDEDOR);
+		} catch (Exception e) {
+			mensajeError("NO se pudo guardar el tercero por favor valida los datos");
+			return;
+		}
+		autocompleteProveedor.setSeleccionado(tercero);
+		getObjeto().setProveedor(tercero);
+		autocompleteProveedor.setQuery(tercero.toString());
+		mensaje("Hecho", "Se ha guardado un nuevo tercero");
+	}
+	
+	
+	
 	/**
 	 * (non-Javadoc)
 	 * 
@@ -557,5 +582,23 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			BodegaExistenciaService bodegaExistenciaService) {
 		this.bodegaExistenciaService = bodegaExistenciaService;
 	}
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 18/01/2014
+ * @return the tercero
+ */
+public Tercero getTercero() {
+	return tercero;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 18/01/2014
+ * @param tercero the tercero to set
+ */
+public void setTercero(Tercero tercero) {
+	this.tercero = tercero;
+}
 
 }

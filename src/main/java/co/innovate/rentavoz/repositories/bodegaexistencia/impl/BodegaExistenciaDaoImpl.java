@@ -173,10 +173,11 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 	@SuppressWarnings("unchecked")
 	public List<BodegaExistencia> findByItemAndSucursal(Sucursal sucursal, BodegaItem bodegaItem){
 		
-		Query query = getEntityManager().createQuery("SELECT b FROM BodegaExistencia b WHERE b.bodegaItemBean = :item AND b.sucursal = :sucursal");
+		Query query = getEntityManager().createQuery("SELECT b FROM BodegaExistencia b WHERE b.bodegaItemBean = :item AND b.sucursal = :sucursal and b.estado = :estado");
 		
 		query.setParameter("item", bodegaItem);
 		query.setParameter("sucursal", sucursal);
+		query.setParameter("estado", EstadoExistenciaEnum.DISPONIBLE);
 		
 		return query.getResultList();
 		
