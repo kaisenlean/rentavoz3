@@ -94,4 +94,12 @@ public class BodegaExistenciaServiceImpl extends GenericServiceImpl<BodegaExiste
 	public List<BodegaExistencia> findByIngreso(BodegaIngreso bodegaIngreso) {
 		return bodegaExistenciaDao.findByIngreso(bodegaIngreso);
 	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService#deleteFromBodegaIngreso(co.innovate.rentavoz.model.bodega.BodegaIngreso)
+	 */
+	@Override
+	public void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso) {
+		bodegaExistenciaDao.deleteFromBodegaIngreso(bodegaIngreso);
+	}
 }

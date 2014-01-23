@@ -193,4 +193,15 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 		return findByCriteria(criterion);
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.bodegaexistencia.BodegaExistenciaDao#deleteFromBodegaIngreso(co.innovate.rentavoz.model.bodega.BodegaIngreso)
+	 */
+	@Override
+	public void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso) {
+
+		Query query = getEntityManager().createQuery(new StringBuilder("DELETE FROM BodegaExistencia b WHERE b.bodegaIngreso = :ingreso").toString());
+		query.setParameter("ingreso", bodegaIngreso);
+		query.executeUpdate();
+	}
+
 }

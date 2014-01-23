@@ -20,9 +20,11 @@ public abstract class ListaDataModel<T,PK extends Serializable> extends LazyData
 
 	private static final long serialVersionUID = 1L;
 
-	private List<T> lista;
+	protected List<T> lista;
 
 	public abstract GenericService<T, PK> getService();
+
+	
 
 	@Override
 	public void setRowIndex(int rowIndex) {
@@ -35,6 +37,13 @@ public abstract class ListaDataModel<T,PK extends Serializable> extends LazyData
 		} else
 			super.setRowIndex(rowIndex % getPageSize());
 	}
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 22/01/2014
+	*/
+	public void customLoad(int startingAt, int maxPerPage){
+		
+	}
 
 	@Override
 	public List<T> load(int startingAt, int maxPerPage, String sortField,
@@ -44,6 +53,7 @@ public abstract class ListaDataModel<T,PK extends Serializable> extends LazyData
 
 				// with datatable pagination limits
 				lista = getService().findByCriteria(startingAt, maxPerPage);
+				customLoad( startingAt,  maxPerPage);
 				setWrappedData(lista);
 
 			} finally {
@@ -51,7 +61,6 @@ public abstract class ListaDataModel<T,PK extends Serializable> extends LazyData
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("aqui");
 		}
 
 		// set the total of players
@@ -70,5 +79,21 @@ public abstract class ListaDataModel<T,PK extends Serializable> extends LazyData
 		return player;
 	}
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 22/01/2014
+ * @param lista the lista to set
+ */
+public void setLista(List<T> lista) {
+	this.lista = lista;
+}
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 22/01/2014
+ * @return the lista
+ */
+public List<T> getLista() {
+	return lista;
+}
 }

@@ -4,6 +4,8 @@
 package co.innovate.rentavoz.services.venta.item.impl;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,13 @@ public class VentaItemServiceImpl extends GenericServiceImpl<VentaItem, Integer>
 	@Override
 	public GenericRepository<VentaItem, Integer> getDao() {
 		return ventaItemDao;
+	}
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.venta.item.VentaItemService#findVentaByFechas(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults) {
+		return ventaItemDao.findVentaByFechas(start, end, firstResult, maxResults);
 	}
 
 }

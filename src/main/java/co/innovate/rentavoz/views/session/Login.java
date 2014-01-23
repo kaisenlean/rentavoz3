@@ -111,8 +111,8 @@ public class Login extends BaseBean implements Serializable {
 			loggedIn = true;
 			context.addCallbackParam("loggedIn", loggedIn);
 			buscarTercero();
-			// cajaEjb.abrirCaja(user);
-			// valorCaja=cajaEjb.valorCaja();
+			 cajaService.abrirCaja(user);
+			 valorCaja=cajaService.valorCaja();
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;
@@ -348,4 +348,6 @@ public class Login extends BaseBean implements Serializable {
 		this.usuario = usuario;
 	}
 
+	
+	
 }

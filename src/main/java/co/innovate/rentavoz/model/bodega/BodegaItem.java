@@ -16,8 +16,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * The persistent class for the bodega_item database table.
  * 
+* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+* @project rentavoz3
+* @class BodegaItem
+* @date 19/01/2014
+*
  */
 @Entity
 @Table(name = "bodega_item")
@@ -57,8 +61,14 @@ public class BodegaItem implements Serializable {
 	private Double precioVentaMayoristas;
 
 	
+	@Column(name="precio_venta_minimo")
+	private Double precioVentaMinimo;
+
 	
-	// bi-directional many-to-one association to BodegaExistencia
+	@Column(name="precio_venta_mayorista_minimo")
+	private Double precioVentaMayoristasMinimo;
+	
+	
 	@OneToMany(mappedBy = "bodegaItemBean")
 	private List<BodegaExistencia> bodegaExistencias;
 	
@@ -283,5 +293,42 @@ public class BodegaItem implements Serializable {
 		this.precioVentaMayoristas = precioVentaMayoristas;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 19/01/2014
+	 * @return the precioVentaMayoristasMinimo
+	 */
+	public Double getPrecioVentaMayoristasMinimo() {
+		return precioVentaMayoristasMinimo;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 19/01/2014
+	 * @param precioVentaMayoristasMinimo the precioVentaMayoristasMinimo to set
+	 */
+	public void setPrecioVentaMayoristasMinimo(
+			Double precioVentaMayoristasMinimo) {
+		this.precioVentaMayoristasMinimo = precioVentaMayoristasMinimo;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 19/01/2014
+	 * @return the precioVentaMinimo
+	 */
+	public Double getPrecioVentaMinimo() {
+		return precioVentaMinimo;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 19/01/2014
+	 * @param precioVentaMinimo the precioVentaMinimo to set
+	 */
+	public void setPrecioVentaMinimo(Double precioVentaMinimo) {
+		this.precioVentaMinimo = precioVentaMinimo;
+	}
 	
 }

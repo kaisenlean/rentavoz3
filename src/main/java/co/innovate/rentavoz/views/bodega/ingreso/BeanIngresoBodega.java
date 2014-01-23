@@ -19,6 +19,7 @@ import co.innovate.rentavoz.model.bodega.BodegaItem;
 import co.innovate.rentavoz.model.bodega.EstadoExistenciaEnum;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
+import co.innovate.rentavoz.services.bodegaexistencia.color.BodegaExistenciaColorService;
 import co.innovate.rentavoz.services.bodegaingreso.BodegaIngresoService;
 import co.innovate.rentavoz.services.bodegaitem.BodegaItemService;
 import co.innovate.rentavoz.services.sucursal.SucursalService;
@@ -74,6 +75,9 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	@ManagedProperty("#{bodegaExistenciaService}")
 	private BodegaExistenciaService bodegaExistenciaService;
 
+	@ManagedProperty("#{bodegaExistenciaColorService}")
+	private BodegaExistenciaColorService bodegaExistenciaColorService;
+	
 	@ManagedProperty(value = "#{login}")
 	private Login login;
 
@@ -87,6 +91,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	
 	private Tercero tercero=new Tercero();
 
+	private Integer idColor;
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 18/01/2014
@@ -157,6 +162,15 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	public List<BodegaIngreso> getListado() {
 		return obtenerListado();
 	}
+	
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#preEliminar()
+	 */
+	@Override
+	public void preEliminar() {
+
+		bodegaExistenciaService.deleteFromBodegaIngreso(getObjeto());
+	}
 
 	/**
 	 * (non-Javadoc)
@@ -178,6 +192,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			}
 
 		};
+	
 	}
 
 	/**
@@ -252,23 +267,26 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			mensajeError("Por favor selecciona una sucursal válida");
 			return false;
 		}
-
+		
 		Sucursal suc = sucursalService.findById(selSucursal);
 
 		if (suc != null) {
 			getObjeto().setSucursal(suc);
 		}
+		if (idColor == 0) {
+			mensajeError("Por favor selecciona un color  válida");
+			return false;
+		}
+		getObjeto().setColor(bodegaExistenciaColorService.findById(idColor));
 
 		if (!isEdit()) {
 			existencias = getObjeto().getBodegaExistencias();
 			for (BodegaExistencia ext : getObjeto().getBodegaExistencias()) {
-//				ext.setBodegaIngreso(getObjeto());
 				ext.setEstado(EstadoExistenciaEnum.DISPONIBLE);
 				ext.setPrecioCompra(getObjeto().getPrecioCompra().doubleValue());
 				ext.setPrecioVenta(getObjeto().getPrecioVenta());
 				ext.setPrecioVentaMayoristas(getObjeto()
 						.getPrecioVentaMayoristas());
-				ext.setColor(getObjeto().getColor());
 				ext.setSucursal(suc);
 				if (bodegaExistenciaService.findByBarcode(ext.getBarCode()) != null) {
 					mensajeError("Este PID " + ext.getBarCode()
@@ -282,6 +300,14 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		return true;
 	}
 
+	public void listenerColor(){
+		if (idColor == 0) {
+			mensajeError("Por favor selecciona un color  válida");
+			return ;
+		}
+		getObjeto().setColor(bodegaExistenciaColorService.findById(idColor));
+	
+}
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -312,12 +338,18 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			mensajeError("Digita un PID válido");
 			return;
 		}
+		if (idColor==0) {
+			mensajeError("Por favor selecciona un color para continuar");
+			return;
+		}
 
 		if (item.getCantidadImei() == 1) {
 
 			existemp.setBarCode(productoId);
 			existemp.setBodegaItemBean(item);
+			existemp.setColor(getObjeto().getColor().getColor());
 			existemp.setSucursal(login.getSucursal());
+			existemp.setColor(getObjeto().getColor().getColor());
 			if (getObjeto().getBodegaExistencias().contains(existemp)) {
 				mensajeError("Este PID ya está en la lista");
 				return;
@@ -325,7 +357,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			getObjeto().addBodegaExistencia(existemp);
 			existemp = new BodegaExistencia();
 			productoId = "";
-			item.setContadorImei(0);
+			item.setContadorImei(1);
 			return;
 		}
 
@@ -335,6 +367,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			if (item.getCantidadImei() == 1) {
 				existemp.setBarCode(productoId);
 				existemp.setBodegaItemBean(item);
+				existemp.setColor(getObjeto().getColor().getColor());
 				existemp.setSucursal(login.getSucursal());
 				if (getObjeto().getBodegaExistencias().contains(existemp)) {
 					mensajeError("Este PID ya está en la lista");
@@ -343,6 +376,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 				getObjeto().addBodegaExistencia(existemp);
 				existemp = new BodegaExistencia();
 				productoId = "";
+				item.setContadorImei(1);
 				return;
 			}
 			item.setContadorImei(item.getContadorImei() + 1);
@@ -357,6 +391,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 
 					existemp.setBarCode2(productoId);
 					existemp.setBodegaItemBean(item);
+					existemp.setColor(getObjeto().getColor().getColor());
 					existemp.setSucursal(login.getSucursal());
 					if (getObjeto().getBodegaExistencias().contains(existemp)) {
 						mensajeError("Este PID ya está en la lista");
@@ -365,6 +400,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 					getObjeto().addBodegaExistencia(existemp);
 					existemp = new BodegaExistencia();
 					productoId = "";
+					item.setContadorImei(1);
 					return;
 				}
 				item.setContadorImei(item.getContadorImei() + 1);
@@ -380,6 +416,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 					existemp.setBarCode3(productoId);
 					existemp.setBodegaItemBean(item);
 					existemp.setSucursal(login.getSucursal());
+					existemp.setColor(getObjeto().getColor().getColor());
 					if (getObjeto().getBodegaExistencias().contains(existemp)) {
 						mensajeError("Este PID ya está en la lista");
 						return;
@@ -387,6 +424,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 					getObjeto().addBodegaExistencia(existemp);
 					existemp = new BodegaExistencia();
 					productoId = "";
+					item.setContadorImei(1);
 					return;
 				}
 				item.setContadorImei(item.getContadorImei() + 1);
@@ -599,6 +637,34 @@ public Tercero getTercero() {
  */
 public void setTercero(Tercero tercero) {
 	this.tercero = tercero;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 19/01/2014
+ * @return the idColor
+ */
+public Integer getIdColor() {
+	return idColor;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 19/01/2014
+ * @param idColor the idColor to set
+ */
+public void setIdColor(Integer idColor) {
+	this.idColor = idColor;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 19/01/2014
+ * @param bodegaExistenciaColorService the bodegaExistenciaColorService to set
+ */
+public void setBodegaExistenciaColorService(
+		BodegaExistenciaColorService bodegaExistenciaColorService) {
+	this.bodegaExistenciaColorService = bodegaExistenciaColorService;
 }
 
 }

@@ -83,4 +83,13 @@ public interface BodegaExistenciaService extends GenericService<BodegaExistencia
 	* @return
 	*/
 	List<BodegaExistencia> findByIngreso(BodegaIngreso bodegaIngreso);
+	
+	
+	/**
+	 * Elimina las existencias por un ingreso determinado
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 23/01/2014
+	* @param bodegaIngreso
+	*/
+	void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso);
 }

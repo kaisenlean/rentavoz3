@@ -14,6 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.hibernate.Hibernate;
 
@@ -64,9 +65,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 	 * @param dirPagina
 	 */
 	public StandardAbm(GenericService<T,PK> facade, String dirPagina) {
-		// this.getFacade() = facade;
-		// this.dirPagina=dirPagina;
-		// t.getJavaType().g
+	
 	}
 
 	@PostConstruct
@@ -91,7 +90,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 		};
 		initialize();
 		ctx = FacesContext.getCurrentInstance().getExternalContext();
-//		ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
+		ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
 	}
 
@@ -126,23 +125,12 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 
 				if (edit) {
 					objeto=getFacade().save(objeto);
-//					RequestContext
-//							.getCurrentInstance()
-//							.execute(
-//									"alert('Se ha realizado la transaccion correctamente !!');");
-					// FacesUtils.mensaje("Se ha realizado la transaccion correctamente !!");
 					System.out.println(reglaNavegacion());
 					mensaje("Hecho", "Se ha editado este objeto");
 					postAction();
 					return reglaNavegacion();
 				} else {
 					objeto=getFacade().save(objeto);
-//					RequestContext
-//							.getCurrentInstance()
-//							.execute(
-//									"alert('Se ha realizado la transaccion correctamente !!');");
-					// FacesUtils.mensaje("Se ha realizado la transaccion correctamente !!");
-					System.out.println(reglaNavegacion());
 					mensaje("Hecho", "Se ha creado un nuevo objeto");
 					postAction();
 					if (reglaNavegacionAlterna!=null) {
@@ -158,8 +146,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 		} catch (Exception e) {
 			e.printStackTrace();
 			mensajeError(e.toString());
-			// FacesUtils.mensaje("No se ha finalizado la transaccion con exito . Respuesta del servidor : "
-			// + e.toString());
+			
 			return "";
 		}
 
@@ -170,7 +157,6 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 	 * @date 3/06/2013
 	 */
 	public void postAction() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -199,24 +185,26 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 
 	public void eliminarItem(T objeto) {
 		try {
-			System.out.println("ando aca");
 			this.objeto = objeto;
-			getFacade().save(objeto);
+			preEliminar();
+			getFacade().delete(objeto);
 			init();
 			postEliminar();
 			mensaje("Hecho", "Se ha eliminado este objeto");
-			// FacesUtils.mensaje("Se  ha eiminado este objeto");
 		} catch (Exception ex) {
-			mensaje("Error",
-					"NO se puede eliminar este objeto debido a que tiene referencias con otros items");
-			Logger.getLogger(StandardAbm.class.getName()).log(Level.SEVERE,
-					null, ex);
-			// FacesUtils.mensaje("No se puede eliminar el objeto debido a que tiene  referencias asocidas");
+			mensajeError(ex.toString());
+			
 		}
-		// return reglaNavegacion();
 	}
 
-	// <editor-fold defaultstate="collapsed" desc="CAPSULAS">
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 23/01/2014
+	*/
+	public void preEliminar() {
+		
+	}
+
 	public String getCriterio() {
 		return criterio;
 	}
@@ -269,7 +257,6 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 		this.edit = edit;
 	}
 
-	// </editor-fold>
 
 	/**
 	 * 
@@ -280,12 +267,10 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 	}
 
 	public void preRenderizarItem() {
-		// throw new UnsupportedOperationException("No soportado");
 	}
 
 	public abstract void initialize();
 
-	// throw new UnsupportedOperationException("No soportado");
 
 	public void postFormNuevo() {
 	}
@@ -294,15 +279,8 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 
 		try {
 
-			// Usar el contexto de JSF para invalidar la sesión,
-			// NO EL DE SERVLETS (nada de HttpServletRequest)
-			// ((HttpSession) ctx.getSession(false)).invalidate();
-
-			// Redirección de nuevo con el contexto de JSF,
-			// si se usa una HttpServletResponse fallará.
-			// Sin embargo, como ya está fuera del ciclo de vida
-			// de JSF se debe usar la ruta completa -_-U
-			ctx.redirect(ctxPath + reglaNavegacion());
+		
+			FacesContext.getCurrentInstance().getExternalContext().redirect(ctxPath + reglaNavegacion());
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -319,7 +297,6 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 	 * @date 9/06/2013
 	 */
 	public void buscarrPorCriterio() {
-		// TODO Auto-generated method stub
 
 	}
 	

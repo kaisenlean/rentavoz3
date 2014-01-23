@@ -115,8 +115,10 @@
 					<p:message for="compradorIngreso"></p:message>
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Color" />
-					<h:inputText rendered="#{!beanIngresoBodega.edit}" id="color"
-						value="#{beanIngresoBodega.objeto.color}"></h:inputText>
+					<p:selectOneMenu rendered="#{!beanIngresoBodega.edit}" id="color" value="#{beanIngresoBodega.idColor}">
+					<p:ajax event="change" partialSubmit="true" listener="#{beanIngresoBodega.listenerColor()}"></p:ajax>
+					<f:selectItems value="#{selectorColor.items}"></f:selectItems>
+					</p:selectOneMenu>
 					<p:message rendered="#{!beanIngresoBodega.edit}" for="color"></p:message>
 
 
@@ -182,6 +184,10 @@
 						<p:column headerText="PID" filterBy="#{existencia.barCode}"
 							filterMatchMode="contains">
 							<h:outputText value="#{existencia.barCode}" />
+						</p:column>
+							<p:column headerText="Color" filterBy="#{existencia.color}"
+							filterMatchMode="contains">
+							<h:outputText value="#{existencia.color}" />
 						</p:column>
 						<p:column>
 							<p:commandButton disabled="#{beanIngresoBodega.edit}"
@@ -259,7 +265,7 @@
 
 						<h:panelGrid columns="2">
 							<p:commandButton value="Eliminar" partialSubmit="true"
-								actionListener="#{beanIngresoBodega.eliminarItem(ingreso)}" />
+								actionListener="#{beanIngresoBodega.eliminarItem(ingreso)}" onblur="pnl#{ingreso.id}.hide();" />
 							<p:commandButton value="Cancelar"
 								onclick="pnl#{ingreso.id}.hide();" />
 

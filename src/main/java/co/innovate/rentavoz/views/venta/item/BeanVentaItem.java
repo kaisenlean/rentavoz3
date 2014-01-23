@@ -283,6 +283,11 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 * @date 29/10/2013
 	 */
 	public void addExistencia() {
+		
+		if (tercero.getIdTecero()==null) {
+			mensajeError("Por favor selecciona primero un cliente");
+			return;
+		}
 		boolean existe = false;
 		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,
 				login.getTercero().getSucursalTerceroList().get(0)
@@ -304,8 +309,17 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 			}
 			venta.getExistencias().add(detalle);
 			/* adicionamos su precio al valor a pagar de la venta */
+			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+				
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getExistencia().getPrecioVentaMayoristas());
+			}else{
+				
+				
+			
 			venta.setValorPagar(venta.getValorPagar()
 					+ detalle.getExistencia().getPrecioVenta());
+			}
 			productoId = "";
 		} else {
 			if (existe) {

@@ -86,7 +86,7 @@ public class BodegaIngreso implements Serializable {
 	
 
 	@Transient
-	private String color;
+	private BodegaExistenciaColor color;
 	
 	
 	public BodegaIngreso() {
@@ -254,7 +254,7 @@ public class BodegaIngreso implements Serializable {
 	 * @date 10/01/2014
 	 * @return the color
 	 */
-	public String getColor() {
+	public BodegaExistenciaColor getColor() {
 		return color;
 	}
 	
@@ -263,7 +263,7 @@ public class BodegaIngreso implements Serializable {
 	 * @date 10/01/2014
 	 * @param color the color to set
 	 */
-	public void setColor(String color) {
+	public void setColor(BodegaExistenciaColor color) {
 		this.color = color;
 	}
 }

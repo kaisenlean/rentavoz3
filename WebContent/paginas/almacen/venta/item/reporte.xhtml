@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+	<ui:define name="content">
+		<h:form>
+
+			<h1>
+				<h:outputLabel value="Reporte de Ventas" class="h1" />
+			</h1>
+
+			<h:panelGrid columns="5">
+
+				<h:outputText value="Fecha de Inicio" />
+				<p:calendar  value="#{reporteVenta.start}"></p:calendar>
+
+				<h:outputText value="Fecha de Fin" />
+				<p:calendar value="#{reporteVenta.end}"></p:calendar>
+
+				<p:commandButton process="@all" update="tablaVenta" value="Consultar" actionListener="#{reporteVenta.buscar()}"></p:commandButton>
+
+		</h:panelGrid>
+				<p:dataTable id="tablaVenta" widgetVar="tablaVenta" paginator="true" lazy="true"
+					rows="#{opcionLoader.numRows}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+					style="width: 100%" value="#{reporteVenta.model}" var="item"
+					emptyMessage="No hay registros">
+
+					<p:column headerText="Código">
+						<h:outputText value="#{item.idVenta}" />
+					</p:column>
+
+					<p:column headerText="Valor a pagar">
+						<h:outputText value="#{item.valorPagar}">
+							<f:convertNumber type="currency" currencySymbol="$" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Comprador">
+						<h:outputText value="#{item.cliente}">
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Fecha de venta">
+						<p:calendar disabled="true" value="#{item.fecha}" />
+					</p:column>
+
+
+				</p:dataTable>
+
+	
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

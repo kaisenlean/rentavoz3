@@ -3,6 +3,9 @@
  */
 package co.innovate.rentavoz.services.venta.item;
 
+import java.util.Date;
+import java.util.List;
+
 import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.services.GenericService;
 
@@ -15,4 +18,13 @@ import co.innovate.rentavoz.services.GenericService;
  */
 public interface VentaItemService  extends GenericService<VentaItem, Integer> {
 
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 22/01/2014
+	* @param start
+	* @param end
+	* @return
+	*/
+	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults);
 }
