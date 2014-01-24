@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Empresa;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.empresa.EmpresaService;
@@ -84,5 +86,23 @@ public class BeanEmpresa extends StandardAbm<Empresa,Integer> implements Seriali
 	 */
 	public void setEmpresaService(EmpresaService empresaService) {
 		this.empresaService = empresaService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Empresa> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
@@ -31,7 +31,7 @@ import com.sun.faces.context.ExternalContextImpl;
  * 
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class OpcionLoader extends BaseBean implements Serializable {
 
 	private String maxRegistrosPagina;

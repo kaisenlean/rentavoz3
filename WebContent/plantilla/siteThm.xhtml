@@ -12,10 +12,11 @@
 	<h:outputStylesheet name="tableLayout.css" library="css" />
 
 	<title>Rentavoz 3.0</title>
-	
-	
-		<ui:insert name="head"> </ui:insert>
-	
+
+
+	<ui:insert name="head">
+	</ui:insert>
+
 </h:head>
 
 <h:body style="font-size: 11px">
@@ -79,24 +80,32 @@
 					</h:form>
 				</p:dialog>
 
-				<p:ajaxStatus style="width:64px;height:64px;float:right">
-					<f:facet name="start">
-						<p:graphicImage value="/imagenes/ajax-loader.gif" />
-					</f:facet>
+				<!-- 				<p:ajaxStatus style="width:64px;height:64px;float:right"> -->
+				<!-- 					<f:facet name="start"> -->
+				<!-- 						<p:graphicImage value="/imagenes/ajax-loader.gif" /> -->
+				<!-- 					</f:facet> -->
 
-					<f:facet name="complete">
-						<h:outputText value="" />
-					</f:facet>
-				</p:ajaxStatus>
+				<!-- 					<f:facet name="complete"> -->
+				<!-- 						<h:outputText value="" /> -->
+				<!-- 					</f:facet> -->
+				<!-- 				</p:ajaxStatus> -->
+
+				<p:ajaxStatus onstart="PF('statusDialog').show();"
+					onsuccess="PF('statusDialog').hide();" />
+
+				<p:dialog appendToBody="true" modal="true" widgetVar="statusDialog" header="Por favor espere ..."
+					draggable="false" closable="false">
+					<p:graphicImage value="/imagenes/ajaxloadingbar.gif" />
+				</p:dialog>
 				<div style="float: bottom">
 
-<!-- 					<p:growl autoUpdate="true" showDetail="true" sticky="true" -->
-<!-- 						severity="info" life="200" /> -->
+					<!-- 					<p:growl autoUpdate="true" showDetail="true" sticky="true" -->
+					<!-- 						severity="info" life="200" /> -->
 				</div>
 
 
-				<p:messages severity="warn,info,error,severe" autoUpdate="true" showDetail="true" 
-					globalOnly="true" closable="true"></p:messages>
+				<p:messages severity="warn,info,error,severe" autoUpdate="true"
+					showDetail="true" globalOnly="true" closable="true"></p:messages>
 				<ui:insert name="content"> Pagina principal</ui:insert>
 			</p:layoutUnit>
 		</h:form>

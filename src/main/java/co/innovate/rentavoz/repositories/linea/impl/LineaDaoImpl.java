@@ -8,9 +8,18 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.text.StrBuilder;
+import org.apache.log4j.Logger;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.repositories.estadolinea.EstadoLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 import co.innovate.rentavoz.repositories.linea.LineaDao;
 
@@ -42,7 +51,13 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
 	private static final int ESTADO_LINEA_DISPONIBLE_USO = 4;
-	private static final Integer ESTADO_LINEA_ACTIVO = 1;
+	private static final Integer ESTADO_LINEA_REPO = 2;
+	
+	
+	private Logger logger= Logger.getLogger(LineaDaoImpl.class);
+	
+	@Autowired
+	private EstadoLineaDao estadoLineaDao;
 	
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#nextCodigo()
@@ -87,7 +102,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query q = getEntityManager().createQuery(
 				"SELECT l FROM Linea l WHERE l.linNumero = :numero AND  l.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
 		q.setParameter("numero", linNumero);
-		q.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		q.setParameter("estado", ESTADO_LINEA_REPO);
 		q.setMaxResults(1);
 		if (q.getResultList().isEmpty()) {
 			return null;
@@ -142,7 +157,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query q = getEntityManager()
 				.createQuery(
 						"SELECT l FROM Linea l WHERE l.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
-		q.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		q.setParameter("estado", ESTADO_LINEA_REPO);
 		return q.getResultList();
 	}
 
@@ -156,7 +171,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query query = getEntityManager()
 				.createQuery(
 						"SELECT l FROM Linea l WHERE l.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
-		query.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		query.setParameter("estado", ESTADO_LINEA_REPO);
 		
 		query.setFirstResult(startingAt);
 		query.setMaxResults(maxPerPage);
@@ -175,7 +190,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query query = getEntityManager()
 				.createQuery(
 						"SELECT l FROM Linea l WHERE l.estadoLineaidEstadoLinea.idEstadoLinea = :estado  OR l.estadoLineaidEstadoLinea.idEstadoLinea = :estado2");
-		query.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		query.setParameter("estado", ESTADO_LINEA_REPO);
 		query.setParameter("estado2", ESTADO_LINEA_DISPONIBLE_CON_USO);
 		query.setFirstResult(startingAt);
 		query.setMaxResults(maxPerPage);
@@ -194,7 +209,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 				.createQuery(
 						"select COUNT(p) from Linea p WHERE p.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
 
-		query.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		query.setParameter("estado", ESTADO_LINEA_REPO);
 
 		Number result = (Number) query.getSingleResult();
 
@@ -211,7 +226,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query q = getEntityManager().createQuery(
 				"SELECT l FROM Linea l WHERE l.linNumero LIKE :query AND  l.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
 		q.setParameter("query", "%" + query + "%");
-		q.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		q.setParameter("estado", ESTADO_LINEA_REPO);
 		return q.getResultList();
 	}
 
@@ -224,8 +239,39 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 				"SELECT l FROM Linea l WHERE l.linNumero LIKE :query AND ( l.estadoLineaidEstadoLinea.idEstadoLinea = :estado OR l.estadoLineaidEstadoLinea.idEstadoLinea = :estado2) AND l.sucursal.idSucursal = :sucursal");
 		q.setParameter("query", "%" + query + "%");
 		q.setParameter("sucursal", idSucursal);
-		q.setParameter("estado", ESTADO_LINEA_ACTIVO);
+		q.setParameter("estado", ESTADO_LINEA_REPO);
 		q.setParameter("estado2", ESTADO_LINEA_DISPONIBLE_USO);
 		return q.getResultList();
+	}
+
+	/** (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#findByCriteria(java.lang.String, int, int)
+	 */
+	@Override
+	public List<Linea> findByCriteria(String query, int firstResult,
+			int maxResults,Order order) {
+		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
+		if (estadoLinea==null) {
+			logger.error(new StrBuilder("No se ha encontrado el estado de la linea con codigo : ").append(ESTADO_LINEA_REPO).toString());
+		}
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like("linNumero", query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		
+		
+		return findByCriteria(firstResult, maxResults,order, criterion);
+	
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#countByCriteria(java.lang.String, int, int)
+	 */
+	@Override
+	public int countByCriteria(String query) {
+		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
+		if (estadoLinea==null) {
+			logger.error(new StrBuilder("No se ha encontrado el estado de la linea con codigo : ").append(ESTADO_LINEA_REPO).toString());
+		}
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like("linNumero", query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		
+		return countByCriteria(criterion);
 	}
 }

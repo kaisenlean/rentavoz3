@@ -115,34 +115,6 @@
 				</textElement>
 				<text><![CDATA[Plan]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="f0ccfbbb-cea6-4f5e-92a7-08ba2e2d43ae" mode="Opaque" x="682" y="10" width="120" height="20" backcolor="#BDBCD2"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Sim Card]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="705c4c40-5f82-427b-9446-a905ad43c93c" mode="Opaque" x="576" y="10" width="106" height="20" backcolor="#BDBCD2"/>
-				<box>
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Sucursal]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -206,30 +178,6 @@
 				</box>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{plan}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="dde1d782-b0a2-4103-9da7-2f24e097876f" x="682" y="0" width="120" height="15"/>
-				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{simcard}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="22cffa9b-8623-4bcb-8e72-e362ae276a2e" x="576" y="0" width="106" height="15"/>
-				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{sucursal}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

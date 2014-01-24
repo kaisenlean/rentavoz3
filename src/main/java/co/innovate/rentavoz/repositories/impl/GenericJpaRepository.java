@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,6 +143,38 @@ public class GenericJpaRepository<C, PK extends Serializable> implements
 			crit.setMaxResults(maxResults);
 		}
 
+		return crit.list();
+
+	}
+	
+	/**
+	 * Use this inside subclasses as a convenience method.
+	 */
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.GenericRepository#findByCriteria(int, int, org.hibernate.criterion.Criterion[])
+	 */
+	public List<C> findByCriteria(final int firstResult,
+			final int maxResults,Order order, final Criterion... criterion ) {
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria crit = session.createCriteria(getEntityClass());
+		
+		for (final Criterion c : criterion) {
+			crit.add(c);
+		}
+
+		if (firstResult > 0) {
+			crit.setFirstResult(firstResult);
+		}
+
+		if (maxResults > 0) {
+			crit.setMaxResults(maxResults);
+		}
+		if (order!=null) {
+			
+			crit.addOrder(order);
+		}
+		
 		return crit.list();
 
 	}

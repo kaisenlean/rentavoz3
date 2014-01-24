@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.bodega.BodegaExistenciaColor;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.bodegaexistencia.color.BodegaExistenciaColorService;
@@ -100,6 +102,24 @@ public class BeanBodegaExistenciaColor extends StandardAbm<BodegaExistenciaColor
 	public void setBodegaExistenciaColorService(
 			BodegaExistenciaColorService bodegaExistenciaColorService) {
 		this.bodegaExistenciaColorService = bodegaExistenciaColorService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<BodegaExistenciaColor> customSearch(int startingAt,
+			int maxPerPage, String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 
 }

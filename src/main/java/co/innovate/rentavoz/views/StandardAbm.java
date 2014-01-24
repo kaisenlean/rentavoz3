@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
 import org.hibernate.Hibernate;
+import org.primefaces.model.SortOrder;
 
 import co.innovate.rentavoz.services.GenericService;
 
@@ -72,7 +73,6 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 	public void init() {
 	
 		edit = false;
-//		listado = getFacade().findAll();
 		Hibernate.initialize(objeto);
 		model=new ListaDataModel<T, PK>() {
 
@@ -87,12 +87,43 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 			public GenericService<T, PK> getService() {
 				return getFacade();
 			}
+			
+			/* (non-Javadoc)
+			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int, java.lang.String)
+			 */
+			@Override
+			public void customLoad(int startingAt, int maxPerPage,
+					String globalFilter , String sortField,
+					SortOrder sortOrder) {
+			lista = customSearch(startingAt,maxPerPage,globalFilter,  sortField,
+					 sortOrder);
+			}
+			
+			
+			/* (non-Javadoc)
+			 * @see co.innovate.rentavoz.views.ListaDataModel#customCount(java.lang.String)
+			 */
+			@Override
+			public Integer customCount(String globalFilter) {
+				return custoCountBySearch(globalFilter);
+			}
+
+		
+
 		};
+		
+
+		
 		initialize();
 		ctx = FacesContext.getCurrentInstance().getExternalContext();
 		ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
 	}
+	public abstract Integer custoCountBySearch(String globalFilter);
+	
+	public abstract List<T> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) ;
 
 	/**
 	 * variable para manipular el campo editar

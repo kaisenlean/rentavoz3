@@ -13,6 +13,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.services.GenericService;
@@ -206,5 +208,23 @@ if (callByOtherModule) {
 	 */
 	public void setTerceroService(TerceroService terceroService) {
 		this.terceroService = terceroService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Tercero> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 }

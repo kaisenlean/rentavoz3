@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.SortOrder;
 
 import co.innovate.rentavoz.model.bodega.BodegaItem;
 import co.innovate.rentavoz.services.GenericService;
@@ -262,5 +263,23 @@ public class BeanBodegaItem extends StandardAbm<BodegaItem,Integer> implements
 	 */
 	public void setBodegaItemService(BodegaItemService bodegaItemService) {
 		this.bodegaItemService = bodegaItemService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<BodegaItem> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 }

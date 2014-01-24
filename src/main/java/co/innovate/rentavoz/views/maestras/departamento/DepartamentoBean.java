@@ -12,6 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Departamento;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.departamento.DepartamentoService;
@@ -111,5 +113,23 @@ public class DepartamentoBean extends StandardAbm<Departamento,Integer> implemen
 	 */
 	public DepartamentoService getDepartamentoService() {
 		return departamentoService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Departamento> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 }

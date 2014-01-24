@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
@@ -222,7 +224,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	 */
 	@Override
 	public void preRenderizarItem() {
-		autocompleteProveedor.setQuery(getObjeto().getProveedor().toString());
+		autocompleteProveedor.setQuery(getObjeto().getProveedor()+"");
 		if (getObjeto().getSucursal() != null) {
 			selSucursal = getObjeto().getSucursal().getIdSucursal();
 		}
@@ -665,6 +667,28 @@ public void setIdColor(Integer idColor) {
 public void setBodegaExistenciaColorService(
 		BodegaExistenciaColorService bodegaExistenciaColorService) {
 	this.bodegaExistenciaColorService = bodegaExistenciaColorService;
+}
+
+
+
+/* (non-Javadoc)
+ * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+ */
+@Override
+public Integer custoCountBySearch(String globalFilter) {
+	return null;
+}
+
+
+
+/* (non-Javadoc)
+ * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+ */
+@Override
+public List<BodegaIngreso> customSearch(int startingAt, int maxPerPage,
+		String globalFilter, String sortField,
+		SortOrder sortOrder) {
+	return null;
 }
 
 }

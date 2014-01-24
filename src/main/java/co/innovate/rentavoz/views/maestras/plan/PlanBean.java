@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Operador;
 import co.innovate.rentavoz.model.Plan;
 import co.innovate.rentavoz.model.Tercero;
@@ -79,7 +81,6 @@ public class PlanBean extends StandardAbm<Plan,Integer> {
 
 	@Override
 	public void postFormNuevo() {
-//		getObjeto().setIdPlan(facade.nextCodigo());
 		getObjeto().setFecha(new Date());
 		getObjeto().setTerceroidTecero(login.getTercero());
 		tercero = login.getTercero();
@@ -250,6 +251,24 @@ public class PlanBean extends StandardAbm<Plan,Integer> {
 	 */
 	public void setOperadorService(OperadorService operadorService) {
 		this.operadorService = operadorService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Plan> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 	
 	

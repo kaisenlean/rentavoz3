@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Ciudad;
 import co.innovate.rentavoz.model.Departamento;
 import co.innovate.rentavoz.model.Sucursal;
@@ -228,6 +230,24 @@ public class BeanSucursal extends StandardAbm<Sucursal,Integer> implements Seria
 	 */
 	public void setDepartamentoService(DepartamentoService departamentoService) {
 		this.departamentoService = departamentoService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Sucursal> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 	
 	

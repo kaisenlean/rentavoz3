@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 
 /**
  * Generic Repository, providing basic CRUD operations
@@ -124,7 +125,12 @@ public interface GenericRepository<C, PK extends Serializable> {
 	C save(final C entity);
 	
 	
-	public List<C> findByCriteria(final int firstResult,
+	 List<C> findByCriteria(final int firstResult,
 			final int maxResults, final Criterion... criterion);
+	 
+	 
+	 
+	 List<C> findByCriteria(final int firstResult,
+				final int maxResults,Order order, final Criterion... criterion );
 
 }

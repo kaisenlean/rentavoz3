@@ -12,6 +12,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.hibernate.criterion.Order;
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.Plan;
 import co.innovate.rentavoz.model.PlanLinea;
 import co.innovate.rentavoz.model.almacen.EstadosSimcardEnum;
@@ -182,7 +185,6 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 
 			@Override
 			public PlanService getService() {
-				// TODO Auto-generated method stub
 				return planService;
 			}
 		};
@@ -201,10 +203,51 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 
 			
 		};
+		
+		
 	}
+	
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Linea> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		Order order = null;
+		if (sortField!=null) {
+			
+		switch (sortOrder) {
+		case ASCENDING:
+			order=Order.asc(sortField);
+			break;
+
+		case DESCENDING:
+			order=Order.desc(sortField);
+			break;
+		case UNSORTED:
+	
+			break;
+		}
+		}
+		
+		
+	return lineaService.findByCriteria(globalFilter,startingAt,maxPerPage,order);
+	}
+	
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return lineaService.countByCriteria(globalFilter);
+	}
+	
+	
 
 	@Override
 	public void buscarrPorCriterio() {
+		
 	}
 
 	@Override
@@ -217,6 +260,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 		
 
 	}
+	
+	
 
 	/**
 	 * @see com.invte.rentavoz.vista.StandardAbm#preAction()

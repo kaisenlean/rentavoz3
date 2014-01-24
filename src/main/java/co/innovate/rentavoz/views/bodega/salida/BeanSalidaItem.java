@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
 import co.innovate.rentavoz.model.bodega.BodegaSalida;
 import co.innovate.rentavoz.model.bodega.BodegaSalidaReferencia;
@@ -439,6 +441,24 @@ getObjeto().setFechaSalida(new Date());
 	public void setBodegaSalidaReferenciaService(
 			BodegaSalidaReferenciaService bodegaSalidaReferenciaService) {
 		this.bodegaSalidaReferenciaService = bodegaSalidaReferenciaService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<BodegaSalida> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 	
 	

@@ -108,11 +108,11 @@
 				</h:panelGrid>
 			</p:panel>
 
-			<p:dataTable lazy="true"
+			<p:dataTable paginator="true" rows="#{opcionLoader.numRows}" lazy="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" rendered="#{!beanBodegaItem.form}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="#{!beanBodegaItem.form}"
 				style="width: 100%" value="#{beanBodegaItem.model}" var="item"
-				paginator="true" rows="30" emptyMessage="No hay registros">
+				 emptyMessage="No hay registros">
 				<p:column style="width: 10%" headerText="Codigo"
 					filterBy="#{item.id}" filterMatchMode="contains"
 					styleClass="styleColumn">

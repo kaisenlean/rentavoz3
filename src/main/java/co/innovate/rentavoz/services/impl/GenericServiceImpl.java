@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.services.GenericService;
@@ -154,5 +155,13 @@ public abstract class GenericServiceImpl<C, PK extends Serializable> implements
 	public List<C> findByCriteria(int firstResult, int maxResults,
 			Criterion... criterion) {
 		return getDao().findByCriteria(firstResult, maxResults, criterion);
+	}
+	 /* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.GenericRepository#findByCriteria(int, int, org.hibernate.criterion.Order, org.hibernate.criterion.Criterion[])
+	 */
+	@Override
+	public List<C> findByCriteria(int firstResult, int maxResults, Order order,
+			Criterion... criterion) {
+		return getDao().findByCriteria(firstResult, maxResults, order, criterion);
 	}
 }

@@ -44,61 +44,61 @@ public class ReporteVenta implements Serializable {
 	
 	
 	public void buscar(){
-		model= new ListaDataModel<VentaItem, Integer>() {
-			
-			/**
-			 * 22/01/2014
-			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-			 * serialVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public GenericService<VentaItem, Integer> getService() {
-				return ventaItemService;
-			}
-			
-			/* (non-Javadoc)
-			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int)
-			 */
-			public void customLoad(int startingAt, int maxPerPage) {
-				lista=(ventaItemService.findVentaByFechas(start, end, startingAt, maxPerPage));
-				
-			}
-		
-		
-		};
+//		model= new ListaDataModel<VentaItem, Integer>() {
+//			
+//			/**
+//			 * 22/01/2014
+//			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//			 * serialVersionUID
+//			 */
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public GenericService<VentaItem, Integer> getService() {
+//				return ventaItemService;
+//			}
+//			
+//			/* (non-Javadoc)
+//			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int)
+//			 */
+//			public void customLoad(int startingAt, int maxPerPage) {
+//				lista=(ventaItemService.findVentaByFechas(start, end, startingAt, maxPerPage));
+//				
+//			}
+//		
+//		
+//		};
 		
 		
 	}
 	
 	@PostConstruct
 	public void init(){
-		model= new ListaDataModel<VentaItem, Integer>() {
-			
-			/**
-			 * 22/01/2014
-			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-			 * serialVersionUID
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public GenericService<VentaItem, Integer> getService() {
-				return ventaItemService;
-			}
-			
-			/* (non-Javadoc)
-			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int)
-			 */
-			public void customLoad(int startingAt, int maxPerPage) {
-				setLista(ventaItemService.findVentaByFechas(start, end, startingAt,maxPerPage));
-				System.out.println(lista.size());
-				
-			}
-		
-		
-		};
+//		model= new ListaDataModel<VentaItem, Integer>() {
+//			
+//			/**
+//			 * 22/01/2014
+//			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//			 * serialVersionUID
+//			 */
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public GenericService<VentaItem, Integer> getService() {
+//				return ventaItemService;
+//			}
+//			
+//			/* (non-Javadoc)
+//			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int)
+//			 */
+//			public void customLoad(int startingAt, int maxPerPage) {
+//				setLista(ventaItemService.findVentaByFechas(start, end, startingAt,maxPerPage));
+//				System.out.println(lista.size());
+//				
+//			}
+//		
+//		
+//		};
 		
 	}
 	private ListaDataModel<VentaItem, Integer> model;

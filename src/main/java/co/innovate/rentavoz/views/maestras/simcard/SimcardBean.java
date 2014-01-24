@@ -7,6 +7,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.SucursalSimcard;
 import co.innovate.rentavoz.model.almacen.EstadosSimcardEnum;
 import co.innovate.rentavoz.model.almacen.Simcard;
@@ -342,6 +344,24 @@ public class SimcardBean extends StandardAbm<Simcard,Integer> {
 	public void setSucursalSimcardService(
 			SucursalSimcardService sucursalSimcardService) {
 		this.sucursalSimcardService = sucursalSimcardService;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	 */
+	@Override
+	public Integer custoCountBySearch(String globalFilter) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	 */
+	@Override
+	public List<Simcard> customSearch(int startingAt, int maxPerPage,
+			String globalFilter, String sortField,
+			SortOrder sortOrder) {
+		return null;
 	}
 	
 	

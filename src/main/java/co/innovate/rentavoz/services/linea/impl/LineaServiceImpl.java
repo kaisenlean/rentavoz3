@@ -6,6 +6,7 @@ package co.innovate.rentavoz.services.linea.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,6 +130,24 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 	@Override
 	public GenericRepository<Linea, Integer> getDao() {
 		return lineaDao;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.linea.LineaService#findByCriteria(java.lang.String, int, int)
+	 */
+	@Override
+	public List<Linea> findByCriteria(String query, int firstResult,
+			int maxResults,Order order) {
+		
+		return lineaDao.findByCriteria(query, firstResult, maxResults,order);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.linea.LineaService#countByCriteria(java.lang.String)
+	 */
+	@Override
+	public int countByCriteria(String query) {
+		return lineaDao.countByCriteria(query);
 	}
 
 }
