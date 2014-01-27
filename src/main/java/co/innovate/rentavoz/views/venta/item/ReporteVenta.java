@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import co.innovate.rentavoz.model.venta.VentaItem;
-import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.venta.item.VentaItemService;
 import co.innovate.rentavoz.views.ListaDataModel;
 

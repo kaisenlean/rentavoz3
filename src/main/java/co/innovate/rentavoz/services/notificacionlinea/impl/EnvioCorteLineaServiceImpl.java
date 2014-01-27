@@ -15,8 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
@@ -98,13 +96,6 @@ public class EnvioCorteLineaServiceImpl implements EnvioCorteLineaService {
 	 */
 	private static final String REPORT_NAME = "lineas_corte";
 
-	/**
-	 * 26/01/2014
-	 * 
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 *         REPOT_PATH
-	 */
-	private static final String REPOT_PATH = "/WebContent/reportes/";
 
 	/**
 	 * 26/01/2014
@@ -120,7 +111,6 @@ public class EnvioCorteLineaServiceImpl implements EnvioCorteLineaService {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         USER_DIR
 	 */
-	private static final String USER_DIR = "user.dir";
 
 	@Autowired
 	private OpcionService opcionService;

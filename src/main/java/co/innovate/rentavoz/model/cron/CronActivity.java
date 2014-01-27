@@ -40,6 +40,12 @@ public class CronActivity {
 	 @Column(name="parametro")
 	 private String parametro;
 	 
+	 @Column
+	 private String ejecuciones;
+	 
+	 @Column(name="multi_ejecucion")
+	 private Boolean multiEjecucion;
+	 
 	 
 	 
 	 
@@ -120,6 +126,78 @@ public class CronActivity {
 	 */
 	public void setHoraFin(Date horaFin) {
 		this.horaFin = horaFin;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @return the parametro
+	 */
+	public String getParametro() {
+		return parametro;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @param parametro the parametro to set
+	 */
+	public void setParametro(String parametro) {
+		this.parametro = parametro;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @return the ejecuciones
+	 */
+	public String getEjecuciones() {
+		return ejecuciones;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @param ejecuciones the ejecuciones to set
+	 */
+	public void setEjecuciones(String ejecuciones) {
+		this.ejecuciones = ejecuciones;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @return the multiEjecucion
+	 */
+	public Boolean getMultiEjecucion() {
+		return multiEjecucion;
+	}
+
+
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @param multiEjecucion the multiEjecucion to set
+	 */
+	public void setMultiEjecucion(Boolean multiEjecucion) {
+		this.multiEjecucion = multiEjecucion;
 	}
 	
 	

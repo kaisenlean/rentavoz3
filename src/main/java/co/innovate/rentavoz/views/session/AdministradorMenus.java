@@ -46,6 +46,8 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 
 	private List<Menu> menus=new ArrayList<Menu>();
 	
+	
+	
 	@ManagedProperty(value="#{menuService}")
 	private MenuService menuService;
 
@@ -66,12 +68,7 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 				cargarMenus(padre);
 			}
 		};
-		
-//		try {
-//			menus = menuService.findAll();
-//		} catch (Exception e) {
-//			menus = new ArrayList<Menu>();
-//		}
+
 	}
 
 	public void cargarMenus(String padre) {

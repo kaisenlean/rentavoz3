@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="./../../../plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Gestion de Tareas Programadas" class="h1" />
+
+			<h:panelGrid columns="2" rendered="${!beanCronActivity.form}">
+				<h:commandButton value="Nueva Tarea Programada"
+					actionListener="${beanCronActivity.verFormNuevo(true)}" />
+			</h:panelGrid>
+
+
+			<p:panel rendered="#{beanCronActivity.form}"
+				header="Informacion de la Tarea" style="width: 100%">
+				<h:panelGrid columns="3">
+
+
+					<h:outputLabel rendered="#{beanCronActivity.edit}" value="Codigo" />
+					<p:inputText  size="40" id="codBanco2" readonly="#{beanCronActivity.edit}"
+						value="${beanCronActivity.objeto.id}" required="true"
+						requiredMessage="Por favor digita un id válido" />
+					<p:message  for="codBanco2" />
+					
+					<h:outputLabel rendered="#{beanCronActivity.edit}" value="Parámetro" />
+					<p:inputText placeholder="define el parametro de ejecución" size="40" id="codBanco" 
+						value="${beanCronActivity.objeto.parametro}" required="true"
+						requiredMessage="Por favor digita un parámetro válido" />
+					<p:message  for="codBanco" />
+
+					<h:outputLabel value="Tarea Multi ejecucion" />
+					<p:selectBooleanCheckbox id="nombreBanco"
+						value="${beanCronActivity.objeto.multiEjecucion}"  >
+						<p:ajax event="change" partialSubmit="true" process="@all" update="@all"></p:ajax>
+						</p:selectBooleanCheckbox>
+					<p:message for="nombreBanco" />
+					
+					
+					
+					<h:outputLabel rendered="#{!beanCronActivity.objeto.multiEjecucion}" value="Hora de ejecución" />
+					<p:calendar immediate="true" rendered="#{!beanCronActivity.objeto.multiEjecucion}" id="nombreBanco1" timeOnly="true" pattern="HH:mm"
+						value="${beanCronActivity.objeto.horaInicio}"  >
+						<p:ajax event="dateSelect" partialSubmit="true" process="@all" update="@all"></p:ajax>
+						</p:calendar>
+					<p:message rendered="#{!beanCronActivity.objeto.multiEjecucion}" for="nombreBanco1" />
+
+
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="3" rendered="#{beanCronActivity.objeto.multiEjecucion}">
+				<h:outputText value="Nueva hora : " />
+				<p:calendar id="fechaSelec" timeOnly="true"  pattern="HH:mm"  value="#{beanCronActivity.hora}" >
+				<p:ajax event="dateSelect" process="@this" partialSubmit="true"></p:ajax>
+				</p:calendar>
+				<p:commandButton value="Adicionar" process="@this,fechaSelec" update="@all" actionListener="#{beanCronActivity.addToList()}"></p:commandButton>
+				</h:panelGrid>
+				<p:dataTable rendered="#{beanCronActivity.objeto.multiEjecucion}" id="tablaCrons" widgetVar="tablaCrons" value="#{beanCronActivity.crons}" var="cron">
+				<p:column headerText="Hora">
+					<h:outputText value="#{cron}" />
+				</p:column>
+				<p:column >
+				<p:commandButton  icon="ui-icon-circle-close" process="@this" actionListener="#{beanCronActivity.removeToList(cron)}" update="tablaCrons"></p:commandButton>
+				</p:column>
+				</p:dataTable>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Aceptar" process="@this" update="@all" action="${beanCronActivity.aceptar()}"
+						id="btnAceptar" />
+					<p:commandButton value="Cancelar" process="@this" immediate="true" update="@all"
+						action="${beanCronActivity.reglaNavegacion()}" />
+				</h:panelGrid>
+
+			</p:panel>
+
+			<p:dataTable paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"  rendered="${!beanCronActivity.form}" style="width: 100%"
+				value="#{beanCronActivity.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column style="width: 10%" headerText="Codigo"
+				
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+				<p:column headerText="Parametro" styleClass="styleColumn"
+					>
+					<p:outputLabel value="${item.parametro}" />
+				</p:column>
+			
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${beanCronActivity.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.id}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.id}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${beanCronActivity.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar"
+								onclick="pnl${item.id}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
