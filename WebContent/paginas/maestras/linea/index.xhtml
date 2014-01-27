@@ -109,7 +109,8 @@
                 <p:outputPanel style="float: right"> 
                     <h:outputText value="Busqueda : " /> 
                     <p:inputText id="globalFilter" 
-                                 onkeyup="tablaLineas.filter()"
+                                 
+                                	 onkeypress="if (event.keyCode == 13) { tablaLineas.filter();  return false; }"
                                  style="width:150px"/>
                 </p:outputPanel> 
             </f:facet>

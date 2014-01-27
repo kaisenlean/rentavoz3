@@ -104,6 +104,10 @@ public class Tercero implements Serializable {
 	@Column(name = "tipo")
 	private TipoTerceroEnum tipo;
 
+	
+	
+	@Column
+	private String email;
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
@@ -509,6 +513,25 @@ public class Tercero implements Serializable {
 	 */
 	public void setCentrope(Centrope centrope) {
 		this.centrope = centrope;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/01/2014
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/01/2014
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	/**

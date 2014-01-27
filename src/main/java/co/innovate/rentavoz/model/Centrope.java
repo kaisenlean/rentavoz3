@@ -28,7 +28,7 @@ public class Centrope implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
@@ -45,6 +45,9 @@ public class Centrope implements Serializable {
 	 */
 	@Column
 	private String nombre;
+	
+	@Column
+	private String parametro;
 
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -58,7 +61,7 @@ public class Centrope implements Serializable {
 	* @date 4/09/2013
 	* @return
 	*/
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
@@ -67,7 +70,7 @@ public class Centrope implements Serializable {
 	* @date 4/09/2013
 	* @param id
 	*/
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -105,6 +108,25 @@ public class Centrope implements Serializable {
 	*/
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @return the parametro
+	 */
+	public String getParametro() {
+		return parametro;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @param parametro the parametro to set
+	 */
+	public void setParametro(String parametro) {
+		this.parametro = parametro;
 	}
 
 }

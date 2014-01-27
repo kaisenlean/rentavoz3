@@ -4,7 +4,6 @@
  */
 package co.innovate.rentavoz.views.maestras.linea;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.SortOrder;
 
 import co.innovate.rentavoz.model.Plan;
-import co.innovate.rentavoz.model.PlanLinea;
 import co.innovate.rentavoz.model.almacen.EstadosSimcardEnum;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.Simcard;
@@ -315,17 +313,17 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 				return false;
 			}
 			if (!getObjeto().getPlan().equals(planOLd)) {
-				if (getObjeto().getPlanLineaList() == null) {
-					getObjeto().setPlanLineaList(new ArrayList<PlanLinea>());
-					PlanLinea pl = new PlanLinea();
-					pl.setFecha(new Date());
-					pl.setLineaidLinea(getObjeto());
-					pl.setPlaEstado(1);
-					pl.setPlanidPlan(getObjeto().getPlan());
-					getObjeto().getPlanLineaList().add(pl);
-					planLineaService.desactivarTodosPlanesLineas(getObjeto());
-
-				}
+//				if (getObjeto().getPlanLineaList() == null) {
+//					getObjeto().setPlanLineaList(new ArrayList<PlanLinea>());
+//					PlanLinea pl = new PlanLinea();
+//					pl.setFecha(new Date());
+//					pl.setLineaidLinea(getObjeto());
+//					pl.setPlaEstado(1);
+//					pl.setPlanidPlan(getObjeto().getPlan());
+//					getObjeto().getPlanLineaList().add(pl);
+//					planLineaService.desactivarTodosPlanesLineas(getObjeto());
+//
+//				}
 			}
 
 			if (lineaService.findBNumero2(getObjeto().getLinNumero())) {

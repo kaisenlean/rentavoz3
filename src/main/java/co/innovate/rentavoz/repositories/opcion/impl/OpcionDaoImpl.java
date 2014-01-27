@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,7 @@ import co.innovate.rentavoz.repositories.opcion.OpcionDao;
 @Repository("opcionDao")
 public class OpcionDaoImpl extends GenericJpaRepository<Opcion, String> implements OpcionDao,Serializable {
 
+	private Logger logger= Logger.getLogger(OpcionDaoImpl.class);
 	/**
 	 * 18/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -48,6 +50,8 @@ public class OpcionDaoImpl extends GenericJpaRepository<Opcion, String> implemen
 		List<Opcion> listado= findByCriteria(criterion);
 		
 		if (listado.isEmpty()) {
+		
+			logger.warn("No se ha encontrado esta opcion");
 			return null;
 		}
 		return listado.get(BigInteger.ZERO.intValue());

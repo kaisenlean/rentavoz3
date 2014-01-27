@@ -125,5 +125,8 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	* @return
 	*/
 	int countByCriteria(String query);
+	
+	
+
 
 }

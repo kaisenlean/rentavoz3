@@ -5,11 +5,10 @@
 package co.innovate.rentavoz.model.almacen;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,23 +16,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import co.innovate.rentavoz.model.Empresa;
 import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.Plan;
-import co.innovate.rentavoz.model.PlanLinea;
 import co.innovate.rentavoz.model.Sucursal;
-import co.innovate.rentavoz.model.SucursalLinea;
 
 /**
  * S
@@ -46,13 +39,6 @@ import co.innovate.rentavoz.model.SucursalLinea;
  */
 @Entity
 @Table(name = "Linea")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Linea.findAll", query = "SELECT l FROM Linea l"),
-		@NamedQuery(name = "Linea.findByIdLinea", query = "SELECT l FROM Linea l WHERE l.idLinea = :idLinea"),
-		@NamedQuery(name = "Linea.findByLinNumero", query = "SELECT l FROM Linea l WHERE l.linNumero = :linNumero"),
-		@NamedQuery(name = "Linea.findByLinCorte", query = "SELECT l FROM Linea l WHERE l.linCorte = :linCorte"),
-		@NamedQuery(name = "Linea.findByFecha", query = "SELECT l FROM Linea l WHERE l.fecha = :fecha") })
 public class Linea implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -74,13 +60,13 @@ public class Linea implements Serializable {
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-	private List<SucursalLinea> sucursalLineaList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-	private List<PlanLinea> planLineaList;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-	private List<VentaLinea> ventaLineaList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
+//	private List<SucursalLinea> sucursalLineaList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
+//	private List<PlanLinea> planLineaList;
+//
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
+//	private List<VentaLinea> ventaLineaList;
 	@JoinColumn(name = "EstadoLinea_idEstadoLinea", referencedColumnName = "idEstadoLinea")
 	@ManyToOne(optional = false)
 	private EstadoLinea estadoLineaidEstadoLinea;
@@ -112,6 +98,7 @@ public class Linea implements Serializable {
 	 */
 	public Linea() {
 		plan = new Plan();
+		linCorte=BigInteger.ONE.intValue();
 	}
 
 	/**
@@ -242,63 +229,63 @@ public class Linea implements Serializable {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the sucursalLineaList
-	 */
-	public List<SucursalLinea> getSucursalLineaList() {
-		return sucursalLineaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param sucursalLineaList
-	 *            the sucursalLineaList to set
-	 */
-	public void setSucursalLineaList(List<SucursalLinea> sucursalLineaList) {
-		this.sucursalLineaList = sucursalLineaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the planLineaList
-	 */
-	public List<PlanLinea> getPlanLineaList() {
-		return planLineaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param planLineaList
-	 *            the planLineaList to set
-	 */
-	public void setPlanLineaList(List<PlanLinea> planLineaList) {
-		this.planLineaList = planLineaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the ventaLineaList
-	 */
-	public List<VentaLinea> getVentaLineaList() {
-		return ventaLineaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param ventaLineaList
-	 *            the ventaLineaList to set
-	 */
-	public void setVentaLineaList(List<VentaLinea> ventaLineaList) {
-		this.ventaLineaList = ventaLineaList;
-	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the sucursalLineaList
+//	 */
+//	public List<SucursalLinea> getSucursalLineaList() {
+//		return sucursalLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param sucursalLineaList
+//	 *            the sucursalLineaList to set
+//	 */
+//	public void setSucursalLineaList(List<SucursalLinea> sucursalLineaList) {
+//		this.sucursalLineaList = sucursalLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the planLineaList
+//	 */
+//	public List<PlanLinea> getPlanLineaList() {
+//		return planLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param planLineaList
+//	 *            the planLineaList to set
+//	 */
+//	public void setPlanLineaList(List<PlanLinea> planLineaList) {
+//		this.planLineaList = planLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the ventaLineaList
+//	 */
+//	public List<VentaLinea> getVentaLineaList() {
+//		return ventaLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param ventaLineaList
+//	 *            the ventaLineaList to set
+//	 */
+//	public void setVentaLineaList(List<VentaLinea> ventaLineaList) {
+//		this.ventaLineaList = ventaLineaList;
+//	}
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

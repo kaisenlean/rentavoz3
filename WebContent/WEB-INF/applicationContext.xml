@@ -149,5 +149,44 @@
 	<!-- <sec:authentication-provider -->
 	<!-- user-service-ref="userDetailsService" /> -->
 	<!-- </sec:authentication-manager> -->
+	
+	
+	
+	<!-- Spring Quartz -->
+	<bean name="runMeJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+ 
+		<property name="jobClass" value="co.innovate.rentavoz.task.impl.RunMeJobImpl" />
+		<property name="jobDataAsMap">
+		  <map>
+			<entry key="runMeTask" value-ref="runMeTask" />
+		  </map>
+		</property>
+ 
+	</bean>
+ 
+ 
+	
+	<!-- Cron Trigger, run every 5 seconds -->
+	<bean id="cronTrigger" 
+                class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 
+		<property name="jobDetail" ref="runMeJob" />
+		<property name="cronExpression" value="0 0/1 * 1/1 * ? *" />
+ 
+	</bean>
+ 
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+<!-- 				<ref bean="cronTrigger" /> -->
+			</list>
+		</property>
+ 
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
 
 </beans>

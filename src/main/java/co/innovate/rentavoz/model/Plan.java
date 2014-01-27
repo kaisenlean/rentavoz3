@@ -35,17 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "plan")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Plan.findAll", query = "SELECT p FROM Plan p"),
-		@NamedQuery(name = "Plan.findByIdPlan", query = "SELECT p FROM Plan p WHERE p.idPlan = :idPlan"),
-		@NamedQuery(name = "Plan.findByPlaNombre", query = "SELECT p FROM Plan p WHERE p.plaNombre = :plaNombre"),
-		@NamedQuery(name = "Plan.findByPlaCantidadMinutos", query = "SELECT p FROM Plan p WHERE p.plaCantidadMinutos = :plaCantidadMinutos"),
-		@NamedQuery(name = "Plan.findByPlaCostoMinuto", query = "SELECT p FROM Plan p WHERE p.plaCostoMinuto = :plaCostoMinuto"),
-		@NamedQuery(name = "Plan.findByPlaCostoMin", query = "SELECT p FROM Plan p WHERE p.plaCostoMin = :plaCostoMin"),
-		@NamedQuery(name = "Plan.findByPlaCostoMax", query = "SELECT p FROM Plan p WHERE p.plaCostoMax = :plaCostoMax"),
-		@NamedQuery(name = "Plan.findByPlaFechaVenc", query = "SELECT p FROM Plan p WHERE p.plaFechaVenc = :plaFechaVenc"),
-		@NamedQuery(name = "Plan.findByFecha", query = "SELECT p FROM Plan p WHERE p.fecha = :fecha") })
+
 public class Plan implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -83,10 +73,10 @@ public class Plan implements Serializable {
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
-	private List<Convenio> convenioList;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
-	private List<PlanLinea> planLineaList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
+//	private List<Convenio> convenioList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
+//	private List<PlanLinea> planLineaList;
 	@JoinColumn(name = "Tercero_idTecero", referencedColumnName = "idTecero")
 	@ManyToOne(optional = false)
 	private Tercero terceroidTecero;
@@ -178,23 +168,23 @@ public class Plan implements Serializable {
 		this.fecha = fecha;
 	}
 
-	@XmlTransient
-	public List<Convenio> getConvenioList() {
-		return convenioList;
-	}
-
-	public void setConvenioList(List<Convenio> convenioList) {
-		this.convenioList = convenioList;
-	}
-
-	@XmlTransient
-	public List<PlanLinea> getPlanLineaList() {
-		return planLineaList;
-	}
-
-	public void setPlanLineaList(List<PlanLinea> planLineaList) {
-		this.planLineaList = planLineaList;
-	}
+//	@XmlTransient
+//	public List<Convenio> getConvenioList() {
+//		return convenioList;
+//	}
+//
+//	public void setConvenioList(List<Convenio> convenioList) {
+//		this.convenioList = convenioList;
+//	}
+//
+//	@XmlTransient
+//	public List<PlanLinea> getPlanLineaList() {
+//		return planLineaList;
+//	}
+//
+//	public void setPlanLineaList(List<PlanLinea> planLineaList) {
+//		this.planLineaList = planLineaList;
+//	}
 
 	public Tercero getTerceroidTecero() {
 		return terceroidTecero;

@@ -2,6 +2,8 @@ package co.innovate.rentavoz.mail.impl;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -176,8 +178,17 @@ public class MailServiceImpl implements MailService, Serializable {
 			final MimeMessageHelper helper = new MimeMessageHelper(message,
 					true);
 
+			
+			List<String> receptores=Arrays.asList(to.split(";"));
+			String[] recipients= new String[receptores.size()];
+			int cont=0;
+			for (String string : receptores) {
+				recipients[cont] = string;
+				cont++;
+			}
 			// settings de los parámetros del envío
-			helper.setTo(to);
+			helper.setTo(recipients);
+			
 			helper.setSubject(subject);
 			helper.setFrom(getFrom());
 			helper.setText(text);

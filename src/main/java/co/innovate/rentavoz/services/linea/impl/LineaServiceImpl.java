@@ -150,4 +150,7 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 		return lineaDao.countByCriteria(query);
 	}
 
+	
+
+
 }

@@ -56,6 +56,22 @@
 						requiredMessage="Este campo es reuqerido" />
 					<p:message for="dirEmpresa" />
 
+					<h:outputLabel value="Email" />
+					<h:inputText id="emailTercero"
+						value="${beanTercero.objeto.email}" placeholder="Ej : usuario@mail.com" />
+					<p:message for="emailTercero" />
+
+
+<h:outputLabel value="Centro de operación" />
+					<h:selectOneMenu id="centroperacion" value="#{beanTercero.selCentrope}"
+						required="true"
+						requiredMessage="Por favor selecciona un centro de operación">
+						<f:selectItems value="#{selectorCentrope.items}" />
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</h:selectOneMenu>
+					<p:message for="centroperacion" />
+
+
 					<h:outputLabel value="Tipo" />
 					<h:selectOneMenu id="tipoTercero" value="#{beanTercero.tipo}"
 						required="true"
@@ -63,7 +79,6 @@
 						<f:selectItems value="#{beanTercero.itemTipo}" />
 					</h:selectOneMenu>
 					<p:message for="tipoTercero" />
-
 
 					<h:commandButton value="Aceptar" action="${beanTercero.aceptar()}" />
 					<h:commandButton value="Cancelar" immediate="true"
@@ -79,9 +94,7 @@
 				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"  rendered="${!beanTercero.form}" style="width: 100%"
 				value="#{beanTercero.model}" var="item"
 				emptyMessage="No hay registros">
-				<!--                 <p:column style="width: 10%" headerText="Codigo" filterBy="${item.idTecero}" filterMatchMode="contains" styleClass="styleColumn"> -->
-				<!--                     <p:outputLabel value="${item.idTecero}"/> -->
-				<!--                 </p:column> -->
+		
 
 				<p:column headerText="Documento" styleClass="styleColumn"
 					filterBy="${item.terDocumento}" filterMatchMode="contains">

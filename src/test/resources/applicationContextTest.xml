@@ -24,19 +24,9 @@
 
 
 
-	<context:component-scan base-package="co.icesi.troca" />
+	<context:component-scan base-package="co.innovate.rentavoz" />
 
 	<context:annotation-config></context:annotation-config>
-	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="finalize">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/trocadero" />
-		<property name="user" value="root" />
-		<property name="password" value="jsepee1855" />
-		<property name="maxPoolSize" value="10" />
-		<property name="maxStatements" value="0" />
-		<property name="minPoolSize" value="5" />
-	</bean>
 
 
 
@@ -52,16 +42,26 @@
 		<property name="persistenceUnitName" value="persistenceUnit" />
 	</bean>
 
+<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="finalize">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/Minutos" />
+		<property name="user" value="root" />
+		<property name="password" value="jsepee1855" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="minPoolSize" value="5" />
+	</bean>
 
-	<!-- <jee:jndi-lookup id="jdniDatasource" -->
-	<!-- jndi-name="java:comp/env/jdbc/troca" -->
-	<!-- expected-type="javax.sql.DataSource" ></jee:jndi-lookup> -->
+<!-- 	<jee:jndi-lookup id="jdniDatasource" jndi-name="java:comp/env/jdbc/rentavoz" -->
+<!-- 		expected-type="javax.sql.DataSource"></jee:jndi-lookup> -->
 
 	<bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<tx:annotation-driven />
+	<tx:annotation-driven  />
+
 
 	<bean
 		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

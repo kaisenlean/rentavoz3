@@ -59,4 +59,8 @@ public interface TerceroDao extends GenericRepository<Tercero, Integer> {
 	 * @return
 	 */
 	List<Tercero> findByCriterioProveedor(String criterio);
+	
+	
+	
+
 }

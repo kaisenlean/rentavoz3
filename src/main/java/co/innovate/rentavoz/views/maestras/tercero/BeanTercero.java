@@ -18,6 +18,7 @@ import org.primefaces.model.SortOrder;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.services.GenericService;
+import co.innovate.rentavoz.services.centrope.CentropeService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.SessionParams;
 import co.innovate.rentavoz.views.StandardAbm;
@@ -27,7 +28,7 @@ import co.innovate.rentavoz.views.StandardAbm;
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
  * @project co.com.rentavoz.consola
  * @class BeanTercero
- * @date 24/07/2013
+ * @date 24/07/2013pr
  * 
  */
 @ManagedBean
@@ -55,11 +56,16 @@ public class BeanTercero extends StandardAbm<Tercero,Integer> implements Seriali
 	private static final long serialVersionUID = 1L;
 	@ManagedProperty(value="#{terceroService}")
 	private TerceroService terceroService;
+	
+	@ManagedProperty(value="#{centropeService}")
+	private CentropeService centropeService;
 
 	private String tipo;
 
 	private List<SelectItem> itemTipo = new ArrayList<SelectItem>();
 	private boolean callByOtherModule;
+	
+	private int selCentrope;
 
 	@Override
 	public GenericService<Tercero,Integer> getFacade() {
@@ -119,6 +125,13 @@ if (callByOtherModule) {
 	
 	@Override
 	public boolean preAction() {
+		
+		if (selCentrope==0) {
+			mensajeError("Selecciona un centro de operaciones");
+			return false;
+		}
+		getObjeto().setCentrope(centropeService.findById(selCentrope));
+		
 		if (tipo != null) {
 			getObjeto().setTipo(
 					TipoTerceroEnum.valueOf(TipoTerceroEnum.class, tipo));
@@ -126,7 +139,6 @@ if (callByOtherModule) {
 		} else {
 			return true;
 		}
-		// return validarClaves();
 	}
 
 	/*
@@ -139,6 +151,10 @@ if (callByOtherModule) {
 		if (getObjeto().getTipo() != null) {
 			tipo = getObjeto().getTipo().name();
 		}
+		if (getObjeto().getCentrope() != null) {
+			selCentrope = getObjeto().getCentrope().getId();
+		}
+		
 	}
 
 	@Override
@@ -226,5 +242,33 @@ if (callByOtherModule) {
 			String globalFilter, String sortField,
 			SortOrder sortOrder) {
 		return null;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/01/2014
+	 * @return the selCentrope
+	 */
+	public int getSelCentrope() {
+		return selCentrope;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/01/2014
+	 * @param selCentrope the selCentrope to set
+	 */
+	public void setSelCentrope(int selCentrope) {
+		this.selCentrope = selCentrope;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/01/2014
+	 * @param centropeService the centropeService to set
+	 */
+	public void setCentropeService(CentropeService centropeService) {
+		this.centropeService = centropeService;
 	}
 }
