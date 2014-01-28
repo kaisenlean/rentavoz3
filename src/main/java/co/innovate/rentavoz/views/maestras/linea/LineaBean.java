@@ -15,7 +15,7 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.SortOrder;
 
 import co.innovate.rentavoz.model.Plan;
-import co.innovate.rentavoz.model.almacen.EstadosSimcardEnum;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.Simcard;
 import co.innovate.rentavoz.services.GenericService;
@@ -137,6 +137,9 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	@ManagedProperty(value="#{sucursalService}")
 	private SucursalService sucursalService;
 	
+	
+	
+	
 	private String idSucursal;
 
 	@Override
@@ -256,6 +259,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 		planOLd = getObjeto().getPlan();
 		idSucursal=getObjeto().getSucursal()!=null?getObjeto().getSucursal().getIdSucursal()+"":"";
 		
+		idPlan=getObjeto().getPlan()==null?null:getObjeto().getPlan().getIdPlan().toString();
 
 	}
 	
@@ -266,20 +270,20 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 */
 	@Override
 	public boolean preAction() {
-//		if (idSucursal==null) {
-//			mensajeError("Sucursal es nulo");
-//			return false;
-//		}
-//		Sucursal sucursal =null;
-//		try {
-//			 sucursal = sucursalFacade.find(Integer.parseInt(idSucursal));
-//			 getObjeto().setSucursal(sucursal);
-//		} catch (Exception e) {
-//			mensajeError(e.toString());
-//			return false;
-//		}
+		if (idSucursal==null) {
+			mensajeError("Sucursal es nulo");
+			return false;
+		}
+		Sucursal sucursal =null;
+		try {
+			 sucursal = sucursalService.findById(Integer.parseInt(idSucursal));
+			 getObjeto().setSucursal(sucursal);
+		} catch (Exception e) {
+			mensajeError(e.toString());
+			return false;
+		}
 		
-		if (idPlan.equals(" ")) {
+		if (idPlan == null) {
 			mensajeError("Por favor selecciona un plan");
 			return false;
 		}
@@ -289,7 +293,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 			return false;
 		}
 		
-		getObjeto().setSucursal(getObjeto().getSimcard().getSucursal());
+		getObjeto().setSucursal(sucursal);
 		
 		Plan plan=null;
 		try {
@@ -301,30 +305,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 		}
 		
 		if (isEdit()) {
-			if (empresa == null || estadoLinea == null
-					|| getObjeto().getPlan() == null
-					|| getObjeto().getSimcard() == null) {
-				mensajeError("Para poder continuar por favor diligencia "
-						+ empresa == null ? "empresa"
-						: "" + " " + estadoLinea == null ? "estado linea "
-								: " " + getObjeto().getSimcard() == null ? " simcard"
-										: " " + getObjeto().getPlan() == null ? " plan "
-												: "");
-				return false;
-			}
-			if (!getObjeto().getPlan().equals(planOLd)) {
-//				if (getObjeto().getPlanLineaList() == null) {
-//					getObjeto().setPlanLineaList(new ArrayList<PlanLinea>());
-//					PlanLinea pl = new PlanLinea();
-//					pl.setFecha(new Date());
-//					pl.setLineaidLinea(getObjeto());
-//					pl.setPlaEstado(1);
-//					pl.setPlanidPlan(getObjeto().getPlan());
-//					getObjeto().getPlanLineaList().add(pl);
-//					planLineaService.desactivarTodosPlanesLineas(getObjeto());
-//
-//				}
-			}
+	
+
 
 			if (lineaService.findBNumero2(getObjeto().getLinNumero())) {
 				getObjeto().setEmpresaidEmpresa(
@@ -341,14 +323,14 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 		} else {
 
 			if (empresa == null || estadoLinea == null
-					|| getObjeto().getPlan() == null
-					|| getObjeto().getSimcard() == null) {
-				mensajeError("Para poder continuar por favor diligencia "
-						+ empresa == null ? "empresa"
-						: "" + " " + estadoLinea == null ? "estado linea "
-								: " " + getObjeto().getSimcard() == null ? " simcard"
-										: " " + getObjeto().getPlan() == null ? " plan "
-												: "");
+					
+					) {
+				if (empresa==null) {
+					mensajeError("Selecciona una empresa");
+				}
+				if (estadoLinea==null) {
+					mensajeError("Selecciona un estado");
+				}
 				return false;
 			}
 
@@ -364,9 +346,9 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 							empresaService.findById(Integer.valueOf(empresa)));
 					getObjeto().setEstadoLineaidEstadoLinea(
 							estadoLineaService.findById(Integer.parseInt(estadoLinea)));
-					Simcard sim = getObjeto().getSimcard();
-					sim.setSimEstado(EstadosSimcardEnum.ASIGNADA);
-					simcardService.save(sim);
+//					Simcard sim = getObjeto().getSimcard();
+//					sim.setSimEstado(EstadosSimcardEnum.ASIGNADA);
+//					simcardService.save(sim);
 					return true;
 				} else {
 					mensajeError("El codigo o numero  de linea ya esta siendo utilizado");

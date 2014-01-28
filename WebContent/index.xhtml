@@ -14,29 +14,31 @@
 
 		<p:dialog footer="@Grupo Innovate S.A.S" closable="false"
 			resizable="false" draggable="false" modal="true" appendToBody="true"
-			widgetVar="pnl" visible="true" header="Ingreso al sistema"
+			 header="Ingreso al sistema"
+			widgetVar="pnl" visible="true"
 			style="width:500px;float:top">
 
 			<h:graphicImage url="/imagenes/logo.png" width="250" height="100" />
-			<h:panelGrid columns="3" style="margin-left: 10%">
-				<h:graphicImage value="/imagenes/user.png" />
-				<h:outputLabel value="Usuario"
-					style="color: orangered;font-weight: bold" />
-				<h:inputText style="width: 100%" value="#{login.usuario}"
+			<h:panelGrid columns="1" style="margin-left: 1%">
+<!-- 				<h:graphicImage value="/imagenes/user.png" /> -->
+<!-- 				<h:outputLabel value="Usuario" -->
+<!-- 					style="color: orangered;font-weight: bold" /> -->
+				<p:inputText size="30" placeholder="Usuario" style="width: 100%" value="#{login.usuario}"
 					id="usuari" />
 
-				<h:graphicImage value="/imagenes/password.png" />
-				<h:outputLabel value="Contraseña"
-					style="color: orangered;font-weight: bold" />
+<!-- 				<h:graphicImage value="/imagenes/password.png" /> -->
+<!-- 				<h:outputLabel value="Contraseña" -->
+<!-- 					style="color: orangered;font-weight: bold" /> -->
 
-				<h:inputSecret style="width: 100%" value="#{login.contrasena}"
-					onkeypress="if (event.keyCode == 13) {btnIngreso.click(); return false;}"
-					id="contras"></h:inputSecret>
+				<p:password size="30" placeholder="Contraseña"  style="width: 100%" value="#{login.contrasena}"
+					onkeypress="if (event.keyCode == 13) { btnIngreso.jq.click();  return false; }"
+					id="contras" ></p:password>
 
 			</h:panelGrid>
-			<p:commandButton style="margin-left: 40%" value="Ingresar"
+			<p:commandButton style="margin-left: 30%" value="Ingresar"
 				process="@this,contras,usuari" partialSubmit="true"
 				action="#{login.login()}" id="btnIngreso"
+				widgetVar="btnIngreso"
 				oncomplete="handleLoginRequest(xhr, status, args)" />
 
 		</p:dialog>

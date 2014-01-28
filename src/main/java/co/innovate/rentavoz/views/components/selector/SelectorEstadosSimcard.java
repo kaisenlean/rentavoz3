@@ -24,7 +24,7 @@ public class SelectorEstadosSimcard {
 	public void init() {
 		EstadosSimcardEnum[] findAll = EstadosSimcardEnum.values();
 		items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(" ", "-- Seleccione un estado --"));
+		items.add(new SelectItem(null, "-- Seleccione un estado --"));
 		for (int i = 0; i < findAll.length; i++) {
 
 			items.add(new SelectItem(findAll[i].name(), findAll[i].name()));

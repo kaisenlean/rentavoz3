@@ -114,9 +114,7 @@
 				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!planBean.form}" style="width: 70%"
 				value="#{planBean.model}" var="item"
 				emptyMessage="No hay registros">
-				<!--                 <p:column style="width: 2%" headerText="Codigo" filterBy="${item.idPlan}" filterMatchMode="contains" styleClass="styleColumn"> -->
-				<!--                     <p:outputLabel value="${item.idPlan}"/> -->
-				<!--                 </p:column> -->
+				
 				<p:column headerText="Nombre" styleClass="styleColumn"
 					filterBy="${item.plaNombre}" filterMatchMode="contains">
 					<p:outputLabel value="${item.plaNombre}" />

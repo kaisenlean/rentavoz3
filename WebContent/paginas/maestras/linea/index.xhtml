@@ -19,8 +19,9 @@
 			</h:panelGrid>
 
 
-			<p:panel rendered="${lineaBean.form}"
+			<p:panel rendered="${lineaBean.form}" id="pnlPanel"
 				header="Informacion de la Linea" style="width: 100%">
+				
 				<h:panelGrid columns="3">
 					<h:outputLabel value="Codigo" rendered="#{lineaBean.edit}" />
 					<h:inputText id="codDept" rendered="#{lineaBean.edit}"
@@ -30,8 +31,10 @@
 					<p:message for="codDept" rendered="#{lineaBean.edit}" />
 
 					<h:outputLabel value="Numero" />
-					<h:inputText id="nomDept" value="${lineaBean.objeto.linNumero}"
+					<p:inputText id="nomDept" value="${lineaBean.objeto.linNumero}"
 						required="true"
+						size="20"
+						placeholder="Ejemplo : 3113139999"
 						requiredMessage="Por favor digita un numero valido" />
 					<p:message for="nomDept" />
 
@@ -51,6 +54,7 @@
 					<p:selectOneMenu id="empresaLinea" value="${lineaBean.empresa}"
 						required="true" requiredMessage="Por favor selecciona una empresa">
 						<f:selectItems value="${selectorEmpresa.items}" />
+						<p:ajax process="@this" update="@this" event="change"></p:ajax>
 					</p:selectOneMenu>
 					<p:message for="empresaLinea" />
 
@@ -58,6 +62,7 @@
 					<p:selectOneMenu id="estadoLinea" value="${lineaBean.estadoLinea}"
 						required="true" requiredMessage="Por favor selecciona un estado">
 						<f:selectItems value="${selectorEstadoLinea.items}" />
+						<p:ajax process="@this" update="@this" event="change"></p:ajax>
 					</p:selectOneMenu>
 					<p:message for="estadoLinea" />
 
@@ -70,29 +75,24 @@
 					</p:selectOneMenu>
 					<p:message for="selectPlan"></p:message>
 
-					<h:outputLabel value="SimCard" />
-					<bsi:buscar codValue="#{lineaBean.objeto.simcard.idSimcard}"
-						displayValue="#{lineaBean.objeto.simcard.simIccid}"
-						buscarListener="#{lineaBean.buscadorSimCard.mostrar}"></bsi:buscar>
-					<bsi:pnlBuscador buscador="#{lineaBean.buscadorSimCard}"></bsi:pnlBuscador>
-
-					<h:outputLabel value="Sucursal" rendered="#{lineaBean.edit}" />
-					<p:selectOneMenu disabled="true" rendered="#{lineaBean.edit}"
+					<h:outputLabel value="Sucursal"  />
+					<p:selectOneMenu 
 						value="#{lineaBean.idSucursal}" id="idSucursal" required="true"
 						requiredMessage="Selecciona una sucursal">
 						<f:selectItems value="#{selectorSucursal.items}" />
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
-					<p:message for="idSucursal" rendered="#{lineaBean.edit}"></p:message>
+					<p:message for="idSucursal"></p:message>
 
 
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<h:commandButton value="Aceptar" action="#{lineaBean.aceptar()}" />
-					<h:commandButton value="Cancelar" immediate="true"
+					<p:commandButton value="Aceptar" process="@this,nomDept,fechaVencimiento,idSucursal" update="@all" action="#{lineaBean.aceptar()}" />
+					<p:commandButton value="Cancelar" immediate="true" process="@all" update="@all"
 						action="#{lineaBean.reglaNavegacion()}" />
 				</h:panelGrid>
-
+<p:focus  context="pnlPanel"></p:focus>
 			</p:panel>
 
 			<h:commandButton rendered="${!lineaBean.form}"
@@ -151,9 +151,8 @@
 				</p:column>
 
 				<p:column headerText="Sucursal" sortBy="sucursal"
-					styleClass="styleColumn" filterBy="${item.simcard.simIccid}"
-					filterMatchMode="contains">
-					<p:outputLabel value="${item.simcard.sucursal.sucNombre}" />
+					styleClass="styleColumn" >
+					<p:outputLabel value="${item.sucursal.sucNombre}" />
 				</p:column>
 
 

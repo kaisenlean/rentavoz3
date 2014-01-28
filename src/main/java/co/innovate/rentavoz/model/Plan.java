@@ -66,10 +66,7 @@ public class Plan implements Serializable {
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
-//	private List<Convenio> convenioList;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "planidPlan")
-//	private List<PlanLinea> planLineaList;
+
 	@JoinColumn(name = "Tercero_idTecero", referencedColumnName = "idTecero")
 	@ManyToOne(optional = false)
 	private Tercero terceroidTecero;

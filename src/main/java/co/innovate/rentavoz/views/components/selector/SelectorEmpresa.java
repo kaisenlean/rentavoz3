@@ -29,7 +29,7 @@ public class SelectorEmpresa implements SelectorBase<Empresa> {
 	public void init() {
 		List<Empresa> findAll = empresaService.findAll();
 		items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(" ", "-- Seleccione una empresa --"));
+		items.add(new SelectItem(null, "-- Seleccione una empresa --"));
 		for (Empresa empresa : findAll) {
 			items.add(new SelectItem(empresa.getIdEmpresa(), empresa
 					.getEmpNombre()));
