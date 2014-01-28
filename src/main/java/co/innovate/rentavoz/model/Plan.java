@@ -74,6 +74,11 @@ public class Plan implements Serializable {
 	@ManyToOne(optional = false)
 	private Operador operadoridOperador;
 
+	
+	@Column(name="valor_plan")
+	private Double valorPlan;
+	
+	
 	public Plan() {
 	}
 
@@ -158,24 +163,26 @@ public class Plan implements Serializable {
 		this.fecha = fecha;
 	}
 
-//	@XmlTransient
-//	public List<Convenio> getConvenioList() {
-//		return convenioList;
-//	}
-//
-//	public void setConvenioList(List<Convenio> convenioList) {
-//		this.convenioList = convenioList;
-//	}
-//
-//	@XmlTransient
-//	public List<PlanLinea> getPlanLineaList() {
-//		return planLineaList;
-//	}
-//
-//	public void setPlanLineaList(List<PlanLinea> planLineaList) {
-//		this.planLineaList = planLineaList;
-//	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @return the valorPlan
+	 */
+	public Double getValorPlan() {
+		return valorPlan;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/01/2014
+	 * @param valorPlan the valorPlan to set
+	 */
+	public void setValorPlan(Double valorPlan) {
+		this.valorPlan = valorPlan;
+	}
+	
 	public Tercero getTerceroidTecero() {
 		return terceroidTecero;
 	}

@@ -24,7 +24,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 import co.innovate.rentavoz.model.profile.Usuario;
 
@@ -113,15 +112,15 @@ public class Tercero implements Serializable {
 	 * co.com.rentavoz.model.jpa
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-	private List<TerceroVenta> terceroVentaList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
+//	private List<TerceroVenta> terceroVentaList;
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-	private List<Roles> rolesList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
+//	private List<Roles> rolesList;
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
@@ -134,8 +133,8 @@ public class Tercero implements Serializable {
 	 * co.com.rentavoz.model.jpa
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-	private List<Plan> planList;
+//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
+//	private List<Plan> planList;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
@@ -303,43 +302,9 @@ public class Tercero implements Serializable {
 		this.terDocumento = terDocumento;
 	}
 
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @return
-	*/
-	@XmlTransient
-	public List<TerceroVenta> getTerceroVentaList() {
-		return terceroVentaList;
-	}
+	
 
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @param terceroVentaList
-	*/
-	public void setTerceroVentaList(List<TerceroVenta> terceroVentaList) {
-		this.terceroVentaList = terceroVentaList;
-	}
 
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @return
-	*/
-	@XmlTransient
-	public List<Roles> getRolesList() {
-		return rolesList;
-	}
-
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @param rolesList
-	*/
-	public void setRolesList(List<Roles> rolesList) {
-		this.rolesList = rolesList;
-	}
 
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -360,24 +325,7 @@ public class Tercero implements Serializable {
 		this.sucursalTerceroList = sucursalTerceroList;
 	}
 
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @return
-	*/
-	@XmlTransient
-	public List<Plan> getPlanList() {
-		return planList;
-	}
-
-	/**
-	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/09/2013
-	* @param planList
-	*/
-	public void setPlanList(List<Plan> planList) {
-		this.planList = planList;
-	}
+	
 
 	/**
 	 * @see java.lang.Object#hashCode()
