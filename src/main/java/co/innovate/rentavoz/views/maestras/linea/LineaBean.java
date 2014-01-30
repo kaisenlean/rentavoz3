@@ -346,9 +346,6 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 							empresaService.findById(Integer.valueOf(empresa)));
 					getObjeto().setEstadoLineaidEstadoLinea(
 							estadoLineaService.findById(Integer.parseInt(estadoLinea)));
-//					Simcard sim = getObjeto().getSimcard();
-//					sim.setSimEstado(EstadosSimcardEnum.ASIGNADA);
-//					simcardService.save(sim);
 					return true;
 				} else {
 					mensajeError("El codigo o numero  de linea ya esta siendo utilizado");

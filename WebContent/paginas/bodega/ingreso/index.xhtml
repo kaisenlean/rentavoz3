@@ -18,14 +18,16 @@
 					actionListener="#{beanIngresoBodega.verFormNuevo(true)}"></p:commandButton>
 			</h:panelGrid>
 
-			<p:dialog id="dlgNuevo" widgetVar="dlgNuevo"  appendTo="@(body)" modal="true" header="Nuevo Proveedor">
+			<p:dialog id="dlgNuevo" widgetVar="dlgNuevo" appendTo="@(body)"
+				modal="true" header="Nuevo Proveedor">
 
-	<h:panelGrid columns="3">
-				
+				<h:panelGrid columns="3">
+
 
 					<h:outputLabel value="Nombres" />
-					<h:inputText id="nomDept" value="#{beanIngresoBodega.tercero.terNombre}"
-						required="true" requiredMessage="Este campo es requerido" />
+					<h:inputText id="nomDept"
+						value="#{beanIngresoBodega.tercero.terNombre}" required="true"
+						requiredMessage="Este campo es requerido" />
 					<p:message for="nomDept" />
 
 					<h:outputLabel value="Apellidos" />
@@ -36,7 +38,8 @@
 
 					<h:outputLabel value="Documento" />
 					<h:inputText id="nitEmpr"
-						value="#{beanIngresoBodega.tercero.terDocumento}" required="false"	requiredMessage="Este campo es requerido" />
+						value="#{beanIngresoBodega.tercero.terDocumento}" required="false"
+						requiredMessage="Este campo es requerido" />
 					<p:message for="nitEmpr" />
 
 					<h:outputLabel value="Direccion" />
@@ -50,11 +53,16 @@
 						value="#{beanIngresoBodega.tercero.terTelefono}" required="false"
 						requiredMessage="Este campo es requerido" />
 					<p:message for="dirEmpresa" />
-	</h:panelGrid>
-	<h:panelGrid columns="2">
-	<p:commandButton onblur="dlgNuevo.hide();" process="@this,dirEmpresa,empContacto,nitEmpr,empAlias,nomDept" partialSubmit="true" actionListener="#{beanIngresoBodega.guardarTercero()}" update="proveedorIngreso,dirEmpresa,empContacto,nitEmpr,empAlias,nomDept,dlgNuevo" value="Guardar"></p:commandButton>
-	<p:commandButton  value="Cancelar" onclick="dlgNuevo.hide();"></p:commandButton>
-	</h:panelGrid>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton onblur="dlgNuevo.hide();"
+						process="@this,dirEmpresa,empContacto,nitEmpr,empAlias,nomDept"
+						partialSubmit="true"
+						actionListener="#{beanIngresoBodega.guardarTercero()}"
+						update="proveedorIngreso,dirEmpresa,empContacto,nitEmpr,empAlias,nomDept,dlgNuevo"
+						value="Guardar"></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dlgNuevo.hide();"></p:commandButton>
+				</h:panelGrid>
 			</p:dialog>
 			<p:panel rendered="#{beanIngresoBodega.form}"
 				header="Informacion del ${!beanIngresoBodega.edit?'Nuevo':''} Ingreso">
@@ -115,9 +123,11 @@
 					<p:message for="compradorIngreso"></p:message>
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Color" />
-					<p:selectOneMenu rendered="#{!beanIngresoBodega.edit}" id="color" value="#{beanIngresoBodega.idColor}">
-					<p:ajax event="change" partialSubmit="true" listener="#{beanIngresoBodega.listenerColor()}"></p:ajax>
-					<f:selectItems value="#{selectorColor.items}"></f:selectItems>
+					<p:selectOneMenu rendered="#{!beanIngresoBodega.edit}" id="color"
+						value="#{beanIngresoBodega.idColor}">
+						<p:ajax event="change" partialSubmit="true"
+							listener="#{beanIngresoBodega.listenerColor()}"></p:ajax>
+						<f:selectItems value="#{selectorColor.items}"></f:selectItems>
 					</p:selectOneMenu>
 					<p:message rendered="#{!beanIngresoBodega.edit}" for="color"></p:message>
 
@@ -185,7 +195,7 @@
 							filterMatchMode="contains">
 							<h:outputText value="#{existencia.barCode}" />
 						</p:column>
-							<p:column headerText="Color" filterBy="#{existencia.color}"
+						<p:column headerText="Color" filterBy="#{existencia.color}"
 							filterMatchMode="contains">
 							<h:outputText value="#{existencia.color}" />
 						</p:column>
@@ -259,13 +269,15 @@
 						<h:graphicImage url="/imagenes/delete.png" />
 
 					</h:commandLink>
+
 					<p:dialog widgetVar="pnl#{ingreso.id}" closable="false"
 						header="Desea eliminar este Item ?" visible="false"
 						resizable="false">
 
 						<h:panelGrid columns="2">
 							<p:commandButton value="Eliminar" partialSubmit="true"
-								actionListener="#{beanIngresoBodega.eliminarItem(ingreso)}" onblur="pnl#{ingreso.id}.hide();" />
+								actionListener="#{beanIngresoBodega.eliminarItem(ingreso)}"
+								onblur="pnl#{ingreso.id}.hide();" />
 							<p:commandButton value="Cancelar"
 								onclick="pnl#{ingreso.id}.hide();" />
 
@@ -273,6 +285,10 @@
 
 					</p:dialog>
 
+				</p:column>
+				<p:column>
+					<p:commandButton icon="ui-icon-print" ajax="false"
+						actionListener="#{beanIngresoBodega.printIngreso(ingreso)}"></p:commandButton>
 				</p:column>
 			</p:dataTable>
 

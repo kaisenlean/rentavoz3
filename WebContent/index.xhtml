@@ -14,10 +14,13 @@
 
 		<p:dialog footer="@Grupo Innovate S.A.S" closable="false"
 			resizable="false" draggable="false" modal="true" appendToBody="true"
-			 header="Ingreso al sistema"
+			
 			widgetVar="pnl" visible="true"
 			style="width:500px;float:top">
 
+<f:facet name="header">
+
+</f:facet>
 			<h:graphicImage url="/imagenes/logo.png" width="250" height="100" />
 			<h:panelGrid columns="1" style="margin-left: 1%">
 <!-- 				<h:graphicImage value="/imagenes/user.png" /> -->
@@ -35,7 +38,7 @@
 					id="contras" ></p:password>
 
 			</h:panelGrid>
-			<p:commandButton style="margin-left: 30%" value="Ingresar"
+			<p:commandButton icon="ui-icon-check" style="margin-left: 30%" value="Ingresar"
 				process="@this,contras,usuari" partialSubmit="true"
 				action="#{login.login()}" id="btnIngreso"
 				widgetVar="btnIngreso"

@@ -8,6 +8,11 @@
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+
+	<meta http-equiv="Pragma" content="nocache" />
+	
 	<h:outputStylesheet name="default.css" library="css" />
 	<h:outputStylesheet name="tableLayout.css" library="css" />
 
@@ -93,8 +98,8 @@
 				<p:ajaxStatus onstart="PF('statusDialog').show();"
 					onsuccess="PF('statusDialog').hide();" />
 
-				<p:dialog appendToBody="true" modal="true" widgetVar="statusDialog" header="Por favor espere ..."
-					draggable="false" closable="false">
+				<p:dialog appendToBody="true" modal="true" widgetVar="statusDialog"
+					header="Por favor espere ..." draggable="false" closable="false">
 					<p:graphicImage value="/imagenes/ajaxloadingbar.gif" />
 				</p:dialog>
 				<div style="float: bottom">

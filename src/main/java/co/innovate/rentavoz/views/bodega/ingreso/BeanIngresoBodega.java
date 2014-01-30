@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -28,7 +29,9 @@ import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.StandardAbm;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTerceroProveedor;
+import co.innovate.rentavoz.views.reports.PrinterBean;
 import co.innovate.rentavoz.views.session.Login;
+import co.innovate.rentavoz.views.session.OpcionLoader;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -94,6 +97,12 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	private Tercero tercero=new Tercero();
 
 	private Integer idColor;
+	
+	@ManagedProperty(value="#{printerBean}")
+	private PrinterBean printerBean;
+	
+	@ManagedProperty(value="#{opcionLoader}")
+	private OpcionLoader opcionLoader;
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 18/01/2014
@@ -125,6 +134,16 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		return bodegaIngresoService;
 	}
 
+	
+	public void printIngreso(BodegaIngreso bodegaIngreso){
+		
+		String nameReporte="reporte_ingresos";
+		HashMap<String, Object> mapa= new HashMap<String, Object>();
+		mapa.put("CORTE", bodegaIngreso.getId());
+		mapa.put("IMAGEN", opcionLoader.getImagenEmpresa());
+		printerBean.exportXls(nameReporte, "reporte_ingresos_"+bodegaIngreso.getId(), mapa);
+	}
+	
 	/**
 	 * (non-Javadoc)
 	 * 
@@ -689,6 +708,25 @@ public List<BodegaIngreso> customSearch(int startingAt, int maxPerPage,
 		String globalFilter, String sortField,
 		SortOrder sortOrder) {
 	return null;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 28/01/2014
+ * @param printerBean the printerBean to set
+ */
+public void setPrinterBean(PrinterBean printerBean) {
+	this.printerBean = printerBean;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 28/01/2014
+ * @param opcionLoader the opcionLoader to set
+ */
+public void setOpcionLoader(OpcionLoader opcionLoader) {
+	this.opcionLoader = opcionLoader;
 }
 
 }
