@@ -140,7 +140,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		String nameReporte="reporte_ingresos";
 		HashMap<String, Object> mapa= new HashMap<String, Object>();
 		mapa.put("CORTE", bodegaIngreso.getId());
-		mapa.put("IMAGEN", opcionLoader.getImagenEmpresa());
+		mapa.put("IMAGEN", "/"+opcionLoader.getImagenEmpresa());
 		printerBean.exportXls(nameReporte, "reporte_ingresos_"+bodegaIngreso.getId(), mapa);
 	}
 	

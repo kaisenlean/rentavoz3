@@ -78,7 +78,8 @@
 						for="nroFacturaIngreso"></p:message>
 
 					<h:outputText value="Fecha de Ingreso" />
-					<p:calendar readonly="#{beanIngresoBodega.edit}" id="fechaIngreso"
+					<p:calendar readonly="#{beanIngresoBodega.edit}"
+						disabled="#{beanIngresoBodega.edit}" id="fechaIngreso"
 						value="#{beanIngresoBodega.objeto.fechaIngreso}"></p:calendar>
 					<p:message for="fechaIngreso"></p:message>
 
@@ -110,15 +111,18 @@
 
 						</p:ajax>
 					</p:autoComplete>
-					<p:commandButton value="Nuevo Proveedor" onclick="dlgNuevo.show();"></p:commandButton>
+					<p:commandButton disabled="#{beanIngresoBodega.edit}"
+						value="Nuevo Proveedor" onclick="dlgNuevo.show();"></p:commandButton>
 
 					<h:outputText value="Numero de factura" />
-					<h:inputText id="consecFactura"
+					<h:inputText readonly="#{beanIngresoBodega.edit}"
+						id="consecFactura"
 						value="#{beanIngresoBodega.objeto.consecutivoFactura}"></h:inputText>
 					<p:message for="consecFactura"></p:message>
 
 					<h:outputText value="Comprador" />
-					<h:inputText id="compradorIngreso"
+					<h:inputText readonly="#{beanIngresoBodega.edit}"
+						id="compradorIngreso"
 						value="#{beanIngresoBodega.objeto.personaCompra}"></h:inputText>
 					<p:message for="compradorIngreso"></p:message>
 
@@ -159,10 +163,24 @@
 
 
 					<h:outputLabel value="Observación :" />
-					<h:inputTextarea rows="5" cols="70" id="descItem"
+					<h:inputTextarea readonly="#{beanIngresoBodega.edit}" rows="5"
+						cols="70" id="descItem"
 						value="#{beanIngresoBodega.objeto.descripcion}" />
 					<p:message for="descItem" />
 
+
+					<h:outputText value="Persona quien Entrega " />
+					<h:inputText size="40" readonly="#{beanIngresoBodega.edit}"
+						id="precioVentaMayoristas2"
+						value="#{beanIngresoBodega.objeto.entrega}"></h:inputText>
+					<p:message for="precioVentaMayoristas2"></p:message>
+
+
+					<h:outputText value="Persona quien Recibe " />
+					<h:inputText size="40" readonly="#{beanIngresoBodega.edit}"
+						id="precioVentaMayoristas3"
+						value="#{beanIngresoBodega.objeto.recibe}"></h:inputText>
+					<p:message for="precioVentaMayoristas3"></p:message>
 
 
 
@@ -171,10 +189,11 @@
 					<h:panelGrid columns="4" id="pnl1">
 
 						<h:outputText value="Producto ID :" />
-						<p:inputText value="#{beanIngresoBodega.productoId}"
+						<p:inputText readonly="#{beanIngresoBodega.edit}"
+							value="#{beanIngresoBodega.productoId}"
 							onkeypress="if (event.keyCode == 13) { btnnnnnnn.jq.click();  return false; }"></p:inputText>
-						<p:commandButton id="btnnnnnnn" widgetVar="btnnnnnnn"
-							value="Añadir"
+						<p:commandButton disabled="#{beanIngresoBodega.edit}"
+							id="btnnnnnnn" widgetVar="btnnnnnnn" value="Añadir"
 							actionListener="#{beanIngresoBodega.addExistencia()}"
 							process="@all" update="@all"></p:commandButton>
 						<p:focus context="pnl1"></p:focus>
@@ -184,20 +203,31 @@
 					<p:dataTable rows="20" paginator="true" id="taablata"
 						value="#{beanIngresoBodega.objeto.bodegaExistencias}"
 						var="existencia">
-						<!-- 						<p:column headerText="Imagen"> -->
-						<!-- 							<p:graphicImage width="50px" height="50px" -->
-						<!-- 								url="/foto_item/#{existencia.bodegaItemBean.foto}"></p:graphicImage> -->
-						<!-- 						</p:column> -->
-						<!-- 						<p:column headerText="Item"> -->
-						<!-- 							<h:outputText value="#{existencia.bodegaItemBean.nombre}" /> -->
-						<!-- 						</p:column> -->
-						<p:column headerText="PID" filterBy="#{existencia.barCode}"
+		
+
+						<p:column headerText="Imei 1" filterBy="#{existencia.barCode}"
 							filterMatchMode="contains">
 							<h:outputText value="#{existencia.barCode}" />
+						</p:column>
+						<p:column headerText="Imei 2" filterBy="#{existencia.barCode2}"
+							filterMatchMode="contains">
+							<h:outputText value="#{existencia.barCode2}" />
+						</p:column>
+						<p:column headerText="Imei 3" filterBy="#{existencia.barCode3}"
+							filterMatchMode="contains">
+							<h:outputText value="#{existencia.barCode3}" />
+						</p:column>
+						<p:column headerText="Item">
+							<h:outputText value="#{existencia.bodegaItemBean.nombre}" />
 						</p:column>
 						<p:column headerText="Color" filterBy="#{existencia.color}"
 							filterMatchMode="contains">
 							<h:outputText value="#{existencia.color}" />
+						</p:column>
+
+						<p:column headerText="Observacion">
+							<p:inputTextarea readonly="#{beanIngresoBodega.edit}"
+								value="#{existencia.observacion}" />
 						</p:column>
 						<p:column>
 							<p:commandButton disabled="#{beanIngresoBodega.edit}"
@@ -207,10 +237,11 @@
 					</p:dataTable>
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<h:commandButton disabled="#{beanIngresoBodega.edit}"
-						action="#{beanIngresoBodega.aceptar()}" value="Guardar"></h:commandButton>
-					<h:commandButton value="Cancelar" immediate="true"
-						action="#{beanIngresoBodega.reglaNavegacion()}"></h:commandButton>
+					<p:commandButton disabled="#{beanIngresoBodega.edit}"
+						process="@all" update="@all"
+						action="#{beanIngresoBodega.aceptar()}" value="Guardar"></p:commandButton>
+					<p:commandButton value="Cancelar" immediate="true" process="@this"
+						update="@all" action="#{beanIngresoBodega.reglaNavegacion()}"></p:commandButton>
 				</h:panelGrid>
 
 
@@ -218,25 +249,22 @@
 
 			<p:dataTable paginator="true" lazy="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" rendered="#{!beanIngresoBodega.form}"
-				value="#{beanIngresoBodega.model}" var="ingreso" rows="30">
-				<p:column headerText="Codigo" filterBy="#{ingreso.id}"
-					filterMatchMode="contains">
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="#{!beanIngresoBodega.form}"
+				value="#{beanIngresoBodega.model}" var="ingreso"
+				rows="#{opcionLoader.numRows}">
+				<p:column headerText="Codigo">
 					<h:outputText value="#{ingreso.id}" />
 				</p:column>
 
-				<p:column headerText="Numero de factura"
-					filterBy="#{ingreso.nroFactura}" filterMatchMode="contains">
+				<p:column headerText="Numero de factura">
 					<h:outputText value="#{ingreso.nroFactura}" />
 				</p:column>
 
 
-				<p:column headerText="Numero de items">
-					<h:outputText value="#{ingreso.bodegaExistencias.size()}" />
-				</p:column>
 
-				<p:column headerText="Fecha de Ingreso"
-					filterBy="#{ingreso.fechaIngreso}" filterMatchMode="contains">
+
+				<p:column headerText="Fecha de Ingreso">
 					<h:outputText value="#{ingreso.fechaIngreso}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:outputText>
@@ -244,21 +272,18 @@
 				</p:column>
 
 
-				<p:column headerText="Comprador" filterBy="#{ingreso.personaCompra}"
-					filterMatchMode="contains">
+				<p:column headerText="Comprador">
 					<h:outputText value="#{ingreso.personaCompra}" />
 				</p:column>
 
 
 
-				<p:column headerText="Proveedor" filterBy="#{ingreso.proveedor}"
-					filterMatchMode="contains">
+				<p:column headerText="Proveedor">
 					<h:outputText value="#{ingreso.proveedor}" />
 				</p:column>
 
 
-				<p:column headerText="Observación" filterBy="#{ingreso.descripcion}"
-					filterMatchMode="contains">
+				<p:column headerText="Observación">
 					<h:outputText value="#{ingreso.descripcion}" />
 				</p:column>
 

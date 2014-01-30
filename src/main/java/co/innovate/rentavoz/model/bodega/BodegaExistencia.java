@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -81,6 +82,11 @@ public class BodegaExistencia implements Serializable {
 	
 	@Column(name="precio_compra")
 	private Double precioCompra;
+	
+	
+	@Lob
+	@Column(name="observacion_exist")
+	private String observacion;
 	
 	public BodegaExistencia() {
 	}
@@ -340,4 +346,22 @@ public class BodegaExistencia implements Serializable {
 		this.color = color;
 	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
 }

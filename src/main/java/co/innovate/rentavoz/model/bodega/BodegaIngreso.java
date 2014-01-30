@@ -63,14 +63,28 @@ public class BodegaIngreso implements Serializable {
 	private String consecutivoFactura;
 	
 
-	//bi-directional many-to-one association to BodegaExistencia
-//	@OneToMany(mappedBy="bodegaIngreso", cascade={CascadeType.ALL},orphanRemoval=true,fetch=FetchType.LAZY)
 	@Transient
 	private List<BodegaExistencia> bodegaExistencias= new ArrayList<BodegaExistencia>();
 
 	@ManyToOne
 	@JoinColumn(name="sucursal")
 	private Sucursal sucursal;
+	
+	/**
+	 * 30/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * entrega
+	 */
+	@Column
+	private String entrega;
+	
+	/**
+	 * 30/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * recibe
+	 */
+	@Column
+	private String recibe;
 	
 	
 
@@ -265,5 +279,43 @@ public class BodegaIngreso implements Serializable {
 	 */
 	public void setColor(BodegaExistenciaColor color) {
 		this.color = color;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @return the entrega
+	 */
+	public String getEntrega() {
+		return entrega;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @param entrega the entrega to set
+	 */
+	public void setEntrega(String entrega) {
+		this.entrega = entrega;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @return the recibe
+	 */
+	public String getRecibe() {
+		return recibe;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/01/2014
+	 * @param recibe the recibe to set
+	 */
+	public void setRecibe(String recibe) {
+		this.recibe = recibe;
 	}
 }
