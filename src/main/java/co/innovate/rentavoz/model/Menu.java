@@ -2,6 +2,7 @@ package co.innovate.rentavoz.model;
 
 import java.io.Serializable;
 
+import javax.faces.event.ValueChangeEvent;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import co.innovate.rentavoz.model.permiso.UsuarioMenu;
 
 /**
  * 
@@ -49,7 +52,18 @@ public class Menu implements Serializable {
 	
 	@Transient
 	private boolean seleccionado;
+
+	@Transient
+	private boolean crea;
+	@Transient
+	private boolean edita;
+	@Transient
+	private boolean elimina;
+	@Transient
+	private boolean imprime;
 	
+	@Transient
+	private UsuarioMenu usuarioMenu;
 	public Menu() {
 	}
 
@@ -181,7 +195,101 @@ public class Menu implements Serializable {
 
 	@Override
 	public String toString() {
-		return "com.invte.rentavoz.logica.entidades.Menu[ id=" + id + " ]";
+		return label;
 	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the crea
+	 */
+	public boolean isCrea() {
+		return crea;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param crea the crea to set
+	 */
+	public void setCrea(boolean crea) {
+		this.crea = crea;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the edita
+	 */
+	public boolean isEdita() {
+		return edita;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param edita the edita to set
+	 */
+	public void setEdita(boolean edita) {
+		this.edita = edita;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the elimina
+	 */
+	public boolean isElimina() {
+		return elimina;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param elimina the elimina to set
+	 */
+	public void setElimina(boolean elimina) {
+		this.elimina = elimina;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the imprime
+	 */
+	public boolean isImprime() {
+		return imprime;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param imprime the imprime to set
+	 */
+	public void setImprime(boolean imprime) {
+		this.imprime = imprime;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param usuarioMenu the usuarioMenu to set
+	 */
+	public void setUsuarioMenu(UsuarioMenu usuarioMenu) {
+		this.usuarioMenu = usuarioMenu;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the usuarioMenu
+	 */
+	public UsuarioMenu getUsuarioMenu() {
+		return usuarioMenu;
+	}
+	
+	public void cambioValor(ValueChangeEvent event){
+		crea=(Boolean) event.getNewValue();
+		
+	}
 }

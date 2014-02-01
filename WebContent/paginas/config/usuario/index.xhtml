@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="./../../../plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Gestion de Usuarios del Sistema" class="h1" />
+
+			<h:panelGrid columns="2" rendered="${!beanUsuario.form}">
+				<h:commandButton value="Nuevo Usuario"
+					actionListener="${beanUsuario.verFormNuevo(true)}" />
+			</h:panelGrid>
+
+
+			<p:panel rendered="#{beanUsuario.form}"
+				header="Informacion del Usuario" style="width: 100%">
+				<h:panelGrid columns="3">
+
+
+					<h:outputLabel value="Usuario" />
+					<p:inputText size="50" id="codBanco2"
+						placeholder="Escribe un usuario para ingresar al sistema"
+						readonly="#{beanUsuario.edit}"
+						value="${beanUsuario.objeto.usuario}" required="true"
+						requiredMessage="Por favor digita un usuario válido" />
+					<p:message for="codBanco2" />
+
+					<h:outputLabel value="Contraseña" />
+					<p:password placeholder="Escribe tu contraseña" size="50"
+						id="codBanco" value="${beanUsuario.objeto.contrasena}"
+						required="#{!beanUsuario.edit}"
+						requiredMessage="Por favor digita un password válido" />
+					<p:message for="codBanco" />
+
+					<h:outputLabel value="Repite tu contaseña :" />
+					<p:password placeholder="Escribe nuevamente tu contraseña"
+						size="50" id="codBanco1" value="${beanUsuario.objeto.contrasena2}"
+						required="#{!beanUsuario.edit}"
+						requiredMessage="Por favor digita un password válido" />
+					<p:message for="codBanco1" />
+
+
+					<h:outputLabel value="Administrador" />
+					<p:selectBooleanCheckbox id="isAdmin"
+						value="#{beanUsuario.objeto.administrador}">
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectBooleanCheckbox>
+					<p:message for="isAdmin"></p:message>
+
+
+
+					<p:commandButton value="Guardar" process="@this,isAdmin,tablaPermiso,codBanco1,codBanco,codBanco2" update="@all"
+						action="#{beanUsuario.aceptar()}"></p:commandButton>
+					<p:commandButton value="Cancelar" process="@this" immediate="true"
+						update="@all" action="#{beanUsuario.reglaNavegacion()}"></p:commandButton>
+				</h:panelGrid>
+
+
+			</p:panel>
+			<p:panel rendered="#{beanUsuario.edit}" header="Permisos del sistema">
+				<p:treeTable widgetVar="tablaPermiso" id="tablaPermiso" selectionMode="checkbox"
+					selection="#{beanUsuario.seleccionados}"
+					value="#{beanUsuario.modelPermiso}" var="menu">
+					<!-- 				<p:ajax event="blur" process="@all" update="@all" ></p:ajax> -->
+<!-- 					<p:ajax event="expand" -->
+<!-- 						update="@all" process="@all" /> -->
+<!-- 					<p:ajax event="collapse" -->
+<!-- 						update="@all" process="@all" /> -->
+<!-- 					<p:ajax event="select" -->
+<!-- 						update="@all" process="@all" /> -->
+<!-- 					<p:ajax event="unselect" -->
+<!-- 					process="@all" -->
+<!-- 						update="@all" /> -->
+
+					<p:column headerText="Menu">
+						<h:outputText value="#{menu}"></h:outputText>
+					</p:column>
+<!-- 					<p:column headerText="Creación"> -->
+<!-- 						<p:selectBooleanButton immediate="true"    onLabel="SI" offLabel="NO" value="#{menu.crea}"> -->
+<!-- 							<p:ajax event="change" process="@this"  /> -->
+<!-- 						</p:selectBooleanButton> -->
+<!-- 					</p:column> -->
+<!-- 					<p:column headerText="Edición"> -->
+<!-- 						<p:selectBooleanCheckbox value="#{menu.edita}"> -->
+<!-- 							<p:ajax event="change" partialSubmit="true" /> -->
+<!-- 						</p:selectBooleanCheckbox> -->
+<!-- 					</p:column> -->
+<!-- 					<p:column headerText="ELiminación"> -->
+<!-- 						<p:selectBooleanCheckbox value="#{menu.elimina}"> -->
+<!-- 							<p:ajax event="change" partialSubmit="true" /> -->
+<!-- 						</p:selectBooleanCheckbox> -->
+<!-- 					</p:column> -->
+<!-- 					<p:column headerText="Imprimir"> -->
+<!-- 						<p:selectBooleanCheckbox value="#{menu.imprime}"> -->
+<!-- 							<p:ajax event="change" partialSubmit="true" /> -->
+<!-- 						</p:selectBooleanCheckbox> -->
+<!-- 					</p:column> -->
+
+				</p:treeTable>
+			</p:panel>
+
+			<p:dataTable paginator="true" lazy="true"
+				rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!beanUsuario.form}" style="width: 100%"
+				value="#{beanUsuario.model}" var="item"
+				emptyMessage="No hay registros">
+
+
+				<p:column style="width: 80%" headerText="Usuario"
+					styleClass="styleColumn">
+
+					<p:outputLabel value="${item.usuario}" />
+
+				</p:column>
+				<p:column headerText="Administrador" styleClass="styleColumn">
+
+					<p:outputLabel value="${item.administrador?'SI':'NO'}" />
+
+				</p:column>
+
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${beanUsuario.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.usuario}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.usuario}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${beanUsuario.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar"
+								onclick="pnl${item.usuario}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

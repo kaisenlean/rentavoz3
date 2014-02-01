@@ -235,7 +235,7 @@ public class PrinterBean extends BaseBean {
 			exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM,
 					servletOutputStream);
 			exporterXLS.setParameter(
-					JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+					JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
 			exporterXLS.setParameter(
 					JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
 			exporterXLS.setParameter(

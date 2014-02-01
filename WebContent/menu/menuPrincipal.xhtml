@@ -8,11 +8,11 @@
 	<h:form>
 
 
-		<h:dataTable value="#{administradorMenus.menus}" var="menu"
+		<h:dataTable value="#{administradorMenus.menus}" var="menu" border="0" bgcolor="#eeeeee"
 			style="font-size: 11px;font-weight: bolder;width: 100%">
-			<h:column style="width: 100%">
+			<h:column style="width: 100%" >
 				<h:graphicImage url="/imagenes/menu/${menu.icono}" />
-				<p:commandLink style="color: #045491 ;font-size: 11px"
+				<p:commandLink style="color: black ;font-size: 12px"
 					actionListener="#{administradorMenus.goTo(menu.url)}" process="@this" update="@all" value=" ${menu.label} " />
 			</h:column>
 		</h:dataTable>

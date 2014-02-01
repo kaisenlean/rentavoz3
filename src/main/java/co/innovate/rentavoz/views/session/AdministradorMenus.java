@@ -15,6 +15,7 @@ import javax.faces.bean.SessionScoped;
 
 import co.innovate.rentavoz.model.Menu;
 import co.innovate.rentavoz.services.menu.MenuService;
+import co.innovate.rentavoz.services.permiso.UsuarioMenuService;
 import co.innovate.rentavoz.views.BaseBean;
 
 /**
@@ -50,6 +51,12 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{menuService}")
 	private MenuService menuService;
+	
+	@ManagedProperty(value="#{usuarioMenuService}")
+	private UsuarioMenuService usuarioMenuService;
+	
+	@ManagedProperty(value="#{login}")
+	private Login login;
 
 
 	private MenuListener listener;
@@ -58,8 +65,6 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 	private List<Menu> menuPrincipal= new ArrayList<Menu>();
 	@PostConstruct
 	public void init() {
-
-		menuPrincipal=(menuService.findTodosByPadre(MENU_RAIZ));
 		listener = new MenuListener() {
 
 			@Override
@@ -68,13 +73,27 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 				cargarMenus(padre);
 			}
 		};
+if (login.getUser()!=null) {
+	if (login.getUser().getAdministrador()) {
+		
+		menuPrincipal=(menuService.findTodosByPadre(MENU_RAIZ));
+	}else{
+		menuPrincipal=usuarioMenuService.findByUsuario(login.getUser(),MENU_RAIZ);
+	}
+
+}
+	
 
 	}
 
 	public void cargarMenus(String padre) {
 		menus.clear();
 		try {
+			if (login.getUser().getAdministrador()) {
 			menus = menuService.findTodosByPadre(padre);
+			}else{
+				menus=usuarioMenuService.findByUsuario(login.getUser(), padre);
+			}
 		} catch (Exception e) {
 			menus = new ArrayList<Menu>();
 		}
@@ -158,5 +177,32 @@ public class AdministradorMenus extends BaseBean implements Serializable {
 		this.menuPrincipal = menuPrincipal;
 	}
 
-	// </editor-fold>
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param usuarioMenuService the usuarioMenuService to set
+	 */
+	public void setUsuarioMenuService(UsuarioMenuService usuarioMenuService) {
+		this.usuarioMenuService = usuarioMenuService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @return the login
+	 */
+	public Login getLogin() {
+		return login;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param login the login to set
+	 */
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+	
 }

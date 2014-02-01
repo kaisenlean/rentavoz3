@@ -11,9 +11,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import co.innovate.rentavoz.model.Menu;
 
@@ -35,10 +35,15 @@ public class Usuario implements Serializable {
 	private String usuario;
 	
 	@Column(name = "administrador")
-	private Character administrador;
-	@Size(max = 50)
+	private Boolean administrador;
+	
+	@Lob
 	@Column(name = "contrasena")
 	private String contrasena;
+	
+	@Transient
+	private String contrasena2;
+
 	
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades.profile
@@ -62,6 +67,7 @@ public class Usuario implements Serializable {
 	 * @date 13/07/2013
 	 */
 	public Usuario() {
+		administrador=false;
 	}
 
 	/**
@@ -71,7 +77,7 @@ public class Usuario implements Serializable {
 	 * @param administrador
 	 * @param contrasena
 	 */
-	public Usuario(String usuario, Character administrador, String contrasena) {
+	public Usuario(String usuario, Boolean administrador, String contrasena) {
 		super();
 		this.usuario = usuario;
 		this.administrador = administrador;
@@ -102,7 +108,7 @@ public class Usuario implements Serializable {
 	 * @date 2/06/2013
 	 * @return the administrador
 	 */
-	public Character getAdministrador() {
+	public Boolean getAdministrador() {
 		return administrador;
 	}
 
@@ -112,7 +118,7 @@ public class Usuario implements Serializable {
 	 * @param administrador
 	 *            the administrador to set
 	 */
-	public void setAdministrador(Character administrador) {
+	public void setAdministrador(Boolean administrador) {
 		this.administrador = administrador;
 	}
 
@@ -174,24 +180,20 @@ public class Usuario implements Serializable {
 		this.menus = menus;
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((contrasena == null) ? 0 : contrasena.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
+
+	
+	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -203,17 +205,30 @@ public class Usuario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		if (contrasena == null) {
-			if (other.contrasena != null)
-				return false;
-		} else if (!contrasena.equals(other.contrasena))
-			return false;
 		if (usuario == null) {
 			if (other.usuario != null)
 				return false;
 		} else if (!usuario.equals(other.usuario))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @return the contrasena2
+	 */
+	public String getContrasena2() {
+		return contrasena2;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param contrasena2 the contrasena2 to set
+	 */
+	public void setContrasena2(String contrasena2) {
+		this.contrasena2 = contrasena2;
 	}
 
 }

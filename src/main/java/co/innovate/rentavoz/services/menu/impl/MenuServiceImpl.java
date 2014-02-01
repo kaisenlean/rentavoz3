@@ -26,6 +26,14 @@ import co.innovate.rentavoz.services.menu.MenuService;
 public  class MenuServiceImpl extends GenericServiceImpl<Menu, Integer> implements MenuService,Serializable {
 
 	/**
+	 * 31/01/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * ROOT
+	 */
+	private static final String ROOT = "root";
+
+
+	/**
 	 * 12/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * SERVICE_NAME
@@ -66,6 +74,14 @@ public  class MenuServiceImpl extends GenericServiceImpl<Menu, Integer> implemen
 	@Override
 	public GenericRepository<Menu, Integer> getDao() {
 		return menuDao;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.menu.MenuService#cargarMenusPadre()
+	 */
+	@Override
+	public List<Menu> cargarMenusPadre() {
+		return menuDao.findTodosByPadre(ROOT);
 	}
 
 }

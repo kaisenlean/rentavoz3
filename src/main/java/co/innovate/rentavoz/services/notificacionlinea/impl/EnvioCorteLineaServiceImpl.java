@@ -135,7 +135,7 @@ public class EnvioCorteLineaServiceImpl implements EnvioCorteLineaService {
 	public void enviarNotificacionLineasFechaCorte() {
 	
 		
-		DateFormat format= new SimpleDateFormat("DD");
+		DateFormat format= new SimpleDateFormat("dd");
 		String dia=format.format(Calendar.getInstance().getTime());
 		int diaInt= Integer.valueOf(dia);
 		
@@ -143,7 +143,7 @@ public class EnvioCorteLineaServiceImpl implements EnvioCorteLineaService {
 			
 			HashMap<String, Object> mapa = new HashMap<String, Object>();
 			mapa.put(CORTE_PARAM, diaInt);
-			mapa.put(IMAGEN_PARAM, opcionService.findByClave(OpcionConstants.IMAGEN_EMPRESA).getValor());
+			mapa.put(IMAGEN_PARAM,"/"+ opcionService.findByClave(OpcionConstants.IMAGEN_EMPRESA).getValor());
 			
 			
 			generarReporte(mapa);

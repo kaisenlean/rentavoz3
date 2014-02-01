@@ -31,4 +31,14 @@ public interface MenuService extends GenericService<Menu, Integer>{
 	* @return
 	*/
 	 List<Menu> findTodosByPadre(String padre);
+	 
+	 
+	 
+	 /**
+	  * Método que carga los menus padre del arbol de menus
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 31/01/2014
+	* @return
+	*/
+	List<Menu> cargarMenusPadre();
 }

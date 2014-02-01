@@ -8,17 +8,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import co.innovate.rentavoz.model.Menu;
+import co.innovate.rentavoz.model.profile.Usuario;
 
 /**
  * The persistent class for the permiso database table.
  * 
  */
 @Entity
-@Table(name = "permiso")
-public class Permiso implements Serializable {
+@Table(name = "usuario_menu")
+public class UsuarioMenu implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,15 +38,20 @@ public class Permiso implements Serializable {
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-	private boolean acceso;
+	private String acceso;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades.permiso co.com.rentavoz.model.jpa
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-	@JoinColumn(name = "menu")
+	@ManyToOne
+	@JoinColumn(name = "menu",referencedColumnName="id")
 	private Menu menu;
+	
+	@ManyToOne
+	@JoinColumn(name="usuario",referencedColumnName="usuar")
+	private Usuario usuario;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades.permiso co.com.rentavoz.model.jpa
@@ -59,7 +66,7 @@ public class Permiso implements Serializable {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/11/2013
 	 */
-	public Permiso() {
+	public UsuarioMenu() {
 	}
 
 	/**
@@ -95,7 +102,7 @@ public class Permiso implements Serializable {
 	 * @param acceso
 	 *            the acceso to set
 	 */
-	public void setAcceso(boolean acceso) {
+	public void setAcceso(String acceso) {
 		this.acceso = acceso;
 	}
 
@@ -130,12 +137,23 @@ public class Permiso implements Serializable {
 //	}
 
 	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
 	 * @return the acceso
 	 */
-	public boolean isAcceso() {
+	public String getAcceso() {
 		return acceso;
 	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/01/2014
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 
 }
