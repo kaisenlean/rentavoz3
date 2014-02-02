@@ -72,8 +72,16 @@ public class Login extends BaseBean implements Serializable {
 	public void init() {
 
 		user = null;
+		logOut();
 	}
 
+
+	public void validateSession(){
+		
+		if (user==null) {
+			logOut();
+		}
+	}
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -155,6 +163,8 @@ public class Login extends BaseBean implements Serializable {
 			// Usar el contexto de JSF para invalidar la sesión,
 			// NO EL DE SERVLETS (nada de HttpServletRequest)
 			((HttpSession) ctx.getSession(false)).invalidate();
+			
+	
 
 			// Redirección de nuevo con el contexto de JSF,
 			// si se usa una HttpServletResponse fallará.

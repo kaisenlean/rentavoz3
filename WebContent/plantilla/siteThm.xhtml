@@ -15,7 +15,9 @@
 	
 	<h:outputStylesheet name="default.css" library="css" />
 	<h:outputStylesheet name="tableLayout.css" library="css" />
-
+ <f:metadata>
+        <f:event type="preRenderView" listener="#{login.validateSession()}"/>
+    </f:metadata>
 	<title>Rentavoz 3.0</title>
 
 

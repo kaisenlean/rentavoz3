@@ -81,6 +81,9 @@ if (login.getUser()!=null) {
 		menuPrincipal=usuarioMenuService.findByUsuario(login.getUser(),MENU_RAIZ);
 	}
 
+}else{
+	
+	mensajeError("Por favor inicia sesion nuevamente");
 }
 	
 

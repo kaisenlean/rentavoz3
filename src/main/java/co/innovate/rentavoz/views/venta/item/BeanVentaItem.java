@@ -23,10 +23,13 @@ import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.model.venta.VentaItemDetalleItem;
 import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
+import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteCiudad;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteColaboradores;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 import co.innovate.rentavoz.views.reports.PrinterBean;
 import co.innovate.rentavoz.views.session.Login;
@@ -101,6 +104,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{printerBean}")
 	private PrinterBean  printerBean;
+	
+	@ManagedProperty(value="#{ciudadService}")
+	private CiudadService ciudadService;
 
 	/**
 	 * 30/10/2013
@@ -122,6 +128,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 * autocompleteTercero
 	 */
 	private AutocompleteTercero autocompleteTercero;
+	
+	
+	
 
 	/**
 	 * 30/10/2013
@@ -150,10 +159,17 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 * estadoCuota
 	 */
 	private String estadoCuota;
+
+	
+	private AutocompleteCiudad autocompleteCiudad;
 	
 	@ManagedProperty(value="#{cuentasService}")
 	private CuentasService  cuentasService;
+	
+	
 
+	private AutocompleteColaboradores autocompleteColaboradores;
+	private AutocompleteColaboradores autocompleteColaboradores2;
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -181,6 +197,50 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 			}
 		};
 		autocompleteTercero.setQuery("");
+		
+		
+		autocompleteCiudad=new AutocompleteCiudad() {
+			
+			@Override
+			public void postSelect() {
+				tercero.setCiudad(seleccionado);
+			}
+			
+			@Override
+			public CiudadService getFacade() {
+				return ciudadService;
+			}
+		};
+		
+		autocompleteColaboradores=new AutocompleteColaboradores() {
+			
+			@Override
+			public void postSelect() {
+					venta.setVendedor(seleccionado);
+			}
+			
+			@Override
+			public TerceroService getService() {
+				return terceroService;
+			}
+		};
+		autocompleteColaboradores.setQuery(login.getTercero()==null?null:login.getTercero().toString());
+		autocompleteColaboradores.setSeleccionado(login.getTercero());
+		
+autocompleteColaboradores2=new AutocompleteColaboradores() {
+			
+			@Override
+			public void postSelect() {
+					venta.setCobrador(seleccionado);
+			}
+			
+			@Override
+			public TerceroService getService() {
+				return terceroService;
+			}
+		};
+		autocompleteColaboradores2.setQuery(login.getTercero()==null?null:login.getTercero().toString());
+		autocompleteColaboradores2.setSeleccionado(login.getTercero());
 	}
 
 	/**
@@ -190,7 +250,12 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	public void crearNuevoTercero() {
 
-		tercero.setTipo(TipoTerceroEnum.CLIENTE_MINORISTA);
+		if (tercero.getMayorista()) {
+			tercero.setTipo(TipoTerceroEnum.CLIENTE_MAYORISTA);
+		}else{
+			
+			tercero.setTipo(TipoTerceroEnum.CLIENTE_MINORISTA);
+		}
 
 		tercero=terceroService.save(tercero);
 
@@ -198,6 +263,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 		autocompleteTercero.setQuery(tercero.toString());
 
+		
 		runJavascript("dlgNewCliente.hide();");
 	}
 
@@ -352,6 +418,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		venta.setFecha(new Date());
 		venta.setEstado(EstadoVentaItemEnum.ACTIVO);
 		venta.setVendedor(login.getTercero());
+		venta.setCobrador(login.getTercero());
 		venta.setValorPagar(BigInteger.ZERO.doubleValue());
 		venta.setObservacion("");
 	}
@@ -573,4 +640,79 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		this.cuentasService = cuentasService;
 	}
 	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param ciudadService the ciudadService to set
+	 */
+	public void setCiudadService(CiudadService ciudadService) {
+		this.ciudadService = ciudadService;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the ciudadService
+	 */
+	public CiudadService getCiudadService() {
+		return ciudadService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the autocompleteCiudad
+	 */
+	public AutocompleteCiudad getAutocompleteCiudad() {
+		return autocompleteCiudad;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param autocompleteCiudad the autocompleteCiudad to set
+	 */
+	public void setAutocompleteCiudad(AutocompleteCiudad autocompleteCiudad) {
+		this.autocompleteCiudad = autocompleteCiudad;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the autocompleteColaboradores
+	 */
+	public AutocompleteColaboradores getAutocompleteColaboradores() {
+		return autocompleteColaboradores;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param autocompleteColaboradores the autocompleteColaboradores to set
+	 */
+	public void setAutocompleteColaboradores(
+			AutocompleteColaboradores autocompleteColaboradores) {
+		this.autocompleteColaboradores = autocompleteColaboradores;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the autocompleteColaboradores2
+	 */
+	public AutocompleteColaboradores getAutocompleteColaboradores2() {
+		return autocompleteColaboradores2;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param autocompleteColaboradores2 the autocompleteColaboradores2 to set
+	 */
+	public void setAutocompleteColaboradores2(
+			AutocompleteColaboradores autocompleteColaboradores2) {
+		this.autocompleteColaboradores2 = autocompleteColaboradores2;
+	}
 }

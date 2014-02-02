@@ -34,4 +34,16 @@ public interface CiudadService extends GenericService<Ciudad, Integer> {
 	*/
 	List<Ciudad> findByCriterio(String criterio,
 			Departamento departamento);
+	
+	
+
+
+	/**
+	 * 
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 1/02/2014
+	* @param criterio
+	* @return
+	 */
+	List<Ciudad> findByCriterio(String criterio);
 }

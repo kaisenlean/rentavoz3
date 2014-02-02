@@ -62,5 +62,15 @@ public interface TerceroDao extends GenericRepository<Tercero, Integer> {
 	
 	
 	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 2/02/2014
+	* @param criterio
+	* @return
+	*/
+	List<Tercero> findColaboradorByCriterio(String criterio);
+	
+	
+	
 
 }

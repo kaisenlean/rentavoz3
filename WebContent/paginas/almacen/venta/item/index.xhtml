@@ -18,14 +18,36 @@
 					style="font-weight: bolder;font-size:16px" />
 				<h:outputLabel value="#{login.valorCaja}"
 					style="font-weight: bolder;font-size:16px;color:red">
-					<f:convertNumber currencyCode="COP" currencySymbol="$" type="currency" />
+					<f:convertNumber type="currency" />
 				</h:outputLabel>
 			</div>
 			<h:panelGrid columns="2" cellspacing="5" cellpadding="5">
 				<h:outputText value="Vendedor" />
 
-				<h:outputLabel style="font-weight: bolder;"
-					value="#{beanVentaItem.venta.vendedor}" />
+				<p:autoComplete size="50" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanVentaItem.autocompleteColaboradores.conversorClientes}"
+						value="#{beanVentaItem.autocompleteColaboradores.seleccionado}"
+						completeMethod="#{beanVentaItem.autocompleteColaboradores.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanVentaItem.autocompleteColaboradores.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+					
+					
+							<h:outputText value="Cobrador" />
+
+				<p:autoComplete size="50" style="width:100px" id="buscadorCobrador"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanVentaItem.autocompleteColaboradores2.conversorClientes}"
+						value="#{beanVentaItem.autocompleteColaboradores2.seleccionado}"
+						completeMethod="#{beanVentaItem.autocompleteColaboradores2.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanVentaItem.autocompleteColaboradores2.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
 
 
 				<h:outputText value="Fecha de venta" />
@@ -73,6 +95,27 @@
 						<p:inputText id="txtDoc"
 							value="#{beanVentaItem.tercero.terDocumento}" />
 						<p:messages for="txtDoc"></p:messages>
+						
+						
+						<h:outputLabel value="Ciudad" />
+					<p:autoComplete size="20" style="width:100px" id="buscadorCiudad"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanVentaItem.autocompleteCiudad.conversorCiudad}"
+						value="#{beanVentaItem.autocompleteCiudad.seleccionado}"
+						completeMethod="#{beanVentaItem.autocompleteCiudad.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanVentaItem.autocompleteCiudad.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+					<p:message for="buscadorCiudad" />
+
+
+
+					<h:outputLabel value="Barrio" />
+					<p:inputText size="20" id="barrioTercero"
+						value="#{beanVentaItem.tercero.barrio}" placeholder="Ej : EL PEÑON" />
+					<p:message for="barrioTercero" />
 
 						<h:outputText value="Direccion " />
 						<h:inputText id="txtDireccion"
@@ -85,10 +128,18 @@
 						<h:inputText id="txtTelefono"
 							value="#{beanVentaItem.tercero.terTelefono}" />
 						<p:messages for="txtTelefono"></p:messages>
+						
+						
+						<h:outputText value="Mayorista " />
+						<p:selectBooleanCheckbox id="clienteMayori"
+							value="#{beanVentaItem.tercero.mayorista}" >
+							<p:ajax event="change" partialSubmit="true"></p:ajax>
+							</p:selectBooleanCheckbox>
+						<p:messages for="clienteMayori"></p:messages>
 
 
 						<p:commandButton value="Guardar" partialSubmit="true"
-							process="txtTelefono,txtDireccion,txtDoc,txtApellidos,txtNameTercero,@this"
+							process="txtTelefono,barrioTercero,txtDireccion,txtDoc,txtApellidos,txtNameTercero,@this"
 							update="@all"
 							actionListener="#{beanVentaItem.crearNuevoTercero()}"></p:commandButton>
 						<p:commandButton value="Cancelar" immediate="true"

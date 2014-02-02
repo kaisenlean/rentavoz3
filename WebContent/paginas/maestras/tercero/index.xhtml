@@ -57,14 +57,32 @@
 					<p:message for="dirEmpresa" />
 
 					<h:outputLabel value="Email" />
-					<h:inputText id="emailTercero"
-						value="${beanTercero.objeto.email}" placeholder="Ej : usuario@mail.com" />
+					<p:inputText id="emailTercero" value="${beanTercero.objeto.email}"
+						placeholder="Ej : usuario@mail.com" />
 					<p:message for="emailTercero" />
 
+					<h:outputLabel value="Ciudad" />
+					<p:autoComplete size="100" style="width:400px" id="buscadorCiudad"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanTercero.autocompleteCiudad.conversorCiudad}"
+						value="#{beanTercero.autocompleteCiudad.seleccionado}"
+						completeMethod="#{beanTercero.autocompleteCiudad.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanTercero.autocompleteCiudad.seleccionar}">
 
-<h:outputLabel value="Centro de operación" />
-					<h:selectOneMenu id="centroperacion" value="#{beanTercero.selCentrope}"
-						required="true"
+						</p:ajax>
+					</p:autoComplete>
+					<p:message for="buscadorCiudad" />
+
+
+
+					<h:outputLabel value="Barrio" />
+					<p:inputText size="40" id="barrioTercero"
+						value="${beanTercero.objeto.barrio}" placeholder="Ej : EL PEÑON" />
+					<p:message for="barrioTercero" />
+					<h:outputLabel value="Centro de operación" />
+					<h:selectOneMenu id="centroperacion"
+						value="#{beanTercero.selCentrope}" required="true"
 						requiredMessage="Por favor selecciona un centro de operación">
 						<f:selectItems value="#{selectorCentrope.items}" />
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
@@ -89,12 +107,14 @@
 			<h:commandButton rendered="${!beanTercero.form}"
 				value="Descargar en pdf" image="/imagenes/pdf.png"
 				actionListener="#{printerBean.exportXls('terceros','informe_terceros','xls')}"></h:commandButton>
-			<p:dataTable paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
+			<p:dataTable paginator="true" lazy="true"
+				rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"  rendered="${!beanTercero.form}" style="width: 100%"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!beanTercero.form}" style="width: 100%"
 				value="#{beanTercero.model}" var="item"
 				emptyMessage="No hay registros">
-		
+
 
 				<p:column headerText="Documento" styleClass="styleColumn"
 					filterBy="${item.terDocumento}" filterMatchMode="contains">

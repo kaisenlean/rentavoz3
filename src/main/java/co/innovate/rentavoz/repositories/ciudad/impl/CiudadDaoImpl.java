@@ -33,6 +33,12 @@ import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 public class CiudadDaoImpl extends GenericJpaRepository<Ciudad, Integer> implements CiudadDao , Serializable {
 
 	/**
+	 * 1/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * CIU_NOMBRE
+	 */
+	private static final String CIU_NOMBRE = "ciuNombre";
+	/**
 	 * 13/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * serialVersionUID
@@ -48,7 +54,7 @@ public class CiudadDaoImpl extends GenericJpaRepository<Ciudad, Integer> impleme
 			Departamento departamento) {
 	Session session = (Session) getEntityManager().unwrap(Session.class);
 	Criteria critaria=session.createCriteria(Ciudad.class);
-	Criterion criterion= Restrictions.conjunction().add(Restrictions.like("ciuNombre", criterio,MatchMode.ANYWHERE)).add(Restrictions.eq("departamentoidDepartamento", departamento));
+	Criterion criterion= Restrictions.conjunction().add(Restrictions.like(CIU_NOMBRE, criterio,MatchMode.ANYWHERE)).add(Restrictions.eq("departamentoidDepartamento", departamento));
 	critaria.add(criterion);
 	critaria.createAlias("departamentoidDepartamento", "departamentoidDepartamento");
 	critaria.addOrder(Order.asc("departamentoidDepartamento.depNombre"));
@@ -69,5 +75,15 @@ public class CiudadDaoImpl extends GenericJpaRepository<Ciudad, Integer> impleme
 						"SELECT c FROM Ciudad c ORDER BY c.departamentoidDepartamento.depNombre ASC");
 		return new ArrayList<Ciudad>(q.getResultList());
 		}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.ciudad.CiudadDao#findByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Ciudad> findByCriterio(String criterio) {
+		Criterion criterion=Restrictions.like(CIU_NOMBRE, criterio,MatchMode.ANYWHERE);
+		return findByCriteria(criterion);
+	}
 
 }

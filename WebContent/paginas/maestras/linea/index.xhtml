@@ -128,11 +128,7 @@
 					sortBy="linCorte">
 					<p:outputLabel value="${item.linCorte}" />
 				</p:column>
-				<p:column headerText="Fecha Registro" styleClass="styleColumn" sortBy="fecha">
-					<h:outputText  value="${item.fecha}"  >
-					<f:convertDateTime pattern="dd/MM/yyyy"/>
-					</h:outputText>
-				</p:column>
+			
 				<p:column headerText="Estado"
 					sortBy="estadoLineaidEstadoLinea"
 					styleClass="styleColumn">
@@ -145,10 +141,6 @@
 					<p:outputLabel value="${item.plan.plaNombre}" />
 				</p:column>
 
-				<p:column headerText="SimCard" sortBy="simcard"
-					styleClass="styleColumn" >
-					<p:outputLabel value="${item.simcard.simIccid}" />
-				</p:column>
 
 				<p:column headerText="Sucursal" sortBy="sucursal"
 					styleClass="styleColumn" >

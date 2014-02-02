@@ -40,7 +40,7 @@ public class BaseBean{
 	 */
 	public void mensajeError(String mensaje) {
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", mensaje));
+				new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", mensaje));
 	}
 
 	/**

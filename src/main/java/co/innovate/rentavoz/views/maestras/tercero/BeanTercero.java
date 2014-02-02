@@ -19,9 +19,11 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.centrope.CentropeService;
+import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.SessionParams;
 import co.innovate.rentavoz.views.StandardAbm;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteCiudad;
 
 /**
  * 
@@ -66,6 +68,12 @@ public class BeanTercero extends StandardAbm<Tercero,Integer> implements Seriali
 	private boolean callByOtherModule;
 	
 	private int selCentrope;
+	
+	
+	private AutocompleteCiudad autocompleteCiudad;
+	
+	@ManagedProperty(value="#{ciudadService}")
+	private CiudadService ciudadService;
 
 	@Override
 	public GenericService<Tercero,Integer> getFacade() {
@@ -107,6 +115,19 @@ public class BeanTercero extends StandardAbm<Tercero,Integer> implements Seriali
 			form=true;
 			
 		}
+		
+		autocompleteCiudad=new AutocompleteCiudad() {
+			
+			@Override
+			public void postSelect() {
+				getObjeto().setCiudad(seleccionado);
+			}
+			
+			@Override
+			public CiudadService getFacade() {
+				return ciudadService;
+			}
+		};
 	}
 
 /**
@@ -153,6 +174,10 @@ if (callByOtherModule) {
 		}
 		if (getObjeto().getCentrope() != null) {
 			selCentrope = getObjeto().getCentrope().getId();
+		}
+		if (getObjeto().getCiudad()!=null) {
+			autocompleteCiudad.setQuery(getObjeto().getCiudad().toString());
+			autocompleteCiudad.setSeleccionado(getObjeto().getCiudad());
 		}
 		
 	}
@@ -270,5 +295,33 @@ if (callByOtherModule) {
 	 */
 	public void setCentropeService(CentropeService centropeService) {
 		this.centropeService = centropeService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param ciudadService the ciudadService to set
+	 */
+	public void setCiudadService(CiudadService ciudadService) {
+		this.ciudadService = ciudadService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param autocompleteCiudad the autocompleteCiudad to set
+	 */
+	public void setAutocompleteCiudad(AutocompleteCiudad autocompleteCiudad) {
+		this.autocompleteCiudad = autocompleteCiudad;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @return the autocompleteCiudad
+	 */
+	public AutocompleteCiudad getAutocompleteCiudad() {
+		return autocompleteCiudad;
 	}
 }

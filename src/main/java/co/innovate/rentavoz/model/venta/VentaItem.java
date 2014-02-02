@@ -149,6 +149,12 @@ public class VentaItem implements Serializable {
 	@OneToMany(mappedBy = "idVenta" ,cascade=CascadeType.ALL)
 	private List<VentaItemCuota> cuotas = new ArrayList<VentaItemCuota>();
 
+	
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "cobrador")
+	private Tercero cobrador;
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
@@ -372,5 +378,25 @@ public class VentaItem implements Serializable {
 public void setModoPago(ModoPagoEnum modoPago) {
 	this.modoPago = modoPago;
 }	
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @param cobrador the cobrador to set
+ */
+public void setCobrador(Tercero cobrador) {
+	this.cobrador = cobrador;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @return the cobrador
+ */
+public Tercero getCobrador() {
+	return cobrador;
+}
 
 }

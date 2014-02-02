@@ -107,6 +107,9 @@ public class Tercero implements Serializable {
 	
 	@Column
 	private String email;
+	
+	@Transient
+	private Boolean mayorista;
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
@@ -157,6 +160,15 @@ public class Tercero implements Serializable {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="centrope" , referencedColumnName="id")
 	private Centrope centrope;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="ciudad",referencedColumnName="idCiudad")
+	private Ciudad ciudad;
+	
+	
+	@Column
+	private String barrio;
 	
 	
 	/**
@@ -482,6 +494,64 @@ public class Tercero implements Serializable {
 		this.email = email;
 	}
 
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @return the barrio
+	 */
+	public String getBarrio() {
+		return barrio;
+	}
+	
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param barrio the barrio to set
+	 */
+	public void setBarrio(String barrio) {
+		this.barrio = barrio;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @return the ciudad
+	 */
+	public Ciudad getCiudad() {
+		return ciudad;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 1/02/2014
+	 * @param ciudad the ciudad to set
+	 */
+	public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param mayorista the mayorista to set
+	 */
+	public void setMayorista(Boolean mayorista) {
+		this.mayorista = mayorista;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the mayorista
+	 */
+	public Boolean getMayorista() {
+		return mayorista;
+	}
 	/**
 	 * @see java.lang.Object#toString()
 	 */

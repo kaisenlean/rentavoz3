@@ -78,4 +78,12 @@ public class TerceroServiceImpl extends GenericServiceImpl<Tercero, Integer> imp
 		return terceroDao;
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.tercero.TerceroService#findColaboradorByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Tercero> findColaboradorByCriterio(String criterio) {
+		return terceroDao.findColaboradorByCriterio(criterio);
+	}
+
 }

@@ -52,4 +52,12 @@ public class CiudadServiceImpl extends GenericServiceImpl<Ciudad, Integer> imple
 		return ciudadDao.findByCriterio(criterio, departamento);
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.ciudad.CiudadService#findByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Ciudad> findByCriterio(String criterio) {
+		return ciudadDao.findByCriterio(criterio);
+	}
+
 }

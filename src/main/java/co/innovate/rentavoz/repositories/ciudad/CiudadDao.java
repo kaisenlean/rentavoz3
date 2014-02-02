@@ -34,4 +34,15 @@ public interface CiudadDao  extends GenericRepository<Ciudad, Integer>{
 	*/
 	List<Ciudad> findByCriterio(String criterio,
 			Departamento departamento);
+	
+	
+
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 13/01/2014
+	* @param criterio
+	* @param departamento
+	* @return
+	*/
+	List<Ciudad> findByCriterio(String criterio);
 }

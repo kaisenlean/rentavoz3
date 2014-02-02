@@ -155,6 +155,16 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 		q.setParameter("tipoTercero", TipoTerceroEnum.PROVEEDOR  );
 		return q.getResultList();
 	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findColaboradorByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Tercero> findColaboradorByCriterio(String criterio) {
+		Criterion criterion2= Restrictions.disjunction().add(Restrictions.like("terApellidos", criterio,MatchMode.ANYWHERE)).add(Restrictions.like("terNombre", criterio,MatchMode.ANYWHERE)).add(Restrictions.like("terDocumento", criterio,MatchMode.ANYWHERE));
+		Criterion criterion =Restrictions.disjunction().add(Restrictions.eq("tipo", TipoTerceroEnum.ADMINISTRADOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO)).add(Restrictions.eq("tipo", TipoTerceroEnum.COBRADOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.VENDEDOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO));
+		return findByCriteria(criterion,criterion2);
+	}
 	
 
 
