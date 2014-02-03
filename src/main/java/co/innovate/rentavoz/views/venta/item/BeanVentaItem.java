@@ -16,6 +16,7 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemEnum;
 import co.innovate.rentavoz.model.venta.ModoPagoEnum;
@@ -25,6 +26,7 @@ import co.innovate.rentavoz.model.venta.VentaItemDetalleItem;
 import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
 import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
+import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
@@ -45,12 +47,11 @@ import co.innovate.rentavoz.views.session.Login;
 @ViewScoped
 public class BeanVentaItem extends BaseBean implements Serializable {
 
-	
-	
 	/**
 	 * 15/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * vt
+	 *         vt
 	 */
 	private VentaItem vt;
 	/**
@@ -62,14 +63,14 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	
 	/**
 	 * 15/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * ventas
+	 *         ventas
 	 */
-	List<VentaItem> ventas= new ArrayList<VentaItem>();
-	
+	List<VentaItem> ventas = new ArrayList<VentaItem>();
+
 	/**
 	 * 29/10/2013
 	 * 
@@ -85,7 +86,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         ventaItemEjb
 	 */
-	@ManagedProperty(value="#{ventaItemEjb}")
+	@ManagedProperty(value = "#{ventaItemEjb}")
 	private VentaItemEjb ventaItemEjb;
 
 	/**
@@ -96,80 +97,92 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	private VentaItem venta;
 
-	@ManagedProperty(value="#{bodegaExistenciaService}")
+	@ManagedProperty(value = "#{bodegaExistenciaService}")
 	private BodegaExistenciaService bodegaExistenciaService;
 
-	@ManagedProperty(value="#{terceroService}")
+	@ManagedProperty(value = "#{terceroService}")
 	private TerceroService terceroService;
-	
-	@ManagedProperty(value="#{printerBean}")
-	private PrinterBean  printerBean;
-	
-	@ManagedProperty(value="#{ciudadService}")
+
+	@ManagedProperty(value = "#{printerBean}")
+	private PrinterBean printerBean;
+
+	@ManagedProperty(value = "#{ciudadService}")
 	private CiudadService ciudadService;
+
+	@ManagedProperty(value = "#{fechaFacturacionService}")
+	private FechaFacturacionService fechaFacturacionService;
 
 	/**
 	 * 30/10/2013
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * productoId
+	 *         productoId
 	 */
 	private String productoId;
 
 	/**
 	 * 30/10/2013
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * tercero
+	 *         tercero
 	 */
 	private Tercero tercero;
 
 	/**
 	 * 30/10/2013
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * autocompleteTercero
+	 *         autocompleteTercero
 	 */
 	private AutocompleteTercero autocompleteTercero;
-	
-	
-	
 
 	/**
-	 * 30/10/2013
+	 * 2/02/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * idCuenta
+	 * selFechaFacturacion
+	 */
+	private Integer selFechaFacturacion;
+	/**
+	 * 30/10/2013
+	 * 
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 *         idCuenta
 	 */
 	private int idCuenta;
 
 	/**
 	 * 30/10/2013
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * modoPago
+	 *         modoPago
 	 */
 	private String modoPago;
 
 	/**
 	 * 30/10/2013
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * cuota
+	 *         cuota
 	 */
 	private VentaItemCuota cuota;
 
 	/**
 	 * 30/10/2013r
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * estadoCuota
+	 *         estadoCuota
 	 */
 	private String estadoCuota;
 
-	
 	private AutocompleteCiudad autocompleteCiudad;
-	
-	@ManagedProperty(value="#{cuentasService}")
-	private CuentasService  cuentasService;
-	
-	
+
+	@ManagedProperty(value = "#{cuentasService}")
+	private CuentasService cuentasService;
 
 	private AutocompleteColaboradores autocompleteColaboradores;
 	private AutocompleteColaboradores autocompleteColaboradores2;
+	private VentaItemDetalleItem item;
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -182,10 +195,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 		tercero = new Tercero();
 		cuota = new VentaItemCuota();
-		
+
 		autocompleteTercero = new AutocompleteTercero() {
 
-			
 			@Override
 			public void postSelect() {
 				tercero = getSeleccionado();
@@ -197,50 +209,53 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 			}
 		};
 		autocompleteTercero.setQuery("");
-		
-		
-		autocompleteCiudad=new AutocompleteCiudad() {
-			
+
+		autocompleteCiudad = new AutocompleteCiudad() {
+
 			@Override
 			public void postSelect() {
 				tercero.setCiudad(seleccionado);
 			}
-			
+
 			@Override
 			public CiudadService getFacade() {
 				return ciudadService;
 			}
 		};
-		
-		autocompleteColaboradores=new AutocompleteColaboradores() {
-			
+
+		autocompleteColaboradores = new AutocompleteColaboradores() {
+
 			@Override
 			public void postSelect() {
-					venta.setVendedor(seleccionado);
+				venta.setVendedor(seleccionado);
 			}
-			
+
 			@Override
 			public TerceroService getService() {
 				return terceroService;
 			}
 		};
-		autocompleteColaboradores.setQuery(login.getTercero()==null?null:login.getTercero().toString());
+		autocompleteColaboradores.setQuery(login.getTercero() == null ? null
+				: login.getTercero().toString());
 		autocompleteColaboradores.setSeleccionado(login.getTercero());
-		
-autocompleteColaboradores2=new AutocompleteColaboradores() {
-			
+
+		autocompleteColaboradores2 = new AutocompleteColaboradores() {
+
 			@Override
 			public void postSelect() {
-					venta.setCobrador(seleccionado);
+				venta.setCobrador(seleccionado);
 			}
-			
+
 			@Override
 			public TerceroService getService() {
 				return terceroService;
 			}
 		};
-		autocompleteColaboradores2.setQuery(login.getTercero()==null?null:login.getTercero().toString());
+		autocompleteColaboradores2.setQuery(login.getTercero() == null ? null
+				: login.getTercero().toString());
 		autocompleteColaboradores2.setSeleccionado(login.getTercero());
+		FechaFacturacion fechaFacturacion= fechaFacturacionService.findByFecha(new Date());
+		selFechaFacturacion=fechaFacturacion==null?0:fechaFacturacion.getId();
 	}
 
 	/**
@@ -252,18 +267,17 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 
 		if (tercero.getMayorista()) {
 			tercero.setTipo(TipoTerceroEnum.CLIENTE_MAYORISTA);
-		}else{
-			
+		} else {
+
 			tercero.setTipo(TipoTerceroEnum.CLIENTE_MINORISTA);
 		}
 
-		tercero=terceroService.save(tercero);
+		tercero = terceroService.save(tercero);
 
 		autocompleteTercero.setSeleccionado(tercero);
 
 		autocompleteTercero.setQuery(tercero.toString());
 
-		
 		runJavascript("dlgNewCliente.hide();");
 	}
 
@@ -278,7 +292,7 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 		if (estadoCuota.equals(EstadoCuotaEnum.PAGADA.name())) {
 			cuota.setFechaPago(new Date());
 		}
-		
+
 		venta.getCuotas().add(cuota);
 		cuota = new VentaItemCuota();
 
@@ -291,25 +305,31 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	 * @param cuota
 	 */
 	public void eliminarCuota(VentaItemCuota cuota) {
-		venta.setValorPagar(venta.getValorPagar()-cuota.getValor());
+		venta.setValorPagar(venta.getValorPagar() - cuota.getValor());
 		venta.getCuotas().remove(cuota);
-		
 
 	}
-/**
- * 
-* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-* @date 29/10/2013
- */
+
+	public void loadItem(VentaItemDetalleItem item){
+		
+		this.item=item;
+		runJavascript("dialogo.show();");
+		
+	}
+	/**
+	 * 
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 29/10/2013
+	 */
 	public void guardarVenta() {
-		venta.setValorPagar(venta.getValorPagar()-venta.getDescuento());
+		venta.setValorPagar(venta.getValorPagar() - venta.getDescuento());
 		venta.setCuenta(cuentasService.findById(idCuenta));
 		venta.setCliente(autocompleteTercero.getSeleccionado());
 		venta.setModoPago(ModoPagoEnum.valueOf(modoPago));
-		
-	
+		venta.setFechaFacturacion(fechaFacturacionService.findById(selFechaFacturacion));
+
 		if (venta.getModoPago().equals(ModoPagoEnum.CONTADO)) {
-			VentaItemCuota cuota= new VentaItemCuota();
+			VentaItemCuota cuota = new VentaItemCuota();
 			cuota.setEstado(EstadoVentaItemCuotaEnum.PAGADA);
 			cuota.setFechaCierre(new Date());
 			cuota.setFechaPago(new Date());
@@ -317,53 +337,97 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 			cuota.setValor(venta.getValorPagar());
 			venta.getCuotas().add(cuota);
 		}
-		
+
 		try {
-			
-			 vt=ventaItemEjb.registrarVenta(venta);
+
+			vt = ventaItemEjb.registrarVenta(venta);
 			init();
 			login.updateValorCaja();
 			ventas.add(vt);
-			venta=new VentaItem();
+			venta = new VentaItem();
 			addAttribute(SessionParams.ENTITY_BACK, vt);
 			goTo("/paginas/almacen/venta/item/respuesta.jsf");
 		} catch (Exception e) {
 			mensajeError(e.toString());
 		}
 	}
-	
-	
-	/**
-	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 15/01/2014
-	*/
-	public void printReport(){
-		
-		printerBean.exportPdf("facturaIndividual_1", "factura_"+vt.getIdVenta(),null,ventas);
-	}
-	
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 15/01/2014
+	 */
+	public void printReport() {
+
+		printerBean.exportPdf("facturaIndividual_1",
+				"factura_" + vt.getIdVenta(), null, ventas);
+	}
+
+	
+	public void saveEditRow(){
+		boolean continua=true;
+		if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+			if (item.getValorItem()<item.getExistencia().getBodegaItemBean().getPrecioVentaMayoristasMinimo()) {
+				mensajeError("Este valor es inferior al precio minimo de venta establecido");
+				continua=false;;
+			}
+			
+		}else{
+			if (item.getValorItem()<item.getExistencia().getBodegaItemBean().getPrecioVentaMinimo()) {
+				mensajeError("Este valor es inferior al precio minimo de venta establecido");
+				continua=false;;
+			}
+			
+		}
+		
+		venta.setValorPagar(BigInteger.ZERO.doubleValue());
+		if (continua) {
+			
+		for (VentaItemDetalleItem it : venta.getExistencias()) {
+			if (it.equals(item)) {
+				it=item;
+			}
+		}
+		}
+		for (VentaItemDetalleItem detalle : venta.getExistencias()) {
+			if (!continua) {
+				
+			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+				
+				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
+			}else{
+				
+				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+			}
+			}
+			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+				
+				
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getValorItem());
+			} else {
+				
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getValorItem());
+			}
+		}
+	}
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
 	 */
 	public void addExistencia() {
-		
-		if (tercero.getIdTecero()==null) {
+
+		if (tercero.getIdTecero() == null) {
 			mensajeError("Por favor selecciona primero un cliente");
 			return;
 		}
 		boolean existe = false;
 		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,
-				login.getTercero().getSucursalTerceroList().get(0)
-						.getSucursalidSucursal());
+				login.getSucursales());
 		if (be != null) {
 			existe = true;
 		}
-		be = bodegaExistenciaService.findByBarcodeActivo(productoId, login
-				.getTercero().getSucursalTerceroList().get(0)
-				.getSucursalidSucursal());
 		if (be != null) {
 			VentaItemDetalleItem detalle = new VentaItemDetalleItem();
 			detalle.setExistencia(be);
@@ -377,14 +441,13 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 			/* adicionamos su precio al valor a pagar de la venta */
 			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
 				
+				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
 				venta.setValorPagar(venta.getValorPagar()
-						+ detalle.getExistencia().getPrecioVentaMayoristas());
-			}else{
-				
-				
-			
-			venta.setValorPagar(venta.getValorPagar()
-					+ detalle.getExistencia().getPrecioVenta());
+						+ detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
+			} else {
+				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
 			}
 			productoId = "";
 		} else {
@@ -404,6 +467,12 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 
 	public void eliminarExistencia(VentaItemDetalleItem detalle) {
 		venta.getExistencias().remove(detalle);
+		if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+			venta.setValorPagar(venta.getValorPagar()-detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
+		}else{
+			venta.setValorPagar(venta.getValorPagar()-detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+			
+		}
 
 	}
 
@@ -583,15 +652,17 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	public void setEstadoCuota(String estadoCuota) {
 		this.estadoCuota = estadoCuota;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
-	 * @param printerBean the printerBean to set
+	 * @param printerBean
+	 *            the printerBean to set
 	 */
 	public void setPrinterBean(PrinterBean printerBean) {
 		this.printerBean = printerBean;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
@@ -604,18 +675,18 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/01/2014
-	 * @param ventaItemEjb the ventaItemEjb to set
+	 * @param ventaItemEjb
+	 *            the ventaItemEjb to set
 	 */
 	public void setVentaItemEjb(VentaItemEjb ventaItemEjb) {
 		this.ventaItemEjb = ventaItemEjb;
 	}
 
-	
-
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/01/2014
-	 * @param bodegaExistenciaService the bodegaExistenciaService to set
+	 * @param bodegaExistenciaService
+	 *            the bodegaExistenciaService to set
 	 */
 	public void setBodegaExistenciaService(
 			BodegaExistenciaService bodegaExistenciaService) {
@@ -625,7 +696,8 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/01/2014
-	 * @param terceroService the terceroService to set
+	 * @param terceroService
+	 *            the terceroService to set
 	 */
 	public void setTerceroService(TerceroService terceroService) {
 		this.terceroService = terceroService;
@@ -634,23 +706,23 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/01/2014
-	 * @param cuentasService the cuentasService to set
+	 * @param cuentasService
+	 *            the cuentasService to set
 	 */
 	public void setCuentasService(CuentasService cuentasService) {
 		this.cuentasService = cuentasService;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param ciudadService the ciudadService to set
+	 * @param ciudadService
+	 *            the ciudadService to set
 	 */
 	public void setCiudadService(CiudadService ciudadService) {
 		this.ciudadService = ciudadService;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -659,7 +731,7 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	public CiudadService getCiudadService() {
 		return ciudadService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -668,16 +740,17 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	public AutocompleteCiudad getAutocompleteCiudad() {
 		return autocompleteCiudad;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param autocompleteCiudad the autocompleteCiudad to set
+	 * @param autocompleteCiudad
+	 *            the autocompleteCiudad to set
 	 */
 	public void setAutocompleteCiudad(AutocompleteCiudad autocompleteCiudad) {
 		this.autocompleteCiudad = autocompleteCiudad;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -686,17 +759,18 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	public AutocompleteColaboradores getAutocompleteColaboradores() {
 		return autocompleteColaboradores;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param autocompleteColaboradores the autocompleteColaboradores to set
+	 * @param autocompleteColaboradores
+	 *            the autocompleteColaboradores to set
 	 */
 	public void setAutocompleteColaboradores(
 			AutocompleteColaboradores autocompleteColaboradores) {
 		this.autocompleteColaboradores = autocompleteColaboradores;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -705,14 +779,63 @@ autocompleteColaboradores2=new AutocompleteColaboradores() {
 	public AutocompleteColaboradores getAutocompleteColaboradores2() {
 		return autocompleteColaboradores2;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param autocompleteColaboradores2 the autocompleteColaboradores2 to set
+	 * @param autocompleteColaboradores2
+	 *            the autocompleteColaboradores2 to set
 	 */
 	public void setAutocompleteColaboradores2(
 			AutocompleteColaboradores autocompleteColaboradores2) {
 		this.autocompleteColaboradores2 = autocompleteColaboradores2;
 	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param fechaFacturacionService
+	 *            the fechaFacturacionService to set
+	 */
+	public void setFechaFacturacionService(
+			FechaFacturacionService fechaFacturacionService) {
+		this.fechaFacturacionService = fechaFacturacionService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the selFechaFacturacion
+	 */
+	public Integer getSelFechaFacturacion() {
+		return selFechaFacturacion;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param selFechaFacturacion the selFechaFacturacion to set
+	 */
+	public void setSelFechaFacturacion(Integer selFechaFacturacion) {
+		this.selFechaFacturacion = selFechaFacturacion;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the item
+	 */
+	public VentaItemDetalleItem getItem() {
+		return item;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param item the item to set
+	 */
+	public void setItem(VentaItemDetalleItem item) {
+		this.item = item;
+	}
+	
 }

@@ -36,6 +36,10 @@
 						<h:outputText value="#{item.idVenta}" />
 					</p:column>
 
+					<p:column headerText="Periodo">
+						<h:outputText value="#{item.fechaFacturacion.label}">
+						</h:outputText>
+					</p:column>
 					<p:column headerText="Valor a pagar">
 						<h:outputText value="#{item.valorPagar}">
 							<f:convertNumber type="currency" currencySymbol="$" />

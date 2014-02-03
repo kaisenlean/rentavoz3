@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import co.innovate.rentavoz.model.EstadoLinea;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.repositories.estadolinea.EstadoLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
@@ -33,6 +34,24 @@ import co.innovate.rentavoz.repositories.linea.LineaDao;
 @Repository("lineaDao")
 public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implements Serializable,LineaDao {
 
+	/**
+	 * 2/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * LIN_NUMERO
+	 */
+	private static final String LIN_NUMERO = "linNumero";
+	/**
+	 * 2/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * NO_ENCONTRADO_MSG
+	 */
+	private static final String NO_ENCONTRADO_MSG = "No se ha encontrado el estado de la linea con codigo : ";
+	/**
+	 * 2/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * SUCURSAL
+	 */
+	private static final String SUCURSAL = "sucursal";
 	/**
 	 * 13/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -238,7 +257,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Query q = getEntityManager().createQuery(
 				"SELECT l FROM Linea l WHERE l.linNumero LIKE :query AND ( l.estadoLineaidEstadoLinea.idEstadoLinea = :estado OR l.estadoLineaidEstadoLinea.idEstadoLinea = :estado2) AND l.sucursal.idSucursal = :sucursal");
 		q.setParameter("query", "%" + query + "%");
-		q.setParameter("sucursal", idSucursal);
+		q.setParameter(SUCURSAL, idSucursal);
 		q.setParameter("estado", ESTADO_LINEA_REPO);
 		q.setParameter("estado2", ESTADO_LINEA_DISPONIBLE_USO);
 		return q.getResultList();
@@ -249,15 +268,16 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 */
 	@Override
 	public List<Linea> findByCriteria(String query, int firstResult,
-			int maxResults,Order order) {
+			int maxResults,Order order,List<Sucursal> sucursales) {
 		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
 		if (estadoLinea==null) {
-			logger.error(new StrBuilder("No se ha encontrado el estado de la linea con codigo : ").append(ESTADO_LINEA_REPO).toString());
+			logger.error(new StrBuilder(NO_ENCONTRADO_MSG).append(ESTADO_LINEA_REPO).toString());
 		}
-		Criterion criterion = Restrictions.conjunction().add(Restrictions.like("linNumero", query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
 		
+		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
 		
-		return findByCriteria(firstResult, maxResults,order, criterion);
+		return findByCriteria(firstResult, maxResults,order, criterion,criterion2);
 	
 	}
 
@@ -265,13 +285,13 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#countByCriteria(java.lang.String, int, int)
 	 */
 	@Override
-	public int countByCriteria(String query) {
+	public int countByCriteria(String query,List<Sucursal> sucursales) {
 		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
 		if (estadoLinea==null) {
-			logger.error(new StrBuilder("No se ha encontrado el estado de la linea con codigo : ").append(ESTADO_LINEA_REPO).toString());
+			logger.error(new StrBuilder(NO_ENCONTRADO_MSG).append(ESTADO_LINEA_REPO).toString());
 		}
-		Criterion criterion = Restrictions.conjunction().add(Restrictions.like("linNumero", query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
-		
-		return countByCriteria(criterion);
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
+		return countByCriteria(criterion,criterion2);
 	}
 }

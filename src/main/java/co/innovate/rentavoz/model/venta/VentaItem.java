@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 
 import co.innovate.rentavoz.model.Cuentas;
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 
 /**
  * 
@@ -155,6 +156,15 @@ public class VentaItem implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cobrador")
 	private Tercero cobrador;
+	
+	
+	
+	
+	@ManyToOne
+	@JoinColumn(name="fecha_facturacion")
+	private FechaFacturacion fechaFacturacion;
+	
+	
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
@@ -398,5 +408,25 @@ public void setCobrador(Tercero cobrador) {
 public Tercero getCobrador() {
 	return cobrador;
 }
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @return the fechaFacturacion
+ */
+public FechaFacturacion getFechaFacturacion() {
+	return fechaFacturacion;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @param fechaFacturacion the fechaFacturacion to set
+ */
+public void setFechaFacturacion(FechaFacturacion fechaFacturacion) {
+	this.fechaFacturacion = fechaFacturacion;
+}
+
 
 }

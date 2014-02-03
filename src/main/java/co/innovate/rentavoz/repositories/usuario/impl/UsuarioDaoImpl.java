@@ -3,6 +3,7 @@ package co.innovate.rentavoz.repositories.usuario.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,15 @@ public class UsuarioDaoImpl extends GenericJpaRepository<Usuario, String> implem
 		}
 		
 		return usuarios.get(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.usuario.UsuarioDao#findByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Usuario> findByCriterio(String query) {
+		Criterion criterion =Restrictions.like("usuario", query,MatchMode.ANYWHERE);
+		return findByCriteria(criterion);
 	}
 
 }

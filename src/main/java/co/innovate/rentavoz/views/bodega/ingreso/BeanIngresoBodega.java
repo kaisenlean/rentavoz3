@@ -371,6 +371,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 			existemp.setColor(getObjeto().getColor().getColor());
 			existemp.setSucursal(login.getSucursal());
 			existemp.setColor(getObjeto().getColor().getColor());
+			existemp.setSubBodega(getObjeto().getSubBodega());
 			if (getObjeto().getBodegaExistencias().contains(existemp)) {
 				mensajeError("Este PID ya está en la lista");
 				return;

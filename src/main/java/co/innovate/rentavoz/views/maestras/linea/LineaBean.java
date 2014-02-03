@@ -10,6 +10,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ValueChangeEvent;
 
 import org.hibernate.criterion.Order;
 import org.primefaces.model.SortOrder;
@@ -26,9 +27,12 @@ import co.innovate.rentavoz.services.plan.PlanService;
 import co.innovate.rentavoz.services.planlinea.PlanLineaService;
 import co.innovate.rentavoz.services.simcard.SimcardService;
 import co.innovate.rentavoz.services.sucursal.SucursalService;
+import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.StandardAbm;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteColaboradores;
 import co.innovate.rentavoz.views.components.buscador.BuscadorPlan;
 import co.innovate.rentavoz.views.components.buscador.BuscadorSimCard;
+import co.innovate.rentavoz.views.session.Login;
 
 /**
  * 
@@ -40,7 +44,7 @@ import co.innovate.rentavoz.views.components.buscador.BuscadorSimCard;
  */
 @ManagedBean
 @ViewScoped
-public class LineaBean extends StandardAbm<Linea,Integer> {
+public class LineaBean extends StandardAbm<Linea, Integer> {
 
 	private static final long serialVersionUID = 1L;
 	/**
@@ -49,7 +53,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         facade
 	 */
-	@ManagedProperty(value="#{empresaService}")
+	@ManagedProperty(value = "#{empresaService}")
 	private EmpresaService empresaService;
 	/**
 	 * 23/07/2013
@@ -57,7 +61,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         terceroFacade
 	 */
-	@ManagedProperty(value="#{estadoLineaService}")
+	@ManagedProperty(value = "#{estadoLineaService}")
 	private EstadoLineaService estadoLineaService;
 	/**
 	 * 23/07/2013
@@ -65,7 +69,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         lineaFacade
 	 */
-	@ManagedProperty(value="#{lineaService}")
+	@ManagedProperty(value = "#{lineaService}")
 	private LineaService lineaService;
 	/**
 	 * 23/07/2013
@@ -73,7 +77,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         planFacade
 	 */
-	@ManagedProperty(value="#{planService}")
+	@ManagedProperty(value = "#{planService}")
 	private PlanService planService;
 	/**
 	 * 23/07/2013
@@ -81,7 +85,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         plFacade
 	 */
-	@ManagedProperty(value="#{planLineaService}")
+	@ManagedProperty(value = "#{planLineaService}")
 	private PlanLineaService planLineaService;
 	/**
 	 * 23/07/2013
@@ -89,7 +93,7 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 *         simcardFacade
 	 */
-	@ManagedProperty(value="#{simcardService}")
+	@ManagedProperty(value = "#{simcardService}")
 	private SimcardService simcardService;
 
 	/**
@@ -128,22 +132,27 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	 *         planOLd
 	 */
 	private Plan planOLd;
-	
-	
-	
+
 	private String idPlan;
-	
-	
-	@ManagedProperty(value="#{sucursalService}")
+
+	@ManagedProperty(value = "#{sucursalService}")
 	private SucursalService sucursalService;
+
+	@ManagedProperty(value = "#{terceroService}")
+	private TerceroService terceroService;
+
 	
-	
-	
+	private AutocompleteColaboradores autocompleteColaboradores;
 	
 	private String idSucursal;
+	
+	 @ManagedProperty(value="#{login}")
+	 private Login login;
+	private List<Sucursal> sucursales;
+	private Boolean verTodas;
 
 	@Override
-	public GenericService<Linea,Integer> getFacade() {
+	public GenericService<Linea, Integer> getFacade() {
 		return lineaService;
 	}
 
@@ -202,53 +211,78 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 				return simcardService;
 			}
 
-			
 		};
-		
-		
+		autocompleteColaboradores=new AutocompleteColaboradores() {
+			
+			@Override
+			public void postSelect() {
+				getObjeto().setEncargado(seleccionado);
+			}
+			
+			@Override
+			public TerceroService getService() {
+				return terceroService;
+			}
+		};
+sucursales=login.getSucursales();
+
 	}
 	
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	public void cambioVerTodas(ValueChangeEvent event){
+		verTodas= (Boolean)event.getNewValue();
+		if (verTodas) {
+			sucursales=sucursalService.findAll();
+		}else{
+			sucursales=login.getSucursales();
+		}
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int,
+	 * java.lang.String)
 	 */
 	@Override
 	public List<Linea> customSearch(int startingAt, int maxPerPage,
-			String globalFilter, String sortField,
-			SortOrder sortOrder) {
+			String globalFilter, String sortField, SortOrder sortOrder) {
 		Order order = null;
-		if (sortField!=null) {
-			
-		switch (sortOrder) {
-		case ASCENDING:
-			order=Order.asc(sortField);
-			break;
+		if (sortField != null) {
 
-		case DESCENDING:
-			order=Order.desc(sortField);
-			break;
-		case UNSORTED:
-	
-			break;
+			switch (sortOrder) {
+			case ASCENDING:
+				order = Order.asc(sortField);
+				break;
+
+			case DESCENDING:
+				order = Order.desc(sortField);
+				break;
+			case UNSORTED:
+
+				break;
+			}
 		}
-		}
-		
-		
-	return lineaService.findByCriteria(globalFilter,startingAt,maxPerPage,order);
+
+		return lineaService.findByCriteria(globalFilter, startingAt,
+				maxPerPage, order,sucursales);
 	}
-	
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String
+	 * )
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
-		return lineaService.countByCriteria(globalFilter);
+		return lineaService.countByCriteria(globalFilter,sucursales);
 	}
-	
-	
 
 	@Override
 	public void buscarrPorCriterio() {
-		
+
 	}
 
 	@Override
@@ -257,62 +291,65 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 				.getIdEstadoLinea() + "";
 		empresa = getObjeto().getEmpresaidEmpresa().getIdEmpresa() + "";
 		planOLd = getObjeto().getPlan();
-		idSucursal=getObjeto().getSucursal()!=null?getObjeto().getSucursal().getIdSucursal()+"":"";
-		
-		idPlan=getObjeto().getPlan()==null?null:getObjeto().getPlan().getIdPlan().toString();
+		idSucursal = getObjeto().getSucursal() != null ? getObjeto()
+				.getSucursal().getIdSucursal() + "" : "";
+
+		idPlan = getObjeto().getPlan() == null ? null : getObjeto().getPlan()
+				.getIdPlan().toString();
+		if (getObjeto().getEncargado()!=null) {
+			autocompleteColaboradores.setSeleccionado(getObjeto().getEncargado());
+			autocompleteColaboradores.setQuery(getObjeto().getEncargado().toString());
+		}
 
 	}
-	
-	
 
 	/**
 	 * @see com.invte.rentavoz.vista.StandardAbm#preAction()
 	 */
 	@Override
 	public boolean preAction() {
-		if (idSucursal==null) {
+		if (idSucursal == null) {
 			mensajeError("Sucursal es nulo");
 			return false;
 		}
-		Sucursal sucursal =null;
+		Sucursal sucursal = null;
 		try {
-			 sucursal = sucursalService.findById(Integer.parseInt(idSucursal));
-			 getObjeto().setSucursal(sucursal);
+			sucursal = sucursalService.findById(Integer.parseInt(idSucursal));
+			getObjeto().setSucursal(sucursal);
 		} catch (Exception e) {
 			mensajeError(e.toString());
 			return false;
 		}
-		
+
 		if (idPlan == null) {
 			mensajeError("Por favor selecciona un plan");
 			return false;
 		}
-		
-		if (getObjeto().getLinCorte()==0) {
+
+		if (getObjeto().getLinCorte() == 0) {
 			mensajeError("El corte de la linea no debe ser cero(0)");
 			return false;
 		}
-		
+
 		getObjeto().setSucursal(sucursal);
-		
-		Plan plan=null;
+
+		Plan plan = null;
 		try {
-			plan=planService.findById(Integer.valueOf(idPlan));
+			plan = planService.findById(Integer.valueOf(idPlan));
 			getObjeto().setPlan(plan);
 		} catch (Exception e) {
 			mensajeError(e.toString());
 			return false;
 		}
-		
-		if (isEdit()) {
-	
 
+		if (isEdit()) {
 
 			if (lineaService.findBNumero2(getObjeto().getLinNumero())) {
 				getObjeto().setEmpresaidEmpresa(
 						empresaService.findById(Integer.valueOf(empresa)));
 				getObjeto().setEstadoLineaidEstadoLinea(
-						estadoLineaService.findById(Integer.parseInt(estadoLinea)));
+						estadoLineaService.findById(Integer
+								.parseInt(estadoLinea)));
 				return true;
 			} else {
 				mensaje("Error",
@@ -323,12 +360,12 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 		} else {
 
 			if (empresa == null || estadoLinea == null
-					
-					) {
-				if (empresa==null) {
+
+			) {
+				if (empresa == null) {
 					mensajeError("Selecciona una empresa");
 				}
-				if (estadoLinea==null) {
+				if (estadoLinea == null) {
 					mensajeError("Selecciona un estado");
 				}
 				return false;
@@ -345,7 +382,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 					getObjeto().setEmpresaidEmpresa(
 							empresaService.findById(Integer.valueOf(empresa)));
 					getObjeto().setEstadoLineaidEstadoLinea(
-							estadoLineaService.findById(Integer.parseInt(estadoLinea)));
+							estadoLineaService.findById(Integer
+									.parseInt(estadoLinea)));
 					return true;
 				} else {
 					mensajeError("El codigo o numero  de linea ya esta siendo utilizado");
@@ -365,7 +403,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	public void postAction() {
 		try {
 
-			planLineaService.activarPorLineaYPlan(getObjeto(), getObjeto().getPlan());
+			planLineaService.activarPorLineaYPlan(getObjeto(), getObjeto()
+					.getPlan());
 		} catch (Exception e) {
 			return;
 		}
@@ -433,15 +472,17 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	public String getIdSucursal() {
 		return idSucursal;
 	}
-	 /**
+
+	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 1/08/2013
-	 * @param idSucursal the idSucursal to set
+	 * @param idSucursal
+	 *            the idSucursal to set
 	 */
 	public void setIdSucursal(String idSucursal) {
 		this.idSucursal = idSucursal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 9/08/2013
@@ -450,17 +491,16 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	public String getIdPlan() {
 		return idPlan;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 9/08/2013
-	 * @param idPlan the idPlan to set
+	 * @param idPlan
+	 *            the idPlan to set
 	 */
 	public void setIdPlan(String idPlan) {
 		this.idPlan = idPlan;
 
-	
 	}
 
 	/**
@@ -475,7 +515,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param estadoLineaService the estadoLineaService to set
+	 * @param estadoLineaService
+	 *            the estadoLineaService to set
 	 */
 	public void setEstadoLineaService(EstadoLineaService estadoLineaService) {
 		this.estadoLineaService = estadoLineaService;
@@ -493,7 +534,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param lineaService the lineaService to set
+	 * @param lineaService
+	 *            the lineaService to set
 	 */
 	public void setLineaService(LineaService lineaService) {
 		this.lineaService = lineaService;
@@ -511,7 +553,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param planService the planService to set
+	 * @param planService
+	 *            the planService to set
 	 */
 	public void setPlanService(PlanService planService) {
 		this.planService = planService;
@@ -529,7 +572,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param planLineaService the planLineaService to set
+	 * @param planLineaService
+	 *            the planLineaService to set
 	 */
 	public void setPlanLineaService(PlanLineaService planLineaService) {
 		this.planLineaService = planLineaService;
@@ -547,7 +591,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param simcardService the simcardService to set
+	 * @param simcardService
+	 *            the simcardService to set
 	 */
 	public void setSimcardService(SimcardService simcardService) {
 		this.simcardService = simcardService;
@@ -565,7 +610,8 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param planOLd the planOLd to set
+	 * @param planOLd
+	 *            the planOLd to set
 	 */
 	public void setPlanOLd(Plan planOLd) {
 		this.planOLd = planOLd;
@@ -583,19 +629,85 @@ public class LineaBean extends StandardAbm<Linea,Integer> {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 13/01/2014
-	 * @param sucursalService the sucursalService to set
+	 * @param sucursalService
+	 *            the sucursalService to set
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
 	}
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 13/01/2014
- * @param empresaService the empresaService to set
- */
-public void setEmpresaService(EmpresaService empresaService) {
-	this.empresaService = empresaService;
-}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 13/01/2014
+	 * @param empresaService
+	 *            the empresaService to set
+	 */
+	public void setEmpresaService(EmpresaService empresaService) {
+		this.empresaService = empresaService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param terceroService
+	 *            the terceroService to set
+	 */
+	public void setTerceroService(TerceroService terceroService) {
+		this.terceroService = terceroService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the autocompleteColaboradores
+	 */
+	public AutocompleteColaboradores getAutocompleteColaboradores() {
+		return autocompleteColaboradores;
+	}
 	
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param autocompleteColaboradores the autocompleteColaboradores to set
+	 */
+	public void setAutocompleteColaboradores(
+			AutocompleteColaboradores autocompleteColaboradores) {
+		this.autocompleteColaboradores = autocompleteColaboradores;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param login the login to set
+	 */
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the login
+	 */
+	public Login getLogin() {
+		return login;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the verTodas
+	 */
+	public Boolean getVerTodas() {
+		return verTodas;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param verTodas the verTodas to set
+	 */
+	public void setVerTodas(Boolean verTodas) {
+		this.verTodas = verTodas;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.services.GenericService;
 
@@ -112,7 +113,7 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	 * @param query
 	 * @return
 	 */
-	List<Linea> findByCriteria(String query, int firstResult, int maxResults,Order order);
+	List<Linea> findByCriteria(String query, int firstResult, int maxResults,Order order,List<Sucursal> sucursales);
 	
 	
 	
@@ -124,7 +125,7 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	* @param maxResults
 	* @return
 	*/
-	int countByCriteria(String query);
+	int countByCriteria(String query,List<Sucursal> sucursales);
 	
 	
 

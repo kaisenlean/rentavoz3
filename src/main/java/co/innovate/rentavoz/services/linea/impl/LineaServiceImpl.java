@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.linea.LineaDao;
@@ -137,17 +138,17 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 	 */
 	@Override
 	public List<Linea> findByCriteria(String query, int firstResult,
-			int maxResults,Order order) {
+			int maxResults,Order order,List<Sucursal> sucursales) {
 		
-		return lineaDao.findByCriteria(query, firstResult, maxResults,order);
+		return lineaDao.findByCriteria(query, firstResult, maxResults,order,sucursales);
 	}
 
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.services.linea.LineaService#countByCriteria(java.lang.String)
 	 */
 	@Override
-	public int countByCriteria(String query) {
-		return lineaDao.countByCriteria(query);
+	public int countByCriteria(String query,List<Sucursal> sucursales) {
+		return lineaDao.countByCriteria(query,sucursales);
 	}
 
 	

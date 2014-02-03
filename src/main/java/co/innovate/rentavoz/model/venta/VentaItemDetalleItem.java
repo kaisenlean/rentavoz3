@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
 
@@ -55,6 +56,9 @@ public class VentaItemDetalleItem implements Serializable {
 	@JoinColumn(name="idVenta")
 	private VentaItem idVenta;
 
+	
+	@Transient
+	private Double valorItem;
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 29/10/2013
@@ -154,6 +158,22 @@ public class VentaItemDetalleItem implements Serializable {
 		return true;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param valorItem the valorItem to set
+	 */
+	public void setValorItem(Double valorItem) {
+		this.valorItem = valorItem;
+	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the valorItem
+	 */
+	public Double getValorItem() {
+		return valorItem;
+	}
 
 }

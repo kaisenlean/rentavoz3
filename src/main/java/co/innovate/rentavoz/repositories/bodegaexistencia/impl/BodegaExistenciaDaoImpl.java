@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.repositories.bodegaexistencia.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -77,27 +78,20 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.bodegaexistencia.BodegaExistenciaDao#findByBarcode(java.lang.String, co.innovate.rentavoz.model.Sucursal)
 	 */
-	public BodegaExistencia findByBarcode(String productoId,Sucursal sucursal) {
-		Query query = getEntityManager()
-				.createQuery(
-						new StringBuilder(
-								"SELECT e FROM BodegaExistencia e WHERE  e.sucursal = :suc and (e.barCode  = :proId or e.barCode2  = :proId or e.barCode3  = :proId)")
-								.toString());
-		query.setParameter(new StringBuilder("proId").toString(),
-				new StringBuilder(productoId).toString());
+	public BodegaExistencia findByBarcode(String productoId,List<Sucursal> sucursal) {
 		
-		query.setParameter(new StringBuilder("suc").toString(),
-				sucursal);
-
-		query.setMaxResults(1);
-		if (query.getResultList().isEmpty()) {
-
+		Criterion criterion=Restrictions.disjunction().add(Restrictions.eq("barCode", productoId)).add(Restrictions.eq("barCode2", productoId)).add(Restrictions.eq("barCode3", productoId));
+		Criterion criterion2=Restrictions.in("sucursal", sucursal);
+		Criterion criterion3=Restrictions.eq("estado", EstadoExistenciaEnum.DISPONIBLE);
+		List<BodegaExistencia> lista=findByCriteria(criterion,criterion2,criterion3);
+		
+		if (lista.isEmpty()) {
 			return null;
-		} else {
-
-			return (BodegaExistencia) query.getSingleResult();
+		}else{
+			
+			return lista.get(BigInteger.ZERO.intValue());
 		}
-	}
+			}
 	
 
 	/**
@@ -170,16 +164,11 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.bodegaexistencia.BodegaExistenciaDao#findByItemAndSucursal(co.innovate.rentavoz.model.Sucursal, co.innovate.rentavoz.model.bodega.BodegaItem)
 	 */
-	@SuppressWarnings("unchecked")
-	public List<BodegaExistencia> findByItemAndSucursal(Sucursal sucursal, BodegaItem bodegaItem){
+	public List<BodegaExistencia> findByItemAndSucursal(List<Sucursal> sucursal, BodegaItem bodegaItem){
 		
-		Query query = getEntityManager().createQuery("SELECT b FROM BodegaExistencia b WHERE b.bodegaItemBean = :item AND b.sucursal = :sucursal and b.estado = :estado");
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.eq("bodegaItemBean", bodegaItem)).add(Restrictions.eq("estado",  EstadoExistenciaEnum.DISPONIBLE)).add(Restrictions.in("sucursal", sucursal));
 		
-		query.setParameter("item", bodegaItem);
-		query.setParameter("sucursal", sucursal);
-		query.setParameter("estado", EstadoExistenciaEnum.DISPONIBLE);
-		
-		return query.getResultList();
+		return findByCriteria(criterion);
 		
 		
 	}
@@ -203,5 +192,7 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 		query.setParameter("ingreso", bodegaIngreso);
 		query.executeUpdate();
 	}
+
+	
 
 }

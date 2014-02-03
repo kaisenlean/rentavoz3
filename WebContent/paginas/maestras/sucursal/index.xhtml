@@ -63,6 +63,14 @@
 						buscador="${beanSucursal.buscadorCiudad}" />
 
 
+		<h:outputLabel value=" Sede Principal" />
+					<p:selectBooleanCheckbox id="princip" value="${beanSucursal.objeto.principal}"
+					 >
+					 <p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
+					 
+					 </p:selectBooleanCheckbox>
+					<p:message for="princip" />
+
 					<h:commandButton value="Aceptar" action="${beanSucursal.aceptar()}" />
 					<h:commandButton value="Cancelar" immediate="true"
 						action="${beanSucursal.reglaNavegacion()}" />

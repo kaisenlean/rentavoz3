@@ -48,5 +48,12 @@ public class VentaItemServiceImpl extends GenericServiceImpl<VentaItem, Integer>
 	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults) {
 		return ventaItemDao.findVentaByFechas(start, end, firstResult, maxResults);
 	}
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.venta.item.VentaItemService#countFindVentaByFechas(java.util.Date, java.util.Date)
+	 */
+	@Override
+	public int countFindVentaByFechas(Date start, Date end) {
+		return ventaItemDao.countFindVentaByFechas(start, end);
+	}
 
 }

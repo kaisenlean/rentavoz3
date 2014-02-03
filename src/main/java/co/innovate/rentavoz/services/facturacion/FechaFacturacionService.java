@@ -3,6 +3,9 @@
  */
 package co.innovate.rentavoz.services.facturacion;
 
+import java.util.Date;
+import java.util.List;
+
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.services.GenericService;
 
@@ -15,4 +18,19 @@ import co.innovate.rentavoz.services.GenericService;
  */
 public interface FechaFacturacionService extends GenericService<FechaFacturacion, Integer> {
 
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 2/02/2014
+	* @return
+	*/
+	public List<FechaFacturacion> findActivas();
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 2/02/2014
+	* @return
+	*/
+	public FechaFacturacion findByFecha(Date fecha);
 }

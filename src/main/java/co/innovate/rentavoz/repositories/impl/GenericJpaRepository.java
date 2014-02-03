@@ -99,6 +99,7 @@ public class GenericJpaRepository<C, PK extends Serializable> implements
 	 */
 	@Override
 	public void delete(C entity) {
+	
 		getEntityManager().remove(
 				getEntityManager().contains(entity) ? entity
 						: getEntityManager().merge(entity));

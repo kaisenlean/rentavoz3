@@ -27,6 +27,7 @@ import co.innovate.rentavoz.model.Empresa;
 import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.Plan;
 import co.innovate.rentavoz.model.Sucursal;
+import co.innovate.rentavoz.model.Tercero;
 
 /**
  * S
@@ -91,6 +92,9 @@ public class Linea implements Serializable {
 	@Transient
 	private double descuento;
 
+	@ManyToOne
+	@JoinColumn(name="responsable",referencedColumnName="idTecero")
+	private Tercero encargado;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -417,6 +421,24 @@ public class Linea implements Serializable {
 	 */
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param encargado the encargado to set
+	 */
+	public void setEncargado(Tercero encargado) {
+		this.encargado = encargado;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the encargado
+	 */
+	public Tercero getEncargado() {
+		return encargado;
 	}
 	
 	

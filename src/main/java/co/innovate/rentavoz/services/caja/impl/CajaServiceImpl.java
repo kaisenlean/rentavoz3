@@ -3,6 +3,8 @@
  */
 package co.innovate.rentavoz.services.caja.impl;
 
+import java.io.Serializable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,14 @@ import co.innovate.rentavoz.services.impl.GenericServiceImpl;
  */
 @Service(CajaServiceImpl.SERVICE_NAME)
 public class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
-		implements CajaService {
+		implements CajaService, Serializable {
+
+	/**
+	 * 2/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 12/01/2014

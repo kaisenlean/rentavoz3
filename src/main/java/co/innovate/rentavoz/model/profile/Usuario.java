@@ -26,36 +26,35 @@ import co.innovate.rentavoz.model.Menu;
  * 
  */
 @Entity
-@Table(name="usuario")
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "usuar")
 	private String usuario;
-	
+
 	@Column(name = "administrador")
 	private Boolean administrador;
-	
+
 	@Lob
 	@Column(name = "contrasena")
 	private String contrasena;
-	
+
 	@Transient
 	private String contrasena2;
 
-	
 	/**
-	 * co.com.rentavoz.logica.jpa.entidades.profile
-	 * co.com.rentavoz.model.jpa
+	 * co.com.rentavoz.logica.jpa.entidades.profile co.com.rentavoz.model.jpa
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
-//	@OneToMany(mappedBy = "usuario")
-//	private List<Permiso> permisos;
-	
+	// @OneToMany(mappedBy = "usuario")
+	// private List<Permiso> permisos;
+
 	/**
-	 * co.com.rentavoz.logica.jpa.entidades.profile
-	 * co.com.rentavoz.model.jpa
+	 * co.com.rentavoz.logica.jpa.entidades.profile co.com.rentavoz.model.jpa
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
 	@Transient
@@ -67,7 +66,7 @@ public class Usuario implements Serializable {
 	 * @date 13/07/2013
 	 */
 	public Usuario() {
-		administrador=false;
+		administrador = false;
 	}
 
 	/**
@@ -140,27 +139,26 @@ public class Usuario implements Serializable {
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
-	
+
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/06/2013
 	 * @return the permisos
 	 */
-//	public List<Permiso> getPermisos() {
-//		return permisos;
-//	}
-	
+	// public List<Permiso> getPermisos() {
+	// return permisos;
+	// }
+
 	/**
-	 *@author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 *@date 2/06/2013
-	 * @param permisos the permisos to set
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/06/2013
+	 * @param permisos
+	 *            the permisos to set
 	 */
-//	public void setPermisos(List<Permiso> permisos) {
-//		this.permisos = permisos;
-//	}
-	
-	
-	
+	// public void setPermisos(List<Permiso> permisos) {
+	// this.permisos = permisos;
+	// }
+
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/06/2013
@@ -169,18 +167,20 @@ public class Usuario implements Serializable {
 	public List<Menu> getMenus() {
 		return menus;
 	}
-	
-	
+
 	/**
-	 *@author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 *@date 2/06/2013
-	 * @param menus the menus to set
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/06/2013
+	 * @param menus
+	 *            the menus to set
 	 */
 	public void setMenus(List<Menu> menus) {
 		this.menus = menus;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -191,9 +191,9 @@ public class Usuario implements Serializable {
 		return result;
 	}
 
-
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -221,14 +221,25 @@ public class Usuario implements Serializable {
 	public String getContrasena2() {
 		return contrasena2;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 31/01/2014
-	 * @param contrasena2 the contrasena2 to set
+	 * @param contrasena2
+	 *            the contrasena2 to set
 	 */
 	public void setContrasena2(String contrasena2) {
 		this.contrasena2 = contrasena2;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return usuario;
 	}
 
 }

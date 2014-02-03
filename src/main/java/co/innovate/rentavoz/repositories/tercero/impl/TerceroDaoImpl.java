@@ -33,32 +33,37 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 
 	/**
 	 * 12/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * CENTROPE
+	 *         CENTROPE
 	 */
 	private static final String CENTROPE = "centrope";
 	/**
 	 * 12/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * ZERO
+	 *         ZERO
 	 */
 	private static final int ZERO = 0;
 	/**
 	 * 12/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * TER_DOCUMENTO
+	 *         TER_DOCUMENTO
 	 */
 	private static final String TER_DOCUMENTO = "terDocumento";
 	/**
 	 * 12/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * TER_NOMBRE
+	 *         TER_NOMBRE
 	 */
 	private static final String TER_NOMBRE = "terNombre";
 	/**
 	 * 12/01/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * TER_APELLIDOS
+	 *         TER_APELLIDOS
 	 */
 	private static final String TER_APELLIDOS = "terApellidos";
 	/**
@@ -80,8 +85,8 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 				.disjunction()
 				.add(Restrictions.like(TER_APELLIDOS, criterio,
 						MatchMode.ANYWHERE))
-				.add(Restrictions.like(TER_NOMBRE, criterio,
-						MatchMode.ANYWHERE))
+				.add(Restrictions
+						.like(TER_NOMBRE, criterio, MatchMode.ANYWHERE))
 				.add(Restrictions.like(TER_DOCUMENTO, criterio,
 						MatchMode.ANYWHERE));
 		return findByCriteria(criterion);
@@ -90,15 +95,13 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 	/**
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * co.innovate.rentavoz.repositories.tercero.TerceroDao#findByDocumento(
-	 * java.lang.String)
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findByDocumento(java.lang.String)
 	 */
 	@Override
 	public Tercero findByDocumento(String val) {
-		
+
 		Criterion criterion = Restrictions.eq(TER_DOCUMENTO, val);
-		List<Tercero> terceros= findByCriteria(criterion);
+		List<Tercero> terceros = findByCriteria(criterion);
 		if (terceros.isEmpty()) {
 			return null;
 		} else {
@@ -110,9 +113,8 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 	/**
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * co.innovate.rentavoz.repositories.tercero.TerceroDao#findByUsuario(co
-	 * .innovate.rentavoz.model.profile.Usuario)
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findByUsuario(co
+	 *      .innovate.rentavoz.model.profile.Usuario)
 	 */
 	@Override
 	public Tercero findByUsuario(Usuario user) {
@@ -129,21 +131,19 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 	/**
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * co.innovate.rentavoz.repositories.tercero.TerceroDao#findByCentrope(int)
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findByCentrope(int)
 	 */
 	@Override
 	public List<Tercero> findByCentrope(Centrope idCentrope) {
-		Criterion criterion= Restrictions.eq(CENTROPE, idCentrope);
+		Criterion criterion = Restrictions.eq(CENTROPE, idCentrope);
 		return findByCriteria(criterion);
 	}
 
 	/**
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * co.innovate.rentavoz.repositories.tercero.TerceroDao#findByCriterioProveedor
-	 * (java.lang.String)
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findByCriterioProveedor
+	 *      (java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -152,21 +152,49 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 				.createQuery(
 						"SELECT t FROM Tercero t WHERE t.tipo = :tipoTercero AND  t.terApellidos LIKE :criterio OR t.terNombre LIKE :criterio  OR t.terDocumento LIKE :criterio");
 		q.setParameter("criterio", "%" + criterio + "%");
-		q.setParameter("tipoTercero", TipoTerceroEnum.PROVEEDOR  );
+		q.setParameter("tipoTercero", TipoTerceroEnum.PROVEEDOR);
 		return q.getResultList();
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#findColaboradorByCriterio(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.repositories.tercero.TerceroDao#
+	 * findColaboradorByCriterio(java.lang.String)
 	 */
 	@Override
 	public List<Tercero> findColaboradorByCriterio(String criterio) {
-		Criterion criterion2= Restrictions.disjunction().add(Restrictions.like("terApellidos", criterio,MatchMode.ANYWHERE)).add(Restrictions.like("terNombre", criterio,MatchMode.ANYWHERE)).add(Restrictions.like("terDocumento", criterio,MatchMode.ANYWHERE));
-		Criterion criterion =Restrictions.disjunction().add(Restrictions.eq("tipo", TipoTerceroEnum.ADMINISTRADOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO)).add(Restrictions.eq("tipo", TipoTerceroEnum.COBRADOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.VENDEDOR)).add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO));
-		return findByCriteria(criterion,criterion2);
+		Criterion criterion2 = Restrictions
+				.disjunction()
+				.add(Restrictions.like("terApellidos", criterio,
+						MatchMode.ANYWHERE))
+				.add(Restrictions.like("terNombre", criterio,
+						MatchMode.ANYWHERE))
+				.add(Restrictions.like("terDocumento", criterio,
+						MatchMode.ANYWHERE));
+		Criterion criterion = Restrictions.disjunction()
+				.add(Restrictions.eq("tipo", TipoTerceroEnum.ADMINISTRADOR))
+				.add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO))
+				.add(Restrictions.eq("tipo", TipoTerceroEnum.COBRADOR))
+				.add(Restrictions.eq("tipo", TipoTerceroEnum.VENDEDOR))
+				.add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO));
+		return findByCriteria(criterion, criterion2);
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.repositories.impl.GenericJpaRepository#findAll()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Tercero> findAll() {
+		Query query = getEntityManager()
+				.createQuery(
+						"SELECT DISTINCT t FROM Tercero t  inner JOIN FETCH t.sucursalTerceroList");
+		return query.getResultList();
 
+	}
 
 }

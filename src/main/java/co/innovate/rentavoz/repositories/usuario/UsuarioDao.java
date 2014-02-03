@@ -1,5 +1,7 @@
 package co.innovate.rentavoz.repositories.usuario;
 
+import java.util.List;
+
 import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -20,4 +22,12 @@ public interface UsuarioDao extends GenericRepository<Usuario, String> {
 	* @throws BaseException
 	*/
 	Usuario login(String login , String contrasena) throws BaseException;
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 3/02/2014
+	* @param query
+	* @return
+	*/
+	List<Usuario> findByCriterio(String query);
 }

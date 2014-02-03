@@ -1,5 +1,7 @@
 package co.innovate.rentavoz.services.usuario.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,14 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, String> impl
 	@Override
 	public Usuario login(String login, String contrasena) throws BaseException {
 		return usuarioDao.login(login, contrasena);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.usuario.UsuarioService#findByCriterio(java.lang.String)
+	 */
+	@Override
+	public List<Usuario> findByCriterio(String query) {
+		return usuarioDao.findByCriterio(query);
 	}
 
 }

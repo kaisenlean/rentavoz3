@@ -49,7 +49,7 @@ public class BodegaExistenciaServiceImpl extends GenericServiceImpl<BodegaExiste
 	 * @see co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService#findByBarcode(java.lang.String, co.innovate.rentavoz.model.Sucursal)
 	 */
 	@Override
-	public BodegaExistencia findByBarcode(String productoId, Sucursal sucursal) {
+	public BodegaExistencia findByBarcode(String productoId, List<Sucursal> sucursal) {
 		return bodegaExistenciaDao.findByBarcode(productoId, sucursal);
 	}
 
@@ -74,7 +74,7 @@ public class BodegaExistenciaServiceImpl extends GenericServiceImpl<BodegaExiste
 	 * @see co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService#findByItemAndSucursal(co.innovate.rentavoz.model.Sucursal, co.innovate.rentavoz.model.bodega.BodegaItem)
 	 */
 	@Override
-	public List<BodegaExistencia> findByItemAndSucursal(Sucursal sucursal,
+	public List<BodegaExistencia> findByItemAndSucursal(List<Sucursal> sucursal,
 			BodegaItem bodegaItem) {
 		return bodegaExistenciaDao.findByItemAndSucursal(sucursal, bodegaItem);
 	}

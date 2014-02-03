@@ -6,8 +6,6 @@ package co.innovate.rentavoz.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,11 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
@@ -27,29 +21,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "sucursaltercero")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "SucursalTercero.findAll", query = "SELECT s FROM SucursalTercero s"),
-		@NamedQuery(name = "SucursalTercero.findByIdSucursalTercero", query = "SELECT s FROM SucursalTercero s WHERE s.idSucursalTercero = :idSucursalTercero"),
-		@NamedQuery(name = "SucursalTercero.findBySucTerEstado", query = "SELECT s FROM SucursalTercero s WHERE s.sucTerEstado = :sucTerEstado") })
 public class SucursalTercero implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Basic(optional = false)
 	@Column(name = "idSucursalTercero")
 	private Integer idSucursalTercero;
-	@Basic(optional = false)
-	@NotNull
+	
 	@Column(name = "sucTerEstado")
 	private int sucTerEstado;
+	
+	
 	@JoinColumn(name = "Tercero_idTecero", referencedColumnName = "idTecero")
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	private Tercero terceroidTecero;
+	
+	
 	@JoinColumn(name = "Sucursal_idSucursal", referencedColumnName = "idSucursal")
-	@ManyToOne(optional = false)
+	@ManyToOne
 	private Sucursal sucursalidSucursal;
-
+	
 	public SucursalTercero() {
 	}
 
@@ -94,26 +85,45 @@ public class SucursalTercero implements Serializable {
 		this.sucursalidSucursal = sucursalidSucursal;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (idSucursalTercero != null ? idSucursalTercero.hashCode() : 0);
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((sucursalidSucursal == null) ? 0 : sucursalidSucursal
+						.hashCode());
+		result = prime * result
+				+ ((terceroidTecero == null) ? 0 : terceroidTecero.hashCode());
+		return result;
 	}
 
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
-	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are
-		// not set
-		if (!(object instanceof SucursalTercero)) {
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-		SucursalTercero other = (SucursalTercero) object;
-		if ((this.idSucursalTercero == null && other.idSucursalTercero != null)
-				|| (this.idSucursalTercero != null && !this.idSucursalTercero
-						.equals(other.idSucursalTercero))) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
+		SucursalTercero other = (SucursalTercero) obj;
+		if (sucursalidSucursal == null) {
+			if (other.sucursalidSucursal != null)
+				return false;
+		} else if (!sucursalidSucursal.equals(other.sucursalidSucursal))
+			return false;
+		if (terceroidTecero == null) {
+			if (other.terceroidTecero != null)
+				return false;
+		} else if (!terceroidTecero.equals(other.terceroidTecero))
+			return false;
 		return true;
 	}
 

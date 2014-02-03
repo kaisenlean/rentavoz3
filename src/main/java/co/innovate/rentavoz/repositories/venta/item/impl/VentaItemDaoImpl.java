@@ -42,4 +42,13 @@ public class VentaItemDaoImpl extends GenericJpaRepository<VentaItem, Integer> i
 		return findByCriteria(firstResult,maxResults,criterion);
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.venta.item.VentaItemDao#countFindVentaByFechas(java.util.Date, java.util.Date, int, int)
+	 */
+	@Override
+	public int countFindVentaByFechas(Date start, Date end) {
+		Criterion criterion = Restrictions.between("fecha", start, end);
+		return countByCriteria(criterion);
+	}
+
 }

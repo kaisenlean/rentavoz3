@@ -62,7 +62,7 @@ public class BodegaExistencia implements Serializable {
 	private EstadoExistenciaEnum estado;
 	
 	@ManyToOne
-	@JoinColumn(name="sucursal")
+	@JoinColumn(name="sucursal",referencedColumnName="idSucursal")
 	private Sucursal sucursal;
 	
 	@Transient
@@ -87,6 +87,10 @@ public class BodegaExistencia implements Serializable {
 	@Lob
 	@Column(name="observacion_exist")
 	private String observacion;
+	
+	
+	@Column(name="sub_bodega")
+	private String subBodega;
 	
 	public BodegaExistencia() {
 	}
@@ -363,5 +367,23 @@ public class BodegaExistencia implements Serializable {
 	 */
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the subBodega
+	 */
+	public String getSubBodega() {
+		return subBodega;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param subBodega the subBodega to set
+	 */
+	public void setSubBodega(String subBodega) {
+		this.subBodega = subBodega;
 	}
 }

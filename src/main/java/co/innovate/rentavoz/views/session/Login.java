@@ -4,6 +4,8 @@
 package co.innovate.rentavoz.views.session;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +21,11 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 import co.innovate.rentavoz.model.Sucursal;
+import co.innovate.rentavoz.model.SucursalTercero;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.caja.CajaService;
+import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.usuario.UsuarioService;
 import co.innovate.rentavoz.views.BaseBean;
@@ -49,9 +53,11 @@ public class Login extends BaseBean implements Serializable {
 	@ManagedProperty(value = "#{cajaService}")
 	private CajaService cajaService;
 	
+	private List<Sucursal> sucursales=new ArrayList<Sucursal>();
+		
+	@ManagedProperty(value="#{sucursalTerceroService}")
+	private SucursalTerceroService sucursalTerceroService;
 	
-	
-
 	private Usuario user;
 	private String usuario;
 	private String contrasena;
@@ -59,6 +65,8 @@ public class Login extends BaseBean implements Serializable {
 	private Sucursal sucursal;
 
 	private double valorCaja;
+	
+	private Boolean pertenecePrinicpal;
 
 	private Logger log = Logger.getAnonymousLogger();
 
@@ -138,11 +146,24 @@ public class Login extends BaseBean implements Serializable {
 	 */
 	private void buscarTercero() {
 		tercero = terceroService.findByUsuario(user);
+		sucursales=new ArrayList<Sucursal>();
+		tercero.setSucursalTerceroList(sucursalTerceroService.findByTercero(tercero));
 		if (tercero != null) {
 			if (!tercero.getSucursalTerceroList().isEmpty()) {
 				sucursal = tercero.getSucursalTerceroList().get(0)
 						.getSucursalidSucursal();
+			for (SucursalTercero sucursalTercero : tercero.getSucursalTerceroList()) {
+				sucursales.add(sucursalTercero.getSucursalidSucursal());
+				
+			}
 
+			}
+			
+			for (Sucursal sucursal : sucursales) {
+				if (sucursal.getPrincipal()) {
+					pertenecePrinicpal=true;
+					break;
+				}
 			}
 		}
 
@@ -359,5 +380,49 @@ public class Login extends BaseBean implements Serializable {
 	}
 
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the sucursales
+	 */
+	public List<Sucursal> getSucursales() {
+		return sucursales;
+	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param sucursales the sucursales to set
+	 */
+	public void setSucursales(List<Sucursal> sucursales) {
+		this.sucursales = sucursales;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the pertenecePrinicpal
+	 */
+	public Boolean getPertenecePrinicpal() {
+		return pertenecePrinicpal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param pertenecePrinicpal the pertenecePrinicpal to set
+	 */
+	public void setPertenecePrinicpal(Boolean pertenecePrinicpal) {
+		this.pertenecePrinicpal = pertenecePrinicpal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 */
+	public void setSucursalTerceroService(
+			SucursalTerceroService sucursalTerceroService) {
+		this.sucursalTerceroService = sucursalTerceroService;
+	}
 }

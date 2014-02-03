@@ -27,4 +27,15 @@ public interface VentaItemService  extends GenericService<VentaItem, Integer> {
 	* @return
 	*/
 	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults);
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 22/01/2014
+	* @param start
+	* @param end
+	* @return
+	*/
+	public int countFindVentaByFechas(Date start, Date end);
 }

@@ -153,7 +153,7 @@ getObjeto().setFechaSalida(new Date());
 
 	public void addExistencia() {
 		boolean existe=false;
-		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,login.getTercero().getSucursalTerceroList().get(0).getSucursalidSucursal());
+		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,login.getSucursales());
 		if (be!=null) {
 			existe=true;
 		}

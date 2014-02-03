@@ -98,6 +98,42 @@
 					</h:selectOneMenu>
 					<p:message for="tipoTercero" />
 
+
+				</h:panelGrid>
+				<p:panel header="Sucursales" rendered="#{beanTercero.edit}">
+				<h:panelGrid columns="3">
+				<h:outputText value="Sucursal" />
+				<p:selectOneMenu value="#{beanTercero.selSucursal}">
+				<f:selectItems value="#{selectorSucursal.items}"/>
+				<p:ajax event="change"  process="@this" update="@this"></p:ajax>
+				</p:selectOneMenu>
+				<p:commandButton value="Agregar" process="@this" update="@all" actionListener="#{beanTercero.addSucursal()}"></p:commandButton>
+				</h:panelGrid>
+				<p:dataTable value="#{beanTercero.objeto.sucursalTerceroList}" var="sucursal">
+				<p:column headerText="Sucursal">
+				<h:outputText value="#{sucursal.sucursalidSucursal.sucNombre}" />
+				</p:column>
+				<p:column>
+				<p:commandButton icon="ui-icon-trash" actionListener="#{beanTercero.removeSucursal(sucursal)}" process="@this" update="@all"></p:commandButton>
+				</p:column>
+				</p:dataTable>
+				</p:panel>
+				
+				<p:panel header="Usuario">
+				
+				<p:autoComplete placeholder="Asigna un usuario existente" size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanTercero.autocompleteUsuario.conversorUsuario}"
+						value="#{beanTercero.autocompleteUsuario.seleccionado}"
+						completeMethod="#{beanTercero.autocompleteUsuario.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanTercero.autocompleteUsuario.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+				</p:panel>
+
+				<h:panelGrid columns="2">
 					<h:commandButton value="Aceptar" action="${beanTercero.aceptar()}" />
 					<h:commandButton value="Cancelar" immediate="true"
 						action="${beanTercero.reglaNavegacion()}" />

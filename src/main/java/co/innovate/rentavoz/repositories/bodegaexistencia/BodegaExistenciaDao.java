@@ -39,7 +39,7 @@ public interface BodegaExistenciaDao extends GenericRepository<BodegaExistencia,
 	* @param sucursal
 	* @return
 	*/
-	BodegaExistencia findByBarcode(String productoId,Sucursal sucursal);
+	BodegaExistencia findByBarcode(String productoId,List<Sucursal> sucursal);
 	
 	
 	
@@ -72,7 +72,7 @@ public interface BodegaExistenciaDao extends GenericRepository<BodegaExistencia,
 	* @param bodegaItem
 	* @return
 	*/
-	List<BodegaExistencia> findByItemAndSucursal(Sucursal sucursal, BodegaItem bodegaItem);
+	List<BodegaExistencia> findByItemAndSucursal(List<Sucursal> sucursal, BodegaItem bodegaItem);
 	
 	
 	

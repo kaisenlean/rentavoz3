@@ -85,7 +85,7 @@ public class BeanReporteExistencias implements Serializable {
 			@Override
 			public void postSelect() {
 				bodegaItem=getSeleccionado();
-				existencias=bodegaExistenciaService.findByItemAndSucursal( login.getSucursal(),bodegaItem);
+				existencias=bodegaExistenciaService.findByItemAndSucursal( login.getSucursales(),bodegaItem);
 			}
 
 			@Override
@@ -109,7 +109,7 @@ public class BeanReporteExistencias implements Serializable {
 		for (Iterator<BodegaItem> iterator = bodegaItems.iterator(); iterator
 				.hasNext();) {
 			BodegaItem bi = iterator.next();
-			bi.setExistenciasPorSucursal(bodegaExistenciaService.findByItemAndSucursal(login.getSucursal(), bi));
+			bi.setExistenciasPorSucursal(bodegaExistenciaService.findByItemAndSucursal(login.getSucursales(), bi));
 			bi.setValorTotalEstimado(bi.getPrecioVenta().doubleValue()*Double.valueOf(String.valueOf(bi.getExistenciasPorSucursal().size())));
 			granTotal+=bi.getValorTotalEstimado();
 		}

@@ -99,6 +99,10 @@
 						<f:selectItems value="#{selectorSucursal.items}"></f:selectItems>
 					</p:selectOneMenu>
 					<p:message for="selSuc" />
+					
+						<h:outputLabel rendered="#{!beanIngresoBodega.edit}" value="Sub Bodega de registro :" />
+					<p:inputText rendered="#{!beanIngresoBodega.edit}" value="#{beanIngresoBodega.objeto.subBodega}" id="subBod"></p:inputText>
+					<p:message rendered="#{!beanIngresoBodega.edit}" for="subBod" />
 
 
 					<h:outputText value="Proveedor" />

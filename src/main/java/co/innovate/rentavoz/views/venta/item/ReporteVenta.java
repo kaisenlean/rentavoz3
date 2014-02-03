@@ -11,7 +11,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.model.SortOrder;
+
 import co.innovate.rentavoz.model.venta.VentaItem;
+import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.venta.item.VentaItemService;
 import co.innovate.rentavoz.views.ListaDataModel;
 
@@ -42,31 +45,38 @@ public class ReporteVenta implements Serializable {
 	private Date end= new Date();
 	
 	
+	
+	
 	public void buscar(){
-//		model= new ListaDataModel<VentaItem, Integer>() {
-//			
-//			/**
-//			 * 22/01/2014
-//			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-//			 * serialVersionUID
-//			 */
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public GenericService<VentaItem, Integer> getService() {
-//				return ventaItemService;
-//			}
-//			
-//			/* (non-Javadoc)
-//			 * @see co.innovate.rentavoz.views.ListaDataModel#customLoad(int, int)
-//			 */
-//			public void customLoad(int startingAt, int maxPerPage) {
-//				lista=(ventaItemService.findVentaByFechas(start, end, startingAt, maxPerPage));
-//				
-//			}
-//		
-//		
-//		};
+		model= new ListaDataModel<VentaItem, Integer>() {
+			
+			/**
+			 * 22/01/2014
+			 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+			 * serialVersionUID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public GenericService<VentaItem, Integer> getService() {
+				return ventaItemService;
+			}
+			
+		
+			@Override
+			public void customLoad(int startingAt, int maxPerPage,
+					String globalFilter, String sortField, SortOrder sortOrder) {
+				lista=(ventaItemService.findVentaByFechas(start, end, startingAt, maxPerPage));
+				
+			}
+
+			@Override
+			public Integer customCount(String globalFilter) {
+				return ventaItemService.countFindVentaByFechas(start, end);
+			}
+		
+		
+		};
 		
 		
 	}

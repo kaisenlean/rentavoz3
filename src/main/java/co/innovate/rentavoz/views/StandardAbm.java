@@ -157,12 +157,12 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 				if (edit) {
 					objeto=getFacade().save(objeto);
 					System.out.println(reglaNavegacion());
-					mensaje("Hecho", "Se ha editado este objeto");
+					mensaje("Hecho", "Se ha editado este item");
 					postAction();
 					return reglaNavegacion();
 				} else {
 					objeto=getFacade().save(objeto);
-					mensaje("Hecho", "Se ha creado un nuevo objeto");
+					mensaje("Hecho", "Se ha creado un nuevo item");
 					postAction();
 					if (reglaNavegacionAlterna!=null) {
 						return reglaNavegacionAlterna;

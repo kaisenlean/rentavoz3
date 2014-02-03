@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.repositories.GenericRepository;
 
@@ -109,7 +110,7 @@ public interface LineaDao extends GenericRepository<Linea, Integer> {
 		* @param query
 		* @return
 		*/
-		List<Linea> findByCriteria(String query,int firstResult , int maxResults,Order order);
+		List<Linea> findByCriteria(String query,int firstResult , int maxResults,Order order,List<Sucursal> sucursales);
 	 
 	 /**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -133,5 +134,5 @@ public interface LineaDao extends GenericRepository<Linea, Integer> {
 	* @param maxResults
 	* @return
 	*/
-	int countByCriteria(String query);
+	int countByCriteria(String query,List<Sucursal> sucursales);
 }

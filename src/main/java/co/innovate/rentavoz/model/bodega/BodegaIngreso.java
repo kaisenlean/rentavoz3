@@ -103,6 +103,8 @@ public class BodegaIngreso implements Serializable {
 	private BodegaExistenciaColor color;
 	
 	
+	@Transient
+	private String subBodega;
 	public BodegaIngreso() {
 	}
 
@@ -317,5 +319,23 @@ public class BodegaIngreso implements Serializable {
 	 */
 	public void setRecibe(String recibe) {
 		this.recibe = recibe;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @return the subBodega
+	 */
+	public String getSubBodega() {
+		return subBodega;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/02/2014
+	 * @param subBodega the subBodega to set
+	 */
+	public void setSubBodega(String subBodega) {
+		this.subBodega = subBodega;
 	}
 }

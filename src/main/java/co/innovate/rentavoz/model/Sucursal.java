@@ -16,13 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -35,14 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "sucursal")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Sucursal.findAll", query = "SELECT s FROM Sucursal s"),
-		@NamedQuery(name = "Sucursal.findByIdSucursal", query = "SELECT s FROM Sucursal s WHERE s.idSucursal = :idSucursal"),
-		@NamedQuery(name = "Sucursal.findBySucNombre", query = "SELECT s FROM Sucursal s WHERE s.sucNombre = :sucNombre"),
-		@NamedQuery(name = "Sucursal.findBySucDireccion", query = "SELECT s FROM Sucursal s WHERE s.sucDireccion = :sucDireccion"),
-		@NamedQuery(name = "Sucursal.findBySucTelefono", query = "SELECT s FROM Sucursal s WHERE s.sucTelefono = :sucTelefono"),
-		@NamedQuery(name = "Sucursal.findBySucEstado", query = "SELECT s FROM Sucursal s WHERE s.sucEstado = :sucEstado") })
 public class Sucursal implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -74,10 +63,9 @@ public class Sucursal implements Serializable {
 	@JoinColumn(name = "Ciudad_idCiudad", referencedColumnName = "idCiudad")
 	@ManyToOne(optional = false)
 	private Ciudad ciudadidCiudad;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
-//	private List<SucursalSimcard> sucursalSimcardList;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sucursalidSucursal")
-//	private List<SucursalTercero> sucursalTerceroList;
+
+	@Column
+	private Boolean principal;
 
 	public Sucursal() {
 	}
@@ -195,5 +183,21 @@ public class Sucursal implements Serializable {
 	public String toString() {
 		return sucNombre;
 	}
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @return the principal
+ */
+public Boolean getPrincipal() {
+	return principal;
+}
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 2/02/2014
+ * @param principal the principal to set
+ */
+public void setPrincipal(Boolean principal) {
+	this.principal = principal;
+}
 }

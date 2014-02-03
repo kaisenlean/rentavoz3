@@ -21,7 +21,7 @@
 
 			<p:panel rendered="${lineaBean.form}" id="pnlPanel"
 				header="Informacion de la Linea" style="width: 100%">
-				
+
 				<h:panelGrid columns="3">
 					<h:outputLabel value="Codigo" rendered="#{lineaBean.edit}" />
 					<h:inputText id="codDept" rendered="#{lineaBean.edit}"
@@ -32,16 +32,13 @@
 
 					<h:outputLabel value="Numero" />
 					<p:inputText id="nomDept" value="${lineaBean.objeto.linNumero}"
-						required="true"
-						size="20"
-						placeholder="Ejemplo : 3113139999"
+						required="true" readonly="#{lineaBean.edit}" size="20" placeholder="Ejemplo : 3113139999"
 						requiredMessage="Por favor digita un numero valido" />
 					<p:message for="nomDept" />
 
 					<h:outputLabel value="Fecha Registro" />
-					<p:calendar id="fechPlan" 
-						value="${lineaBean.objeto.fecha}" required="true"
-						requiredMessage="Por favor selecciona una fecha" />
+					<p:calendar id="fechPlan" value="${lineaBean.objeto.fecha}"
+						required="true" requiredMessage="Por favor selecciona una fecha" />
 					<p:message for="fechPlan" />
 
 					<h:outputLabel value="Linea corte" />
@@ -75,86 +72,106 @@
 					</p:selectOneMenu>
 					<p:message for="selectPlan"></p:message>
 
-					<h:outputLabel value="Sucursal"  />
-					<p:selectOneMenu 
-						value="#{lineaBean.idSucursal}" id="idSucursal" required="true"
-						requiredMessage="Selecciona una sucursal">
+					<h:outputLabel value="Sucursal" />
+					<p:selectOneMenu value="#{lineaBean.idSucursal}" id="idSucursal"
+						required="true" requiredMessage="Selecciona una sucursal">
 						<f:selectItems value="#{selectorSucursal.items}" />
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
 					<p:message for="idSucursal"></p:message>
 
 
+					<h:outputText value="Encargado" />
 
+					<p:autoComplete size="50" style="width:100px" id="buscadorEncargado"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{lineaBean.autocompleteColaboradores.conversorClientes}"
+						value="#{lineaBean.autocompleteColaboradores.seleccionado}"
+						completeMethod="#{lineaBean.autocompleteColaboradores.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{lineaBean.autocompleteColaboradores.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+					<p:message for="buscadorEncargado"></p:message>
 				</h:panelGrid>
 				<h:panelGrid columns="2">
-					<p:commandButton value="Aceptar" process="@this,nomDept,fechaVencimiento,idSucursal" update="@all" action="#{lineaBean.aceptar()}" />
-					<p:commandButton value="Cancelar" immediate="true" process="@all" update="@all"
-						action="#{lineaBean.reglaNavegacion()}" />
+					<p:commandButton value="Aceptar"
+						process="@this,nomDept,fechaVencimiento,idSucursal" update="@all"
+						action="#{lineaBean.aceptar()}" />
+					<p:commandButton value="Cancelar" immediate="true" process="@all"
+						update="@all" action="#{lineaBean.reglaNavegacion()}" />
 				</h:panelGrid>
-<p:focus  context="pnlPanel"></p:focus>
+				<p:focus context="pnlPanel"></p:focus>
 			</p:panel>
 
 			<h:commandButton rendered="${!lineaBean.form}"
 				value="Descargar en pdf" image="/imagenes/pdf.png"
 				actionListener="#{printerBean.exportXls('lineas','informe_lineas')}"></h:commandButton>
-			<p:dataTable   paginator="true" rows="#{opcionLoader.numRows}" lazy="true"
+			<p:dataTable stickyHeader="true" paginator="true" rows="#{opcionLoader.numRows}"
+				lazy="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!lineaBean.form}" style="width: 100%"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!lineaBean.form}" style="width: 100%"
 				value="#{lineaBean.model}" var="item"
-				emptyMessage="No hay registros" id="tablaLineas" widgetVar="tablaLineas">
-				
-				
-				 <f:facet name="header"> 
-                <p:outputPanel style="float: right"> 
-                    <h:outputText value="Busqueda : " /> 
-                    <p:inputText id="globalFilter" 
-                                 
-                                	 onkeypress="if (event.keyCode == 13) { tablaLineas.filter();  return false; }"
-                                 style="width:150px"/>
-                </p:outputPanel> 
-            </f:facet>
-				
-				<p:column style="width: 7%" headerText="Codigo" 
-					sortBy="idLinea"
-					>
+				emptyMessage="No hay registros" id="tablaLineas"
+				widgetVar="tablaLineas">
+
+
+				<f:facet name="header">
+					<p:outputPanel style="float: right">
+					<p:selectBooleanCheckbox onchange="tablaLineas.filter();" rendered="#{login.pertenecePrinicpal}" value="#{lineaBean.verTodas}" valueChangeListener="#{lineaBean.cambioVerTodas}">
+					<p:ajax process="@this" partialSubmit="true"></p:ajax>
+					</p:selectBooleanCheckbox>
+					<h:outputLabel rendered="#{login.pertenecePrinicpal}" style="color:blue" value="Ver todas las sucursales" />
+						
+						<p:inputText id="globalFilter" placeholder="Busqueda"
+							onkeypress="if (event.keyCode == 13) { tablaLineas.filter();  return false; }"
+							style="width:150px" />
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column style="width: 7%" headerText="Codigo" sortBy="idLinea">
 					<p:outputLabel value="${item.idLinea}" />
 				</p:column>
 				<p:column headerText="Numero linea" styleClass="styleColumn"
 					sortBy="linNumero">
 					<p:outputLabel value="${item.linNumero}" />
 				</p:column>
-				<p:column headerText="Corte" style="width : 5%" styleClass="styleColumn"
-					sortBy="linCorte">
+				<p:column headerText="Corte" style="width : 5%"
+					styleClass="styleColumn" sortBy="linCorte">
 					<p:outputLabel value="${item.linCorte}" />
 				</p:column>
-			
-				<p:column headerText="Estado"
-					sortBy="estadoLineaidEstadoLinea"
+
+				<p:column headerText="Estado" sortBy="estadoLineaidEstadoLinea"
 					styleClass="styleColumn">
 					<p:outputLabel
 						value="${item.estadoLineaidEstadoLinea.estLinNombre}" />
 				</p:column>
 
-				<p:column headerText="Plan" sortBy="plan"
-					styleClass="styleColumn" >
+				<p:column headerText="Plan" sortBy="plan" styleClass="styleColumn">
 					<p:outputLabel value="${item.plan.plaNombre}" />
 				</p:column>
 
 
 				<p:column headerText="Sucursal" sortBy="sucursal"
-					styleClass="styleColumn" >
+					styleClass="styleColumn">
 					<p:outputLabel value="${item.sucursal.sucNombre}" />
 				</p:column>
 
 
 
-				<p:column headerText="Empresa"
-					sortBy="empresaidEmpresa"
+				<p:column headerText="Empresa" sortBy="empresaidEmpresa"
 					styleClass="styleColumn">
 					<p:outputLabel value="${item.empresaidEmpresa.empNombre}" />
 				</p:column>
 
+
+				<p:column headerText="Encargado" sortBy="responsable"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.encargado}" />
+				</p:column>
+				
 				<p:column width="7%">
 					<h:commandButton image="/imagenes/edit.png"
 						actionListener="${lineaBean.renderizarItem(item, true)}" />

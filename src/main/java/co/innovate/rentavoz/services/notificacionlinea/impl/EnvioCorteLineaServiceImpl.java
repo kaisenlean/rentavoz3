@@ -6,6 +6,7 @@ package co.innovate.rentavoz.services.notificacionlinea.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.DateFormat;
@@ -134,11 +135,14 @@ public class EnvioCorteLineaServiceImpl implements EnvioCorteLineaService {
 	@Override
 	public void enviarNotificacionLineasFechaCorte() {
 	
-		
+	
 		DateFormat format= new SimpleDateFormat("dd");
 		String dia=format.format(Calendar.getInstance().getTime());
 		int diaInt= Integer.valueOf(dia);
 		
+	if (diaInt>Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)) {
+		diaInt=BigInteger.ONE.intValue();	
+		}
 		try {
 			
 			HashMap<String, Object> mapa = new HashMap<String, Object>();
