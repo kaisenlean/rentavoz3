@@ -61,13 +61,7 @@ public class Linea implements Serializable {
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-//	private List<SucursalLinea> sucursalLineaList;
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-//	private List<PlanLinea> planLineaList;
-//
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "lineaidLinea")
-//	private List<VentaLinea> ventaLineaList;
+
 	@JoinColumn(name = "EstadoLinea_idEstadoLinea", referencedColumnName = "idEstadoLinea")
 	@ManyToOne(optional = false)
 	private EstadoLinea estadoLineaidEstadoLinea;
@@ -131,24 +125,37 @@ public class Linea implements Serializable {
 		this.fecha = fecha;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (idLinea != null ? idLinea.hashCode() : 0);
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((linNumero == null) ? 0 : linNumero.hashCode());
+		return result;
 	}
 
-	@Override
-	public boolean equals(Object object) {
 
-		if (!(object instanceof Linea)) {
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-		Linea other = (Linea) object;
-		if ((this.idLinea == null && other.idLinea != null)
-				|| (this.idLinea != null && !this.idLinea.equals(other.idLinea))) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
+		Linea other = (Linea) obj;
+		if (linNumero == null) {
+			if (other.linNumero != null)
+				return false;
+		} else if (!linNumero.equals(other.linNumero))
+			return false;
 		return true;
 	}
 

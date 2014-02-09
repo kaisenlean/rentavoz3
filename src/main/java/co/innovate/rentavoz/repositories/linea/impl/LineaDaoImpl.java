@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.repositories.linea.impl;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -17,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
@@ -137,15 +139,33 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#findByNumeroObjeto(java.lang.String)
 	 */
-	public Linea findByNumeroObjeto(String linNumero) {
+	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException{
+		
+		
+		
 		Query q = getEntityManager().createQuery(
-				"SELECT l FROM Linea l WHERE l.linNumero = :numero ");
+				"SELECT l FROM Linea l WHERE l.linNumero = :numero AND l.estadoLineaidEstadoLinea.idEstadoLinea = :estado AND l.sucursal IN (:sucursales)");
 		q.setParameter("numero", linNumero);
+		q.setParameter("estado", ESTADO_LINEA_REPO);
+		q.setParameter("sucursales", sucursales);
 		q.setMaxResults(1);
+		
+		
 		if (q.getResultList().isEmpty()) {
 			return null;
 		} else if (q.getSingleResult() != null) {
-			return (Linea) q.getSingleResult();
+			
+			Query query= getEntityManager().createQuery("SELECT l FROM VentaLinea l WHERE :hoy >= l.ventaidVenta.fechaFacturacion.fechaInicio AND :hoy < l.ventaidVenta.fechaFacturacion.fechaFin AND l.lineaidLinea = :linea");
+			query.setParameter("hoy", Calendar.getInstance().getTime());
+			query.setParameter("linea", (Linea)q.getSingleResult());
+			
+			if (query.getResultList().isEmpty()) {
+				
+				return (Linea) q.getSingleResult();
+			}else{
+				
+				throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
+			}
 		} else {
 			return null;
 		}

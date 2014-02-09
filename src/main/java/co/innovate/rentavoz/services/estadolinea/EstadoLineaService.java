@@ -15,4 +15,8 @@ import co.innovate.rentavoz.services.GenericService;
  */
 public interface EstadoLineaService  extends GenericService<EstadoLinea, Integer>{
 
+	
+	Integer ESTADO_VENDIDA=3;
+	Integer ESTADO_REPO=2;
+	Integer ESTADO_DISPONIBLE=1;
 }

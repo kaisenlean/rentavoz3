@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.innovate.rentavoz.model.almacen;
+package co.innovate.rentavoz.model.almacen.venta;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,75 +20,67 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import co.innovate.rentavoz.model.Pago;
+import co.innovate.rentavoz.model.Cuentas;
 import co.innovate.rentavoz.model.Tercero;
-import co.innovate.rentavoz.model.TerceroVenta;
+import co.innovate.rentavoz.model.almacen.Cuota;
+import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
+import co.innovate.rentavoz.model.almacen.ModalidaVentaEnum;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
+import co.innovate.rentavoz.model.venta.ModoPagoEnum;
 
 /**
  * 
- * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @project co.com.rentavoz.model.jpa
- * @class Venta
- * @date 14/07/2013
- * 
+* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+* @project rentavoz3
+* @class Venta
+* @date 7/02/2014
+*
  */
 @Entity
 @Table(name = "venta")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Venta.findAll", query = "SELECT v FROM Venta v"),
-		@NamedQuery(name = "Venta.findByIdVenta", query = "SELECT v FROM Venta v WHERE v.idVenta = :idVenta"),
-		@NamedQuery(name = "Venta.findByVenFecha", query = "SELECT v FROM Venta v WHERE v.venFecha = :venFecha"),
-		@NamedQuery(name = "Venta.findByFecha", query = "SELECT v FROM Venta v WHERE v.fecha = :fecha"),
-		@NamedQuery(name = "Venta.findByVenDomicilio", query = "SELECT v FROM Venta v WHERE v.venDomicilio = :venDomicilio"),
-		@NamedQuery(name = "Venta.findByVenSaldo", query = "SELECT v FROM Venta v WHERE v.venSaldo = :venSaldo") })
 public class Venta implements Serializable {
-	/**
-	 * co.com.rentavoz.logica.jpa.entidades.almacen
-	 * co.com.rentavoz.model.jpa
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idVenta")
 	private Integer idVenta;
+	
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "venFecha")
 	@Temporal(TemporalType.DATE)
 	private Date venFecha;
+	
+	
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
-	// consider using these annotations to enforce field validation
-	@Basic(optional = false)
-	@NotNull
+
+	@Basic
 	@Column(name = "venDomicilio")
 	private BigDecimal venDomicilio;
+	
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "venSaldo")
 	private BigDecimal venSaldo;
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "ventaidVenta")
-	private List<Pago> pagoList;
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "ventaidVenta")
-	private List<TerceroVenta> terceroVentaList;
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "ventaidVenta")
-	private List<VentaLinea> ventaLineaList;
+	
+	@Transient
+	private List<VentaLinea> ventaLineaList=new ArrayList<VentaLinea>();
+	
+	@Transient
+	private List<Cuota> cuotas=new ArrayList<Cuota>();
+	
+	
 	@Basic(optional = true)
 	@Column(name = "observacion")
 	private String observacion;
@@ -109,17 +100,35 @@ public class Venta implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRenovacion;
 
-	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "venta")
-	private List<Cuota> cuotas = new ArrayList<Cuota>();
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="tercero", referencedColumnName="idTecero")
 	private Tercero tercero;
 	
 	
 	@Transient
 	private boolean seleccionado;
+	
+	@ManyToOne
+	@JoinColumn(name="fecha_facturacion")
+	private FechaFacturacion fechaFacturacion;
+	
+	@ManyToOne
+	@JoinColumn(name="cuenta")
+	private Cuentas cuenta;
 
+	
+	@ManyToOne
+	@JoinColumn(name="cobrador")
+	private Tercero cobrador;
+	
+	@ManyToOne
+	@JoinColumn(name="vendedor")
+	private Tercero vendedor;
+	
+	@Column(name="modo_pago")
+	@Enumerated(EnumType.STRING)
+	private ModoPagoEnum modoPago;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -185,8 +194,6 @@ public class Venta implements Serializable {
 
 	@Override
 	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are
-		// not set
 		if (!(object instanceof Venta)) {
 			return false;
 		}
@@ -299,43 +306,7 @@ public class Venta implements Serializable {
 		this.venSaldo = venSaldo;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the pagoList
-	 */
-	public List<Pago> getPagoList() {
-		return pagoList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param pagoList
-	 *            the pagoList to set
-	 */
-	public void setPagoList(List<Pago> pagoList) {
-		this.pagoList = pagoList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the terceroVentaList
-	 */
-	public List<TerceroVenta> getTerceroVentaList() {
-		return terceroVentaList;
-	}
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param terceroVentaList
-	 *            the terceroVentaList to set
-	 */
-	public void setTerceroVentaList(List<TerceroVenta> terceroVentaList) {
-		this.terceroVentaList = terceroVentaList;
-	}
+	
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -413,43 +384,7 @@ public class Venta implements Serializable {
 		this.descuento = descuento;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the cuotas
-	 */
-	public List<Cuota> getCuotas() {
-		return cuotas;
-	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param cuotas
-	 *            the cuotas to set
-	 */
-	public void setCuotas(List<Cuota> cuotas) {
-		this.cuotas = cuotas;
-	}
-
-	/**
-	 * 
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 15/07/2013
-	 * @return
-	 */
-	public Tercero getFirstTercero() {
-		if (terceroVentaList != null) {
-			if (!terceroVentaList.isEmpty()) {
-				return terceroVentaList.get(0).getTerceroidTecero();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-
-	}
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -514,4 +449,112 @@ public class Venta implements Serializable {
 		return tercero;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 5/02/2014
+	 * @return the fechaFacturacion
+	 */
+	public FechaFacturacion getFechaFacturacion() {
+		return fechaFacturacion;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 5/02/2014
+	 * @param fechaFacturacion the fechaFacturacion to set
+	 */
+	public void setFechaFacturacion(FechaFacturacion fechaFacturacion) {
+		this.fechaFacturacion = fechaFacturacion;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @return the cuenta
+	 */
+	public Cuentas getCuenta() {
+		return cuenta;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @param cuenta the cuenta to set
+	 */
+	public void setCuenta(Cuentas cuenta) {
+		this.cuenta = cuenta;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @return the cobrador
+	 */
+	public Tercero getCobrador() {
+		return cobrador;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @param cobrador the cobrador to set
+	 */
+	public void setCobrador(Tercero cobrador) {
+		this.cobrador = cobrador;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @return the vendedor
+	 */
+	public Tercero getVendedor() {
+		return vendedor;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @param vendedor the vendedor to set
+	 */
+	public void setVendedor(Tercero vendedor) {
+		this.vendedor = vendedor;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @return the cuotas
+	 */
+	public List<Cuota> getCuotas() {
+		return cuotas;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @param cuotas the cuotas to set
+	 */
+	public void setCuotas(List<Cuota> cuotas) {
+		this.cuotas = cuotas;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/02/2014
+	 * @return the modoPago
+	 */
+	public ModoPagoEnum getModoPago() {
+		return modoPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/02/2014
+	 * @param modoPago the modoPago to set
+	 */
+	public void setModoPago(ModoPagoEnum modoPago) {
+		this.modoPago = modoPago;
+	}
 }

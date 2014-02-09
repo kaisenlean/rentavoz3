@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+	<ui:define name="head">
+		<script type="text/javascript">
+        function codeAddress() {
+        	 btnExec.jq.click();
+        }
+        window.onload = codeAddress;
+        </script>
+	</ui:define>
+	<ui:define name="content">
+		<h:form id="formRespuesta">
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<h1>
+				<h:outputLabel value="Venta Exitosa"
+					 class="h1" />
+			</h1>
+<!-- 			<div align="left"> -->
+
+				<h:graphicImage value="/imagenes/venta.jpg" />
+				<p:commandButton  style="visibility:hidden"
+					value=" Imprimir Ultima venta"
+					actionListener="#{respuestaVentaLineaBean.loadReporte()}" ajax="false"
+					widgetVar="btnExec" id="btnExec"></p:commandButton>
+
+				<h3>
+					<a
+						href="#{request.contextPath}/paginas/almacen/venta/linea/index.jsf">Nueva
+						Venta</a>
+				</h3>
+<!-- 			</div> -->
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

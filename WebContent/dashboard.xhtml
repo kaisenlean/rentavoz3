@@ -54,13 +54,29 @@
 						<p:menuitem value="Salir" actionListener="#{login.logOut}" />
 					</p:menuButton>
 					<br />
-					<h:outputLabel value="Dinero en caja : "
+					<h:panelGrid columns="2">
+					
+					<h:outputLabel value="Caja de telefonos : "
 						style="font-weight: bolder;font-size:16px" />
 					<h:outputLabel value="#{login.valorCaja}"
 						style="font-weight: bolder;font-size:16px;color:red">
 						<f:convertNumber  currencySymbol="$"   type="currency" />
 					</h:outputLabel>
+					<h:outputLabel value="Caja de lineas : "
+						style="font-weight: bolder;font-size:16px" />
+					<h:outputLabel value="#{login.valorCajaLineas}"
+						style="font-weight: bolder;font-size:16px;color:red">
+						<f:convertNumber  currencySymbol="$"   type="currency" />
+					</h:outputLabel>
+					
+					<h:outputLabel value="Total : "
+						style="font-weight: bolder;font-size:16px" />
+					<h:outputLabel value="#{login.valorCajaLineas + login.valorCaja}"
+						style="font-weight: bolder;font-size:16px;color:red">
+						<f:convertNumber  currencySymbol="$"   type="currency" />
+					</h:outputLabel>
 
+					</h:panelGrid>
 				</div>
 				<p:graphicImage url="/imagenes/logo.png"></p:graphicImage>
 				<h:panelGrid columns="2">
@@ -108,16 +124,16 @@
 					</div>
 				</h:panelGrid>
 			</p:layoutUnit>
-			<p:layoutUnit position="south" size="40" resizable="false">
+<!-- 			<p:layoutUnit position="south" size="40" resizable="false"> -->
 
-				<h:outputLabel value="Desarrollado por @Grupo Innovate"
-					style="font-weight:bolder"></h:outputLabel>
+<!-- 				<h:outputLabel value="Desarrollado por @Grupo Innovate" -->
+<!-- 					style="font-weight:bolder"></h:outputLabel> -->
 
 
-				<p:graphicImage url="/imagenes/innovateLogo.png"
-					style="width:80px;heigth:15px;float:right"></p:graphicImage>
+<!-- 				<p:graphicImage url="/imagenes/innovateLogo.png" -->
+<!-- 					style="width:80px;heigth:15px;float:right"></p:graphicImage> -->
 
-			</p:layoutUnit>
+<!-- 			</p:layoutUnit> -->
 		</h:form>
 
 	</p:layout>

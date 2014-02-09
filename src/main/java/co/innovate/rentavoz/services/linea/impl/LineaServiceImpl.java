@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -65,8 +66,8 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 	 * @see co.innovate.rentavoz.services.linea.LineaService#findByNumeroObjeto(java.lang.String)
 	 */
 	@Override
-	public Linea findByNumeroObjeto(String linNumero) {
-		return lineaDao.findByNumeroObjeto(linNumero);
+	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException{
+		return lineaDao.findByNumeroObjeto(linNumero,sucursales);
 	}
 
 	/* (non-Javadoc)

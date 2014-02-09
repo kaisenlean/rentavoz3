@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.services.caja;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.GenericService;
@@ -34,7 +35,16 @@ public interface CajaService extends GenericService<Caja, Integer>
 	* @date 12/01/2014
 	* @return
 	*/
-	 double valorCaja() throws BaseException;
+	 double valorCaja(Tercero vendedor) throws BaseException;
+	 
+	 
+	 /**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 9/02/2014
+	* @return
+	* @throws BaseException
+	*/
+	public double valorCajaLineas(Tercero vendedor) throws BaseException ;
 
 	
 }

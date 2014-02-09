@@ -3,6 +3,7 @@
  */
 package co.innovate.rentavoz.repositories.caja.impl;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,9 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
+import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.caja.EstadoCaja;
 import co.innovate.rentavoz.model.profile.Usuario;
@@ -28,9 +32,15 @@ import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
  *
  */
  @Repository("cajaDao")
-public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements CajaDao {
+public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements CajaDao ,Serializable{
 
 
+	/**
+	 * 7/02/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 12/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -124,7 +134,7 @@ public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements 
 	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCaja()
 	 */
 	@Override
-	public double valorCaja() throws BaseException {
+	public double valorCaja(Tercero vendedor) throws BaseException {
 		Calendar inicio = Calendar.getInstance();
 		inicio.setTime(new Date());
 		Calendar fin = Calendar.getInstance();
@@ -143,12 +153,57 @@ public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements 
 		
 		Query query = getEntityManager()
 				.createQuery(new StringBuilder(
-						"SELECT SUM(c.valor) FROM VentaItemCuota c WHERE c.idVenta.fecha BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota").toString());
+						"SELECT SUM(c.valor) FROM VentaItemCuota c WHERE c.idVenta.fecha BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota AND c.idVenta.vendedor = :vendedor").toString());
 
 		query.setParameter(START, inicio.getTime());
 		query.setParameter(END, fin.getTime());
 		query.setParameter(ESTADO_VENTA, EstadoVentaItemEnum.ACTIVO);
 		query.setParameter(ESTADO_CUOTA, EstadoVentaItemCuotaEnum.PAGADA);
+		query.setParameter("vendedor", vendedor);
+		
+		query.setMaxResults(1);
+		
+		Object salida = query.getSingleResult();
+		if (salida==null) {
+			
+			return ZERO;
+		}
+		
+		
+		return Double.valueOf(salida.toString());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCajaLineas()
+	 */
+	@Override
+	public double valorCajaLineas(Tercero vendedor) throws BaseException {
+		Calendar inicio = Calendar.getInstance();
+		inicio.setTime(new Date());
+		Calendar fin = Calendar.getInstance();
+		fin.setTime(new Date());
+		inicio.set(Calendar.HOUR, ZERO);
+		inicio.set(Calendar.HOUR_OF_DAY, ZERO);
+		inicio.set(Calendar.MINUTE, ZERO);
+		inicio.set(Calendar.SECOND, ZERO);
+		inicio.set(Calendar.MILLISECOND, ZERO);
+
+		fin.set(Calendar.HOUR, NUMBER_23);
+		fin.set(Calendar.HOUR_OF_DAY, NUMBER_23);
+		fin.set(Calendar.MINUTE, NUMBER_59);
+		fin.set(Calendar.SECOND, NUMBER_59);
+		fin.set(Calendar.MILLISECOND, NUMBER_59);
+		
+		Query query = getEntityManager()
+				.createQuery(new StringBuilder(
+						"SELECT SUM(c.valorCuota) FROM Cuota c WHERE c.fechaPago BETWEEN :start AND :end  AND c.venta.estadoVenta = :estadoVenta AND c.estadoCuota = :estadoCuota AND c.venta.vendedor = :vendedor").toString());
+
+		query.setParameter(START, inicio.getTime());
+		query.setParameter(END, fin.getTime());
+		query.setParameter(ESTADO_VENTA, EstadoVentaEnum.ACTIVA);
+		query.setParameter(ESTADO_CUOTA, EstadoCuotaEnum.PAGADA);
+		query.setParameter("vendedor", vendedor);
 		
 		query.setMaxResults(1);
 		

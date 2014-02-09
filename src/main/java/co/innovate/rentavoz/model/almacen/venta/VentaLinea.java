@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.innovate.rentavoz.model.almacen;
+package co.innovate.rentavoz.model.almacen.venta;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,27 +16,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import co.innovate.rentavoz.model.almacen.Linea;
 
 /**
  * 
- * @author ejody
+* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+* @project rentavoz3
+* @class VentaLinea
+* @date 4/02/2014
+*
  */
 @Entity
 @Table(name = "ventalinea")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "VentaLinea.findAll", query = "SELECT v FROM VentaLinea v"),
-		@NamedQuery(name = "VentaLinea.findByIdVentaLinea", query = "SELECT v FROM VentaLinea v WHERE v.idVentaLinea = :idVentaLinea"),
-		@NamedQuery(name = "VentaLinea.findByVentLinPrecio", query = "SELECT v FROM VentaLinea v WHERE v.ventLinPrecio = :ventLinPrecio"),
-		@NamedQuery(name = "VentaLinea.findByVentLinTipo", query = "SELECT v FROM VentaLinea v WHERE v.ventLinTipo = :ventLinTipo"),
-		@NamedQuery(name = "VentaLinea.findByVentLinDeposito", query = "SELECT v FROM VentaLinea v WHERE v.ventLinDeposito = :ventLinDeposito") })
 public class VentaLinea implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -109,26 +105,35 @@ public class VentaLinea implements Serializable {
 		this.ventLinDeposito = ventLinDeposito;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
-		int hash = 0;
-		hash += (idVentaLinea != null ? idVentaLinea.hashCode() : 0);
-		return hash;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((lineaidLinea == null) ? 0 : lineaidLinea.hashCode());
+		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
-	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are
-		// not set
-		if (!(object instanceof VentaLinea)) {
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-		VentaLinea other = (VentaLinea) object;
-		if ((this.idVentaLinea == null && other.idVentaLinea != null)
-				|| (this.idVentaLinea != null && !this.idVentaLinea
-						.equals(other.idVentaLinea))) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
+		VentaLinea other = (VentaLinea) obj;
+		if (lineaidLinea == null) {
+			if (other.lineaidLinea != null)
+				return false;
+		} else if (!lineaidLinea.equals(other.lineaidLinea))
+			return false;
 		return true;
 	}
 

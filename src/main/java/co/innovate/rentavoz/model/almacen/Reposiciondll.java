@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import co.innovate.rentavoz.model.almacen.venta.Venta;
+
 /**
  * The persistent class for the reposiciondll database table.
  * 

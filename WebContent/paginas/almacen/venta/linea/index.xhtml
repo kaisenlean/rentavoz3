@@ -4,278 +4,331 @@
 	template="/plantilla/siteThm.xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
 
 
 	<ui:define name="content">
-		<h:form id="form" style="width:100%">
-			<h:outputLabel value="Registrar Venta de Linea" class="h1" />
-			<h:panelGrid columns="3" style="width:80%">
-				<h:outputText value="Cliente"></h:outputText>
-				<p:autoComplete size="100" style="width:800px"
-					value="#{beanVentaLinea.queryTercero}"
-					completeMethod="#{beanVentaLinea.completarBusqueda}">
-					<p:ajax event="itemSelect" update="autocomp"
-						listener="#{beanVentaLinea.seleccionarTercero}">
-
-					</p:ajax>
-				</p:autoComplete>
-				<p:commandButton process="@this" value="Nuevo Cliente"
-					action="#{beanVentaLinea.loadForm()}">
-					<f:attribute name="create" value="create" />
-				</p:commandButton>
-			</h:panelGrid>
-			<p:dialog appendToBody="true" visible="false"
-				widgetVar="dlgNuevoCliente" modal="true" id="dlgNuevoCliente">
-				<h:form>
-					<h:panelGrid columns="3">
-						<h:outputLabel rendered="#{beanTercero.edit}" value="Codigo" />
-						<p:inputText rendered="#{beanTercero.edit}" id="codDept"
-							disabled="${beanTercero.edit}"
-							value="${beanTercero.objeto.idTecero}" required="true"
-							requiredMessage="Este campo es reuqerido" />
-						<p:message for="codDept" rendered="#{beanTercero.edit}" />
-
-						<h:outputLabel value="Nombres" />
-						<p:inputText id="nomDept" value="${beanTercero.objeto.terNombre}"
-							required="true" requiredMessage="Este campo es reuqerido" />
-						<p:message for="nomDept" />
-
-						<h:outputLabel value="Apellidos" />
-						<p:inputText id="empAlias"
-							value="${beanTercero.objeto.terApellidos}" required="true"
-							requiredMessage="Este campo es reuqerido" />
-						<p:message for="empAlias" />
-
-						<h:outputLabel value="Documento" />
-						<p:inputText id="nitEmpr"
-							value="${beanTercero.objeto.terDocumento}" required="true"
-							requiredMessage="Este campo es reuqerido" />
-						<p:message for="nitEmpr" />
-
-						<h:outputLabel value="Direccion" />
-						<p:inputText id="empContacto"
-							value="${beanTercero.objeto.terDireccion}" required="true"
-							requiredMessage="Este campo es reuqerido" />
-						<p:message for="empContacto" />
-
-						<h:outputLabel value="Telefono" />
-						<p:inputText id="dirEmpresa"
-							value="${beanTercero.objeto.terTelefono}" required="true"
-							requiredMessage="Este campo es reuqerido" />
-						<p:message for="dirEmpresa" />
-
-						<h:outputLabel value="Tipo" />
-						<p:selectOneMenu id="tipoTercero" value="#{beanTercero.tipo}"
-							required="true"
-							requiredMessage="Por favor selecciona un tipo de tercero">
-							<f:selectItems value="#{beanTercero.itemTipo}" />
-							<p:ajax process="@this" event="change"></p:ajax>
-						</p:selectOneMenu>
-						<p:message for="tipoTercero" />
+		<h:form>
+			<div style="font-size: 16px;">
+<script src="http://www.java.com/js/deployJava.js"></script>
+<script type="text/javascript">
+function runApplet(){
+    var attributes = {
+    code : 'jzebra.PrintApplet.class',
+    archive : '${pageContext.request.contextPath}/lib/jzebra.jar',
+    width : 500,
+    height : 300
+    };
+    var parameters = {
+    printer : 'zebra'
+    };
+    var version = '1.6';
+    deployJava.runApplet(attributes, parameters, version);
+}
+</script>
 
 
-						<p:commandButton process="@this" update="@all" value="Aceptar"
-							action="${beanTercero.aceptar()}" />
-						<p:commandButton process="@this" value="Cancelar" immediate="true"
-							action="${beanTercero.reglaNavegacion()}" />
-					</h:panelGrid>
-				</h:form>
-			</p:dialog>
-			<!-- 			<p:panel header="Información de la venta"> -->
+				<h:outputLabel value="Venta de Lineas" class="h1" />
+				<div align="right">
 
-			<h:panelGrid columns="2">
-
-
-				<!-- 					<h:outputText value="Fecha de Venta "></h:outputText> -->
-				<!-- 					<p:calendar size="25" value="#{beanVentaLinea.dto.fecha}"></p:calendar> -->
+					<br />
+					<h:outputLabel value="Dinero en caja : "
+						style="font-weight: bolder;font-size:16px" />
+					<h:outputLabel value="#{login.valorCajaLineas}"
+						style="font-weight: bolder;font-size:16px;color:red">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputLabel>
+				</div>
+				<h:panelGrid columns="4">
 
 
-
-
-
-
-
-				<h:outputText value="Forma de Pago "></h:outputText>
-				<p:selectOneMenu style="width:200px"
-					value="#{beanVentaLinea.dto.tipoPago}">
-					<f:selectItems value="#{selectorTipoPago.items}">/</f:selectItems>
-					<p:ajax update="panelCuenta"
-						listener="#{beanVentaLinea.cambioFormaPago()}" />
-				</p:selectOneMenu>
-
-
-
-			</h:panelGrid>
-			<p:panel id="panelCuenta" header="Consignacion a cuenta"
-				visible="#{beanVentaLinea.verFormaPagos}">
-				<h:panelGrid columns="2">
-					<h:outputText value="Cuenta" />
-					<p:selectOneMenu id="selectCuentas"
-						value="#{beanVentaLinea.dto.selIdCuenta}" required="true"
-						requiredMessage="Selecciona una cuenta para continuar">
-						<f:selectItems value="#{selectorCuentas.items}" />
+					<h:outputText style="font-weight: bolder"
+						value="Fecha de facturacion : " />
+					<p:selectOneMenu value="#{beanVentaLinea.selFechaFacturacion}">
+						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
+						<p:ajax event="change" process="@this" update="@this"></p:ajax>
 					</p:selectOneMenu>
-					<h:outputText value="Fecha" />
-					<p:calendar value="#{beanVentaLinea.dto.fechaPagoCuenta}" />
-					<h:outputText value="Lugar de consignación" />
-					<p:inputText value="#{beanVentaLinea.dto.lugarPago}" />
+
+					<h:outputText style="font-weight: bolder" value="Cuenta" />
+					<p:selectOneMenu value="#{beanVentaLinea.selCuota}">
+						<f:selectItems value="#{selectorCuentas.items}" />
+						<p:ajax event="change" process="@this"></p:ajax>
+					</p:selectOneMenu>
+
+					<h:outputLabel style="font-weight: bolder" value="Vendedor" />
+
+					<p:autoComplete size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanVentaLinea.autocompleteVendedor.conversorClientes}"
+						value="#{beanVentaLinea.autocompleteVendedor.seleccionado}"
+						completeMethod="#{beanVentaLinea.autocompleteVendedor.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanVentaLinea.autocompleteVendedor.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+
+
+					<h:outputText style="font-weight: bolder" value="Cobrador" />
+
+					<p:autoComplete size="30" style="width:100px" id="buscadorCobrador"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanVentaLinea.autocompleteCobrador.conversorClientes}"
+						value="#{beanVentaLinea.autocompleteCobrador.seleccionado}"
+						completeMethod="#{beanVentaLinea.autocompleteCobrador.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanVentaLinea.autocompleteCobrador.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+
 				</h:panelGrid>
-				<p:message for="selectCuentas" />
-			</p:panel>
+				<p:spacer height="20px"></p:spacer>
+
+				<h:panelGrid columns="3">
+					<h:outputText style="font-weight: bolder" value="Cliente" />
+					<p:autoComplete size="50" style="width:400px" id="proveedorIngreso"
+						value="#{beanVentaLinea.autocompleteTercero.query}"
+						completeMethod="#{beanVentaLinea.autocompleteTercero.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@all" process="@this"
+							listener="#{beanVentaLinea.autocompleteTercero.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+					<p:commandButton value="Nuevo Cliente"
+						onclick="dlgNewCliente.show();"></p:commandButton>
+
+				</h:panelGrid>
+				<p:dialog appendToBody="true" widgetVar="dlgNewCliente"
+					visible="false" closable="false" draggable="false"
+					header="Nuevo Cliente" resizable="false">
+					<h:form>
+
+						<h:panelGrid columns="3">
+							<h:outputText value="Nombres (*)" />
+							<h:inputText id="txtNameTercero"
+								value="#{beanVentaLinea.tercero.terNombre}" required="true"
+								requiredMessage="Por favor digita un nombre válido" />
+							<p:messages for="txtNameTercero"></p:messages>
+
+							<h:outputText value="Apellidos (*)" />
+							<h:inputText id="txtApellidos"
+								value="#{beanVentaLinea.tercero.terApellidos}" required="true"
+								requiredMessage="Por favor digita un apellido válido" />
+							<p:messages for="txtApellidos"></p:messages>
 
 
-			<!-- 			</p:panel> -->
-			<!--<p:panel header="Lineas">-->
-			<br />
-			<h:outputText value="Linea"></h:outputText>
-			<p:autoComplete size="100" style="width:800px" id="autocomp"
-				widgetVar="autocomp"
-				disabled="${beanVentaLinea.dto.tercero == null}"
-				value="#{beanVentaLinea.query}"
-				completeMethod="#{beanVentaLinea.autocompleteLinea.completarBusqueda}">
-				<p:ajax event="itemSelect" update="@all"
-					listener="#{beanVentaLinea.autocompleteLinea.seleccionar}">
-				</p:ajax>
-			</p:autoComplete>
-			<!-- 			<h:commandButton value="Adicionar Lineas" -->
-			<!-- 				onclick="dlgLineas.show(); -->
-			<!--                                          return false;"></h:commandButton> -->
-			<p:dataTable paginator="true" rows="20"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="5,10,15" id="tablaLineas"
-				value="#{beanVentaLinea.lineasSeleccionadas}" var="line">
 
-				<p:column headerText="Numero" filterBy="#{line.linNumero}"
-					filterMatchMode="contains">
-					<h:outputText value="#{line.linNumero}"></h:outputText>
-				</p:column>
-				<p:column headerText="Corte" filterBy="#{line.linCorte}"
-					filterMatchMode="contains">
-					<h:outputText value="#{line.linCorte}"></h:outputText>
-				</p:column>
-				<p:column headerText="Empresa" filterBy="#{line.empresaidEmpresa}"
-					filterMatchMode="contains">
-					<h:outputText value="#{line.empresaidEmpresa}"></h:outputText>
-				</p:column>
-				<p:column headerText="Plan" filterBy="#{line.plan}"
-					filterMatchMode="contains">
-					<h:outputText value="#{line.plan}"></h:outputText>
-				</p:column>
-				<p:column headerText="Minutos"
-					filterBy="#{line.plan.plaCantidadMinutos}"
-					filterMatchMode="contains">
-					<h:outputText value="#{line.plan.plaCantidadMinutos}"></h:outputText>
-				</p:column>
-				<p:column headerText="Descuento"
-					rendered="#{beanVentaLinea.permiteDescuento}">
-					<h:inputText value="#{line.descuento}" />
-				</p:column>
-				<p:column>
-					<h:commandButton action="#{beanVentaLinea.eliminarItem(line)}"
-						value="Remover" />
-				</p:column>
-			</p:dataTable>
+							<h:outputText value="Documento " />
+							<p:inputText id="txtDoc"
+								value="#{beanVentaLinea.tercero.terDocumento}" />
+							<p:messages for="txtDoc"></p:messages>
 
 
-			<!--</p:panel>-->
+							<h:outputLabel value="Ciudad" />
+							<p:autoComplete size="20" style="width:100px" id="buscadorCiudad"
+								var="it" itemLabel="#{it}" itemValue="#{it}"
+								converter="#{beanVentaLinea.autocompleteCiudad.conversorCiudad}"
+								value="#{beanVentaLinea.autocompleteCiudad.seleccionado}"
+								completeMethod="#{beanVentaLinea.autocompleteCiudad.completarBusqueda}">
+								<p:ajax event="itemSelect" update="@this" process="@this"
+									listener="#{beanVentaLinea.autocompleteCiudad.seleccionar}">
 
-			<p:dialog header="Lineas Disponibles" visible="false"
-				rendered="false" widgetVar="dlgLineas">
-				<p:dataTable paginator="true" rows="10" lazy="true"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" value="#{beanVentaLinea.model}"
-					var="line" selection="#{beanVentaLinea.seleccionada}"
-					selectionMode="single">
+								</p:ajax>
+							</p:autoComplete>
+							<p:message for="buscadorCiudad" />
 
-					<p:column headerText="Numero" filterBy="#{line.linNumero}"
-						filterMatchMode="contains">
-						<h:outputText value="#{line.linNumero}"></h:outputText>
-					</p:column>
-					<p:column headerText="Corte" filterBy="#{line.linCorte}"
-						filterMatchMode="contains">
-						<h:outputText value="#{line.linCorte}"></h:outputText>
-					</p:column>
-					<p:column headerText="Empresa" filterBy="#{line.empresaidEmpresa}"
-						filterMatchMode="contains">
-						<h:outputText value="#{line.empresaidEmpresa}"></h:outputText>
-					</p:column>
-					<p:column headerText="Plan" filterBy="#{line.plan}"
-						filterMatchMode="contains">
-						<h:outputText value="#{line.plan}"></h:outputText>
-					</p:column>
-					<p:column headerText="Minutos"
-						filterBy="#{line.plan.plaCantidadMinutos}"
-						filterMatchMode="contains">
-						<h:outputText value="#{line.plan.plaCantidadMinutos}"></h:outputText>
-					</p:column>
 
-				</p:dataTable>
-				<h:commandButton value="Adicionar"
-					actionListener="#{beanVentaLinea.adicionarCarrito}" />
-			</p:dialog>
 
-			<fieldset>
+							<h:outputLabel value="Barrio" />
+							<p:inputText size="20" id="barrioTercero"
+								value="#{beanVentaLinea.tercero.barrio}"
+								placeholder="Ej : EL PEÑON" />
+							<p:message for="barrioTercero" />
 
-				<h:panelGrid>
-					<h:panelGrid columns="4">
-						<p:outputLabel value="Subtotal" />
-						<h:inputText value="#{beanVentaLinea.subtotal}" />
-						<p:outputLabel value="Total Depositos" />
-						<h:inputText value="#{beanVentaLinea.totalDepositos}" />
-						<p:outputLabel value="Total descuento" />
-						<h:inputText value="#{beanVentaLinea.descuentos}" />
-						<p:outputLabel value="domicilio" />
-						<h:inputText value="#{beanVentaLinea.domicilio}" />
-						<p:outputLabel value="Total" />
-						<h:inputText value="#{beanVentaLinea.total}" />
-					</h:panelGrid>
-					<h:panelGrid columns="2">
-						<h:outputText value="Tipo de pago" />
-						<p:selectOneMenu value="#{beanVentaLinea.tipoPago}"
-							required="true"
-							requiredMessage="Selecciona un tipo de pago para continuar"
-							id="selTipoPago">
-							<f:selectItem itemLabel="-- Selecciona el tipo de pago --"
-								itemValue="" />
-							<f:selectItem itemLabel="Pago total" itemValue="T" />
-							<f:selectItem itemLabel="Pago parcial" itemValue="P" />
-							<p:ajax update="suburbs"
-								listener="#{beanVentaLinea.cambioTipoPago()}" />
-						</p:selectOneMenu>
-						<p:message for="selTipoPago" />
-					</h:panelGrid>
-					<p:panel header="Pago parcial" id="suburbs"
-						visible="#{beanVentaLinea.verGridCuotas}">
-						<h:panelGrid columns="2">
-							<p:outputLabel value="Proxima Fecha"></p:outputLabel>
-							<p:calendar value="#{beanVentaLinea.dto.fechaProxPago}"
-								pattern="dd/MM/yyyy"></p:calendar>
+							<h:outputText value="Direccion " />
+							<h:inputText id="txtDireccion"
+								value="#{beanVentaLinea.tercero.terDireccion}" />
+							<p:messages for="txtDireccion"></p:messages>
 
-							<p:outputLabel value="Valor a abonar"></p:outputLabel>
-							<h:inputText value="#{beanVentaLinea.valorAbonado}" />
+
+
+							<h:outputText value="Teléfono " />
+							<h:inputText id="txtTelefono"
+								value="#{beanVentaLinea.tercero.terTelefono}" />
+							<p:messages for="txtTelefono"></p:messages>
+
+
+							<h:outputText value="Mayorista " />
+							<p:selectBooleanCheckbox id="clienteMayori"
+								value="#{beanVentaLinea.tercero.mayorista}">
+								<p:ajax event="change" partialSubmit="true"></p:ajax>
+							</p:selectBooleanCheckbox>
+							<p:messages for="clienteMayori"></p:messages>
+
+
+							<p:commandButton value="Guardar" partialSubmit="true"
+								process="txtTelefono,barrioTercero,txtDireccion,txtDoc,txtApellidos,txtNameTercero,@this"
+								update="@all"
+								actionListener="#{beanVentaLinea.crearNuevoTercero()}"></p:commandButton>
+							<p:commandButton value="Cancelar" immediate="true"
+								onclick="dlgNewCliente.hide();"></p:commandButton>
+
+
 
 						</h:panelGrid>
 
+					</h:form>
+				</p:dialog>
+
+				<p:panel header="Lineas">
+
+					<h:panelGrid columns="4">
+						<h:outputText style="font-weight: bolder" value="Producto ID :" />
+						<p:inputText id="txtpid" value="#{beanVentaLinea.numeroLinea}"
+							onkeypress="if (event.keyCode == 13) { aceptBtn.jq.click();  return false; }"></p:inputText>
+						<p:commandButton id="aceptBtn" widgetVar="aceptBtn" value="Añadir"
+							actionListener="#{beanVentaLinea.buscarLinea()}" process="@all"
+							update="@all"></p:commandButton>
+						<p:focus for="txtpid"></p:focus>
+					</h:panelGrid>
+
+
+					<p:dataTable value="#{beanVentaLinea.venta.ventaLineaList}"
+						var="detalle" style="width:100%">
+
+						<p:column headerText="Número">
+							<h:outputText value="#{detalle.lineaidLinea.linNumero}" />
+						</p:column>
+
+						<p:column headerText="Precio Venta">
+							<h:outputText value="#{detalle.ventLinPrecio}" >
+							<f:convertNumber type="currency" currencySymbol="$"/>
+							</h:outputText>
+							
+						</p:column>
+
+						<p:column headerText="Valor Depósito">
+							<h:outputText value="#{detalle.ventLinDeposito}" >
+							<f:convertNumber type="currency" currencySymbol="$"/>
+							</h:outputText>
+						</p:column>
+
+						<p:column>
+							<p:commandButton value="Cambiar Precio" process="@this"
+								update="@this"
+								actionListener="#{beanVentaLinea.loadItem(detalle)}"
+								onclick="dialogo.show();">
+							</p:commandButton>
+
+
+						</p:column>
+						<p:column>
+							<p:commandButton value="Eliminar"
+								actionListener="#{beanVentaLinea.deleteLinea(detalle)}"
+								process="@this" update="@all"></p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:dialog widgetVar="dialogo" id="dialogo" appendToBody="true" modal="true"
+						header="Nuevo precio">
+						<p:inputText value="#{beanVentaLinea.ventaItem.ventLinPrecio}" 
+							id="txtValor"  onkeypress="if (event.keyCode == 13) { addPrecioBtn.jq.click();  return false; }">	</p:inputText>
+						<p:commandButton widgetVar="addPrecioBtn" id="addPrecioBtn" actionListener="#{beanVentaLinea.saveEditRow}"
+							value="Cambiar" process="@this,txtValor" partialSubmit="true"
+							update="@all">
+						
+							</p:commandButton>
+
+					</p:dialog>
+				</p:panel>
+
+
+				<p:panel header="Modalidad de pago">
+					<p:selectOneMenu value="#{beanVentaLinea.modoPago}">
+						<f:selectItems value="#{selectorModoPago.items}"></f:selectItems>
+						<p:ajax event="change" process="@this" update="@all"></p:ajax>
+					</p:selectOneMenu>
+
+					<p:panel header="Cuotas"
+						rendered="#{beanVentaLinea.modoPago eq 'CUOTA'}">
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Valor cuota"></p:outputLabel>
+							<p:inputText value="#{beanVentaLinea.cuota.valorCuota}"></p:inputText>
+
+							<p:outputLabel value="Fecha de cierre"></p:outputLabel>
+							<p:calendar pattern="dd/MM/yyyy"
+								value="#{beanVentaLinea.cuota.fechaPago}"></p:calendar>
+
+							<p:outputLabel value="Estado"></p:outputLabel>
+							<p:selectOneMenu value="#{beanVentaLinea.selEstadoCuota}">
+								<f:selectItems value="#{selectorEstadoCuota.items}" />
+								<p:ajax event="change" process="@this"></p:ajax>
+							</p:selectOneMenu>
+
+							<p:commandButton process="@all" update="@all" value="Agregar"
+								actionListener="#{beanVentaLinea.addCuota()}"></p:commandButton>
+
+						</h:panelGrid>
+
+						<p:dataTable value="#{beanVentaLinea.venta.cuotas}" var="cuota" widgetVar="tablaCuotas" id="tablaCuotas"
+							style="width:50%">
+							<p:column headerText="Valor">
+								<h:outputLabel value="#{cuota.valorCuota}">
+									<f:convertNumber type="currency" />
+								</h:outputLabel>
+
+							</p:column>
+							<p:column headerText="Fecha de cierre">
+								<h:outputLabel value="#{cuota.fechaPago}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputLabel>
+							</p:column>
+
+							<p:column>
+								<p:commandButton value="Eliminar"
+									actionListener="#{beanVentaLinea.eliminarCuota(cuota)}"
+									process="@this" update="tablaCuotas"></p:commandButton>
+							</p:column>
+						</p:dataTable>
+
 					</p:panel>
+				</p:panel>
+				
+
+				<h:panelGrid columns="2">
+					<h:outputText style="font-weight: bolder;font-size: 18px;"
+						value="Valor a Pagar" />
+					<h:outputText
+						style="font-weight: bolder;color:red;font-size: 18px;"
+						value="#{beanVentaLinea.venta.venSaldo}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
+
 				</h:panelGrid>
 
-
-			</fieldset>
-			<fieldset>
 				<h:panelGrid>
-					<h:outputText value="Observación" />
-					<p:inputTextarea cols="100"
-						value="#{beanVentaLinea.dto.observacion}" />
-				</h:panelGrid>
-			</fieldset>
-			<h:panelGrid columns="2">
-				<h:commandButton value="Guardar"
-					action="#{beanVentaLinea.registrarVenta()}" />
-				<h:commandButton value="Cancelar"
-					action="/paginas/almacen/venta/linea/" />
-			</h:panelGrid>
+					<h:outputLabel value="Observación" style="font-weight: bolder" />
+					<p:inputTextarea value="#{beanVentaLinea.venta.observacion}"
+						cols="40" rows="7">
 
+					</p:inputTextarea>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Guardar Venta"
+						actionListener="#{beanVentaLinea.guardarVenta()}"
+						process="@this" update="@all">
+					</p:commandButton>
+
+					<p:commandButton ajax="false" value="Nueva Venta" rendered="true"
+						widgetVar="btnDespues" id="btnDespues" process="@this"
+						update="@all" action="/paginas/almacen/venta/linea/index.jsf"></p:commandButton>
+				</h:panelGrid>
+				
+			</div>
 		</h:form>
 
 	</ui:define>

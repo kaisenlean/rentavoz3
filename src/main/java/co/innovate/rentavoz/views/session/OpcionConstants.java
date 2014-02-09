@@ -26,4 +26,5 @@ public interface OpcionConstants {
 	String DB_PASSWORD="DB_PASSWORD";
 	String DB_USER="DB_USER";
 	String PATH_REPORTES="PATH_REPORTES";
+	String VALOR_DEPOSITO_LINEA="VALOR_DEPOSITO_LINEA";
 }

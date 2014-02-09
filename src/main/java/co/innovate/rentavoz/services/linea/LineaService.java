@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.services.GenericService;
@@ -48,7 +49,7 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	 * @param linNumero
 	 * @return
 	 */
-	Linea findByNumeroObjeto(String linNumero);
+	Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException;
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

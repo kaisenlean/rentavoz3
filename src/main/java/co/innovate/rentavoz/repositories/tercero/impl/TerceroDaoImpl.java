@@ -177,7 +177,7 @@ public class TerceroDaoImpl extends GenericJpaRepository<Tercero, Integer>
 				.add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO))
 				.add(Restrictions.eq("tipo", TipoTerceroEnum.COBRADOR))
 				.add(Restrictions.eq("tipo", TipoTerceroEnum.VENDEDOR))
-				.add(Restrictions.eq("tipo", TipoTerceroEnum.CAJERO));
+				;
 		return findByCriteria(criterion, criterion2);
 	}
 

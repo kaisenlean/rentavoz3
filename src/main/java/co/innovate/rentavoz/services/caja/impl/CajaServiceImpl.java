@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -67,8 +68,8 @@ public class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
 	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCaja()
 	 */
 	@Override
-	public double valorCaja() throws BaseException {
-		return cajaDao.valorCaja();
+	public double valorCaja(Tercero vendedor) throws BaseException {
+		return cajaDao.valorCaja(vendedor);
 	}
 
 	/*
@@ -79,6 +80,14 @@ public class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
 	@Override
 	public GenericRepository<Caja, Integer> getDao() {
 		return cajaDao;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCajaLineas()
+	 */
+	@Override
+	public double valorCajaLineas(Tercero vendedor) throws BaseException {
+		return cajaDao.valorCajaLineas(vendedor);
 	}
 
 }

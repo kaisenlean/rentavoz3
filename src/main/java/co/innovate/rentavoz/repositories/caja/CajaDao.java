@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.repositories.caja;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -33,5 +34,12 @@ public interface CajaDao extends GenericRepository<Caja, Integer> {
 	* @date 12/01/2014
 	* @return
 	*/
-	 double valorCaja() throws BaseException;
+	 double valorCaja(Tercero vendedor) throws BaseException;
+	 
+		/**
+		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+		* @date 12/01/2014
+		* @return
+		*/
+		 double valorCajaLineas(Tercero vendedor) throws BaseException;
 }

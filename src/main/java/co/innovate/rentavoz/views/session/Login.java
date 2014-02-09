@@ -65,6 +65,7 @@ public class Login extends BaseBean implements Serializable {
 	private Sucursal sucursal;
 
 	private double valorCaja;
+	private double valorCajaLineas;
 	
 	private Boolean pertenecePrinicpal;
 
@@ -86,7 +87,7 @@ public class Login extends BaseBean implements Serializable {
 
 	public void validateSession(){
 		
-		if (user==null) {
+		if (user==null ) {
 			logOut();
 		}
 	}
@@ -98,7 +99,8 @@ public class Login extends BaseBean implements Serializable {
 	public void updateValorCaja() {
 		try {
 
-			valorCaja = cajaService.valorCaja();
+			valorCaja = cajaService.valorCaja(getTercero());
+			valorCajaLineas=cajaService.valorCajaLineas(getTercero());
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
 		}
@@ -128,7 +130,8 @@ public class Login extends BaseBean implements Serializable {
 			context.addCallbackParam("loggedIn", loggedIn);
 			buscarTercero();
 			 cajaService.abrirCaja(user);
-			 valorCaja=cajaService.valorCaja();
+			 valorCaja=cajaService.valorCaja(getTercero());
+			 valorCajaLineas=cajaService.valorCajaLineas(getTercero());
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;
@@ -424,5 +427,23 @@ public class Login extends BaseBean implements Serializable {
 	public void setSucursalTerceroService(
 			SucursalTerceroService sucursalTerceroService) {
 		this.sucursalTerceroService = sucursalTerceroService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 9/02/2014
+	 * @return the valorCajaLineas
+	 */
+	public double getValorCajaLineas() {
+		return valorCajaLineas;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 9/02/2014
+	 * @param valorCajaLineas the valorCajaLineas to set
+	 */
+	public void setValorCajaLineas(double valorCajaLineas) {
+		this.valorCajaLineas = valorCajaLineas;
 	}
 }
