@@ -88,14 +88,17 @@ function runApplet(){
 
 				<h:panelGrid columns="3">
 					<h:outputText style="font-weight: bolder" value="Cliente" />
-					<p:autoComplete size="50" style="width:400px" id="proveedorIngreso"
-						value="#{beanVentaLinea.autocompleteTercero.query}"
-						completeMethod="#{beanVentaLinea.autocompleteTercero.completarBusqueda}">
+					<p:autoComplete size="50" style="width:400px" var="it" itemLabel="#{it}" itemValue="#{it}"  id="proveedorIngreso"
+						value="#{beanVentaLinea.autocompleteTercero.seleccionado}"
+						completeMethod="#{beanVentaLinea.autocompleteTercero.completarBusqueda}"
+						converter="#{beanVentaLinea.autocompleteTercero.conversorClientes}">
+						
 						<p:ajax event="itemSelect" update="@all" process="@this"
 							listener="#{beanVentaLinea.autocompleteTercero.seleccionar}">
 
 						</p:ajax>
 					</p:autoComplete>
+			
 					<p:commandButton value="Nuevo Cliente"
 						onclick="dlgNewCliente.show();"></p:commandButton>
 

@@ -1,8 +1,10 @@
 package co.innovate.rentavoz.views.components.autocomplete;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 import org.primefaces.event.SelectEvent;
 
@@ -57,30 +59,35 @@ public abstract class AutocompleteTercero extends Autocompletar<Tercero> {
 		if (evt.getObject()==null) {
 			return ;
 		}
-		String valor = evt.getObject().toString();
-		String id = obtenerId(valor);
-		seleccionado= getService().findByDocumento(id);
 		query = seleccionado!=null?seleccionado.toString():null;
 		postSelect();
 	}
 	
 	public abstract void postSelect();
 
-	/**
-	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 3/06/2013
-	 * @param valor
-	 * @return
-	 */
-	private String obtenerId(String valor) {
+	
 
-		String id = "";
-		Pattern p = Pattern.compile("\\d+");
-		Matcher m = p.matcher(valor);
-		while (m.find()) {
-			id += m.group();
-		}
-
-		return id;
-	}
+	public Converter getConversorClientes() {
+        return new Converter() {
+            @Override
+            public Object getAsObject(FacesContext context, UIComponent component, String value) {
+                if (value.trim().equals("") || value == null) {
+                    return null;
+                }
+                int number = Integer.parseInt(value);
+                Tercero c = getService().findById( number);
+                seleccionado=c;
+                return c;
+            }
+ 
+            @Override
+            public String getAsString(FacesContext context, UIComponent  component, Object value) {
+                if (value == null || value.equals("")) {
+                    return "";
+                } else {
+                    return ((Tercero) value).getIdTecero()+"";
+                }
+            }
+        };
+}
 }

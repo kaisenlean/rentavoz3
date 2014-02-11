@@ -3,6 +3,9 @@
  */
 package co.innovate.rentavoz.repositories.almacen.venta;
 
+import java.util.List;
+
+import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.repositories.GenericRepository;
 
@@ -15,4 +18,12 @@ import co.innovate.rentavoz.repositories.GenericRepository;
  */
 public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 10/02/2014
+	* @param venta
+	* @return
+	*/
+	List<VentaLinea> findByVenta(Venta venta);
 }

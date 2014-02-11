@@ -129,6 +129,10 @@ public class Venta implements Serializable {
 	@Column(name="modo_pago")
 	@Enumerated(EnumType.STRING)
 	private ModoPagoEnum modoPago;
+	
+	@Transient
+	private String valorCuota;
+	
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -556,5 +560,24 @@ public class Venta implements Serializable {
 	 */
 	public void setModoPago(ModoPagoEnum modoPago) {
 		this.modoPago = modoPago;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 10/02/2014
+	 * @return the valorCuota
+	 */
+	public String getValorCuota() {
+		return valorCuota;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 10/02/2014
+	 * @param valorCuota the valorCuota to set
+	 */
+	public void setValorCuota(String valorCuota) {
+		this.valorCuota = valorCuota;
 	}
 }

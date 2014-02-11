@@ -107,6 +107,7 @@ public class ControladorMenuUsuarioImpl implements ControladorMenuUsuario {
 
 			if (usuarioMenu != null) {
 				nodoHijo.setSelected(true);
+				nodoPadre.setSelected(true);
 			}
 			nodos.add(nodoHijo);
 

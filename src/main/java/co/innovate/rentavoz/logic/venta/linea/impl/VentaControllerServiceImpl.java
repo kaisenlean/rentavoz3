@@ -35,14 +35,6 @@ import co.innovate.rentavoz.services.linea.LineaService;
 public class VentaControllerServiceImpl implements VentaControllerService {
 
 
-	/**
-	 * 5/02/2014
-	 * 
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 *         DAYS
-	 */
-	private static final int DAYS = 30;
-
 	@Autowired
 	private VentaService ventaService;
 

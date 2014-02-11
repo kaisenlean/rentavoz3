@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+			<h1>
+				<h:outputLabel value="Consulta de Cuotas pendientes por Cliente"
+					class="h1" />
+			</h1>
+			<p:autoComplete placeholder="Nombre o Cedula del cliente" size="100"
+				style="width:400px" id="buscadorItemExistencia" var="it"
+				itemLabel="#{it}" itemValue="#{it}"
+				converter="#{beanConsultaCuota.autocompleteCliente.conversorClientes}"
+				value="#{beanConsultaCuota.autocompleteCliente.seleccionado}"
+				completeMethod="#{beanConsultaCuota.autocompleteCliente.completarBusqueda}">
+				<p:ajax event="itemSelect" update="@all" process="@this"
+					listener="#{beanConsultaCuota.autocompleteCliente.seleccionar}">
+
+				</p:ajax>
+			</p:autoComplete>
+
+			<p:dataTable value="#{beanConsultaCuota.lista}" var="cuota">
+				<p:column>
+					<p:selectBooleanCheckbox value="#{cuota.seleccionada}">
+					<p:ajax partialSubmit="true"></p:ajax>
+					</p:selectBooleanCheckbox>
+				</p:column>
+				<p:column headerText="Factura">
+					<h:outputText value="#{cuota.venta.idVenta}" />
+				</p:column>
+
+				<p:column headerText="Periodo">
+					<h:outputText value="#{cuota.venta.fechaFacturacion.label}" />
+				</p:column>
+				<p:column headerText="Fecha cierre">
+					<h:outputText value="#{cuota.fechaPago}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Saldo">
+					<h:outputText value="#{cuota.valorCuota}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<p:commandButton icon="ui-icon-shuffle" value="Efectuar pago"
+						process="@this" update="@all"
+						actionListener="#{beanConsultaCuota.pagarCuota(cuota)}">
+						<p:confirm header="Confirmación de pago"
+							message="Está seguro de efectuar el pago de esta cuota"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:commandButton style="visibility:hidden;"
+						actionListener="#{beanConsultaCuota.pagarCuotaImprimirFactura(cuota)}"
+						process="@this" ajax="false" id="btnCuota${cuota.numero}"
+						widgetVar="btnCuota${cuota.numero}"></p:commandButton>
+
+				</p:column>
+			</p:dataTable>
+			<h:panelGrid>
+			<p:commandButton actionListener="#{beanConsultaCuota.pagarCuotasSeleccionadas()}" value="Pagar facturas seleccionadas" process="@this" update="@all" >
+			<p:confirm header="Pago masivo de cuotas" message="Esta seguro de pagar las cuotas seleccionadas ?" icon="ui-icon-alert"></p:confirm>
+			</p:commandButton>
+			<p:commandButton style="visibility:hidden;"
+						actionListener="#{beanConsultaCuota.pagarSeleccionadas()}"
+						process="@this" ajax="false" id="btnPagarCuotas"
+						widgetVar="btnPagarCuotas"></p:commandButton>
+			</h:panelGrid>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check"></p:commandButton>
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

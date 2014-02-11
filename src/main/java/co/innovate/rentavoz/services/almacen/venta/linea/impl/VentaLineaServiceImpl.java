@@ -4,10 +4,12 @@
 package co.innovate.rentavoz.services.almacen.venta.linea.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao;
@@ -39,5 +41,13 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	@Override
 	public GenericRepository<VentaLinea, Integer> getDao() {
 		return ventaLineaDao;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#findByVenta(co.innovate.rentavoz.model.almacen.venta.Venta)
+	 */
+	@Override
+	public List<VentaLinea> findByVenta(Venta venta) {
+		return ventaLineaDao.findByVenta(venta);
 	}
 }
