@@ -327,6 +327,13 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		
 	}
 	
+	public void loadItem2(VentaLinea ventaItem){
+		this.ventaItem=ventaItem;
+		runJavascript("dialogoDeposito.show();");
+		
+		
+	}
+	
 	public void saveEditRow(){
 		
 		for (VentaLinea vl : venta.getVentaLineaList()) {
@@ -338,6 +345,20 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		calcularPrecioVenta();
 		runJavascript("dialogo.hide();");
 	}
+	
+	
+	public void saveEditRowDeposito(){
+		
+		for (VentaLinea vl : venta.getVentaLineaList()) {
+			if (vl.equals(ventaItem)) {
+				vl=ventaItem;
+			}
+		}
+		ventaItem=new VentaLinea();
+		calcularPrecioVenta();
+		runJavascript("dialogoDeposito.hide();");
+	}
+	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014

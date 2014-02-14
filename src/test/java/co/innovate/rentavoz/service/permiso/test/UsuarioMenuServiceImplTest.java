@@ -3,7 +3,7 @@
  */
 package co.innovate.rentavoz.service.permiso.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

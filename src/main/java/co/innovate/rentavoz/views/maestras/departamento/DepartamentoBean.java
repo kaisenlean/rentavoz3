@@ -68,7 +68,7 @@ public class DepartamentoBean extends StandardAbm<Departamento,Integer> implemen
 
 	@Override
 	public void buscarrPorCriterio() {
-		throw new UnsupportedOperationException("Not supported yet."); 
+	
 	}
 
 	@Override
@@ -81,14 +81,6 @@ public class DepartamentoBean extends StandardAbm<Departamento,Integer> implemen
 
 		try {
 
-			// Usar el contexto de JSF para invalidar la sesión,
-			// NO EL DE SERVLETS (nada de HttpServletRequest)
-			// ((HttpSession) ctx.getSession(false)).invalidate();
-
-			// Redirección de nuevo con el contexto de JSF,
-			// si se usa una HttpServletResponse fallará.
-			// Sin embargo, como ya está fuera del ciclo de vida
-			// de JSF se debe usar la ruta completa -_-U
 			ctx.redirect(ctxPath + reglaNavegacion());
 
 		} catch (IOException ex) {

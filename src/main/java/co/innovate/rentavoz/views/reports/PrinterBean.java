@@ -14,6 +14,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -38,6 +40,9 @@ import co.innovate.rentavoz.views.session.OpcionConstants;
 @ApplicationScoped
 public class PrinterBean extends BaseBean {
 
+	
+	private Logger logger= Logger.getLogger(PrinterBean.class);
+	
 	@PostConstruct
 	public void init() {
 		try {
@@ -63,7 +68,7 @@ public class PrinterBean extends BaseBean {
 			}
 			
 		} catch (Exception e) {
-		
+			logger.error(e);
 		}
 	}
 
@@ -103,17 +108,15 @@ public class PrinterBean extends BaseBean {
 			if (secondDatasource == null) {
 				jasperPrint = JasperFillManager.fillReport(reportPath,
 						parameters, establishConnection());
-				// JasperPrintManager.printReport(jasperPrint, false);
 				return;
 			}
 			JRBeanCollectionDataSource dts = new JRBeanCollectionDataSource(
 					secondDatasource);
 			jasperPrint = JasperFillManager.fillReport(reportPath, parameters,
 					dts);
-			// JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (Exception e) {
-			System.err.println(e);
+			logger.error(e);
 		}
 	}
 
@@ -144,7 +147,7 @@ public class PrinterBean extends BaseBean {
 
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 
@@ -175,7 +178,7 @@ public class PrinterBean extends BaseBean {
 			FacesContext.getCurrentInstance().responseComplete();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 
@@ -205,7 +208,7 @@ public class PrinterBean extends BaseBean {
 
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+		logger.error(e);
 		}
 	}
 
@@ -248,7 +251,7 @@ public class PrinterBean extends BaseBean {
 
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 
@@ -290,7 +293,8 @@ public class PrinterBean extends BaseBean {
 
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+		logger.error(e);
+		
 		}
 	}
 
@@ -333,7 +337,7 @@ public class PrinterBean extends BaseBean {
 
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+		logger.error(e);
 		}
 	}
 
@@ -377,5 +381,14 @@ public class PrinterBean extends BaseBean {
 	 */
 	public void setOpcionService(OpcionService opcionService) {
 		this.opcionService = opcionService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/02/2014
+	 * @return the logger
+	 */
+	public Logger getLogger() {
+		return logger;
 	}
 }

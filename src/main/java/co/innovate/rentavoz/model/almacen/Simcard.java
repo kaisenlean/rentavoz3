@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,18 +18,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import co.innovate.rentavoz.model.Sucursal;
-import co.innovate.rentavoz.model.SucursalSimcard;
 
 /**
  * 
@@ -42,13 +37,6 @@ import co.innovate.rentavoz.model.SucursalSimcard;
  */
 @Entity
 @Table(name = "simcard")
-@XmlRootElement
-@NamedQueries({
-		@NamedQuery(name = "Simcard.findAll", query = "SELECT s FROM Simcard s"),
-		@NamedQuery(name = "Simcard.findByIdSimcard", query = "SELECT s FROM Simcard s WHERE s.idSimcard = :idSimcard"),
-		@NamedQuery(name = "Simcard.findBySimIccid", query = "SELECT s FROM Simcard s WHERE s.simIccid = :simIccid"),
-		@NamedQuery(name = "Simcard.findBySimEstado", query = "SELECT s FROM Simcard s WHERE s.simEstado = :simEstado"),
-		@NamedQuery(name = "Simcard.findByFecha", query = "SELECT s FROM Simcard s WHERE s.fecha = :fecha") })
 public class Simcard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -70,8 +58,7 @@ public class Simcard implements Serializable {
 	@Column(name = "fecha")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "simcardidSimcard")
-	private List<SucursalSimcard> sucursalSimcardList;
+
 	@OneToMany(mappedBy = "simcard")
 	private List<Linea> lineas;
 
@@ -218,24 +205,7 @@ public class Simcard implements Serializable {
 		this.fecha = fecha;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the sucursalSimcardList
-	 */
-	public List<SucursalSimcard> getSucursalSimcardList() {
-		return sucursalSimcardList;
-	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param sucursalSimcardList
-	 *            the sucursalSimcardList to set
-	 */
-	public void setSucursalSimcardList(List<SucursalSimcard> sucursalSimcardList) {
-		this.sucursalSimcardList = sucursalSimcardList;
-	}
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

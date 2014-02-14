@@ -86,8 +86,6 @@ public class BeanCiudad extends StandardAbm<Ciudad,Integer> implements Serializa
 				}
 			}
 		};
-//		bean.init();
-		// System.out.println(ejb.registrarVenta(null));
 	}
 
 	@Override

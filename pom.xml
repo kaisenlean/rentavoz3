@@ -322,6 +322,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.0</version>
+			<scope>import</scope>
 		</dependency>
 
 
@@ -368,6 +369,20 @@
 	<build>
 
 		<plugins>
+		<plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.4</version>
+         <!-- http://mojo.codehaus.org/aspectj-maven-plugin/ -->
+         <executions>
+           <execution>
+             <goals>
+                <goal>compile</goal>
+             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -384,6 +399,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 	<packaging>war</packaging>

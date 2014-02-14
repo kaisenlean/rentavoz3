@@ -86,18 +86,7 @@ public class Plan implements Serializable {
 		this.idPlan = idPlan;
 	}
 
-	public Plan(Integer idPlan, String plaNombre, int plaCantidadMinutos,
-			int plaCostoMinuto, int plaCostoMin, int plaCostoMax,
-			Date plaFechaVenc, Date fecha) {
-		this.idPlan = idPlan;
-		this.plaNombre = plaNombre;
-		this.plaCantidadMinutos = plaCantidadMinutos;
-		this.plaCostoMinuto = plaCostoMinuto;
-		this.plaCostoMin = plaCostoMin;
-		this.plaCostoMax = plaCostoMax;
-		this.plaFechaVenc = plaFechaVenc;
-		this.fecha = fecha;
-	}
+
 
 	public Integer getIdPlan() {
 		return idPlan;

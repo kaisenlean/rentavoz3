@@ -133,33 +133,6 @@ public class ControladorMenuUsuarioImpl implements ControladorMenuUsuario {
 
 				transaccionMenu(treeNode, usuario);
 			}
-//			for (TreeNode treeNode2 : treeNode.getChildren()) {
-//				if (treeNode2.isSelected()) {
-//					if (treeNode2.getData() instanceof Menu) {
-//
-//						Menu menu = (Menu) treeNode.getData();
-//						UsuarioMenu usuarioMenu;
-//						StringBuilder buffer = new StringBuilder();
-//						buffer.append(menu.isCrea() ? "C" : "");
-//						buffer.append(menu.isEdita() ? "E" : "");
-//						buffer.append(menu.isElimina() ? "B" : "");
-//						buffer.append(menu.isImprime() ? "I" : "");
-//						if (menu.getUsuarioMenu() == null) {
-//							usuarioMenu = new UsuarioMenu();
-//							usuarioMenu.setMenu(menu);
-//							usuarioMenu.setUsuario(usuario);
-//
-//							usuarioMenu.setAcceso(buffer.toString().trim());
-//							usuarioMenuService.save(usuarioMenu);
-//						} else {
-//							usuarioMenu = menu.getUsuarioMenu();
-//							usuarioMenu.setAcceso(buffer.toString().trim());
-//							usuarioMenuService.save(usuarioMenu);
-//						}
-//						break;
-//					}
-//				}
-//			}
 
 		}
 

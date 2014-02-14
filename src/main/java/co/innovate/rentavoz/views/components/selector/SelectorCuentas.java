@@ -28,7 +28,6 @@ public class SelectorCuentas implements SelectorBase<Cuentas> {
 	public void init() {
 		List<Cuentas> findAll = cuentasService.findAll();
 		items = new ArrayList<SelectItem>();
-//		items.add(new SelectItem(" ", "-- Seleccione una cuenta --"));
 		for (Cuentas empresa : findAll) {
 			items.add(new SelectItem(empresa.getIdCuentas(), empresa
 					.getCueNombre()));

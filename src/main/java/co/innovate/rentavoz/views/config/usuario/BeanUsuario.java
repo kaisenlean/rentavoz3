@@ -277,14 +277,6 @@ public class BeanUsuario extends StandardAbm<Usuario, String> implements
 		return seleccionados;
 	}
 	
-	/**
-	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 31/01/2014
-	 * @param seleccionados the seleccionados to set
-	 */
-	public void setSeleccionados(TreeNode[] seleccionados) {
-		this.seleccionados = seleccionados;
-	}
 	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

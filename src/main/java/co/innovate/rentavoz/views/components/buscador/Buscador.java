@@ -98,14 +98,12 @@ public abstract class Buscador<T> {
 	}
 
 	public void seleccionar(T t) {
-		// item = (T) FacesUtils.getAttribute( "item");
 		item = (T) t;
 		System.out.println(t);
 		asignar(item);
 
 		cerrar();
 		RequestContext.getCurrentInstance().execute("dlg.hide()");
-		// return null;
 	}
 
 	public String cerrar() {

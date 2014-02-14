@@ -103,20 +103,7 @@ public class Tercero implements Serializable {
 	
 	@Transient
 	private Boolean mayorista;
-	/**
-	 * co.com.rentavoz.logica.jpa.entidades
-	 * co.com.rentavoz.model.jpa
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 */
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-//	private List<TerceroVenta> terceroVentaList;
-	/**
-	 * co.com.rentavoz.logica.jpa.entidades
-	 * co.com.rentavoz.model.jpa
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 */
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-//	private List<Roles> rolesList;
+
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
@@ -124,13 +111,6 @@ public class Tercero implements Serializable {
 	 */
 	@Transient
 	private List<SucursalTercero> sucursalTerceroList=new ArrayList<SucursalTercero>();
-	/**
-	 * co.com.rentavoz.logica.jpa.entidades
-	 * co.com.rentavoz.model.jpa
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 */
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "terceroidTecero")
-//	private List<Plan> planList;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
@@ -319,7 +299,6 @@ public class Tercero implements Serializable {
 	* @date 4/09/2013
 	* @return
 	*/
-//	@XmlTransient
 	public List<SucursalTercero> getSucursalTerceroList() {
 		return sucursalTerceroList;
 	}
@@ -382,11 +361,6 @@ public class Tercero implements Serializable {
 	}
 
 	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the tipo
-	 */
-	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 4/09/2013
 	* @return
@@ -395,11 +369,8 @@ public class Tercero implements Serializable {
 		return tipo;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the usuario
-	 */
+	
+
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 4/09/2013
@@ -409,12 +380,7 @@ public class Tercero implements Serializable {
 		return usuario;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param usuario
-	 *            the usuario to set
-	 */
+
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 4/09/2013
@@ -424,12 +390,7 @@ public class Tercero implements Serializable {
 		this.usuario = usuario;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param tipo
-	 *            the tipo to set
-	 */
+
 	/**
 	* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 4/09/2013

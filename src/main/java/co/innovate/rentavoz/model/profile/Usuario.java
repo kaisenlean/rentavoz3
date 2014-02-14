@@ -44,13 +44,6 @@ public class Usuario implements Serializable {
 	@Transient
 	private String contrasena2;
 
-	/**
-	 * co.com.rentavoz.logica.jpa.entidades.profile co.com.rentavoz.model.jpa
-	 * 
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 */
-	// @OneToMany(mappedBy = "usuario")
-	// private List<Permiso> permisos;
 
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades.profile co.com.rentavoz.model.jpa
@@ -140,24 +133,6 @@ public class Usuario implements Serializable {
 		this.contrasena = contrasena;
 	}
 
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @return the permisos
-	 */
-	// public List<Permiso> getPermisos() {
-	// return permisos;
-	// }
-
-	/**
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 2/06/2013
-	 * @param permisos
-	 *            the permisos to set
-	 */
-	// public void setPermisos(List<Permiso> permisos) {
-	// this.permisos = permisos;
-	// }
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
