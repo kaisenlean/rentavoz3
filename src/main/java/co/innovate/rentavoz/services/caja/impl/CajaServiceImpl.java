@@ -25,7 +25,7 @@ import co.innovate.rentavoz.services.impl.GenericServiceImpl;
  * 
  */
 @Service(CajaServiceImpl.SERVICE_NAME)
-public abstract class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
+public class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
 		implements CajaService, Serializable {
 
 	/**

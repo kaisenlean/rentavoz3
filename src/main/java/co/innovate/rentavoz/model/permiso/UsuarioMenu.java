@@ -53,7 +53,15 @@ public class UsuarioMenu implements Serializable {
 	@JoinColumn(name="usuario",referencedColumnName="usuar")
 	private Usuario usuario;
 
+	/**
+	 * co.com.rentavoz.logica.jpa.entidades.permiso co.com.rentavoz.model.jpa
+	 * 
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 */
 	
+//	@JoinColumn(name = "usuario")
+//	private Usuario usuario;
+
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/11/2013
@@ -79,7 +87,14 @@ public class UsuarioMenu implements Serializable {
 		return menu;
 	}
 
-
+	/**
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/06/2013
+	 * @return the usuario
+	 */
+//	public Usuario getUsuario() {
+//		return usuario;
+//	}
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -111,6 +126,15 @@ public class UsuarioMenu implements Serializable {
 		this.menu = menu;
 	}
 
+	/**
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 2/06/2013
+	 * @param usuario
+	 *            the usuario to set
+	 */
+//	public void setUsuario(Usuario usuario) {
+//		this.usuario = usuario;
+//	}
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

@@ -24,6 +24,7 @@ public class SelectorModoPago {
 	public void init() {
 		ModoPagoEnum[] findAll = ModoPagoEnum.values();
 		items = new ArrayList<SelectItem>();
+//		items.add(new SelectItem(" ", "-- Seleccione un estado --"));
 		for (int i = 0; i < findAll.length; i++) {
 
 			items.add(new SelectItem(findAll[i].name(), findAll[i].name()));

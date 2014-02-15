@@ -68,8 +68,7 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 		cuotas=venta.getCuotas();
 		lineas = venta.getVentaLineaList();
 
-		 Venta ventaTmp = ventaService.save(venta);
-		 venta=ventaTmp;
+		venta = ventaService.save(venta);
 		int i = 0;
 		for (VentaLinea linea : lineas) {
 			linea.setVentaidVenta(venta);

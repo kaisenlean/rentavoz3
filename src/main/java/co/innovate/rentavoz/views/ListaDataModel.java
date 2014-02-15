@@ -31,7 +31,10 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 
 	@Override
 	public void setRowIndex(int rowIndex) {
-
+		/*
+		 * The following is in ancestor (LazyDataModel): this.rowIndex =
+		 * rowIndex == -1 ? rowIndex : (rowIndex % pageSize);
+		 */
 		if (rowIndex == -1 || getPageSize() == 0) {
 			super.setRowIndex(-1);
 		} else
@@ -78,6 +81,7 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 			e.printStackTrace();
 		}
 		setRowCount(-1);
+		// set the total of players
 		if (getRowCount() <= 0) {
 			Integer count = customCount(globalFilter);
 
@@ -90,6 +94,7 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 			}
 		}
 
+		// set the page dize
 		setPageSize(maxPerPage);
 
 		return lista;

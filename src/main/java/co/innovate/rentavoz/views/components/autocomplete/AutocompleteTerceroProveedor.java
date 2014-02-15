@@ -58,6 +58,7 @@ public abstract class AutocompleteTerceroProveedor extends Autocompletar<Tercero
 		}
 		String valor = evt.getObject().toString();
 		String id = obtenerId(valor);
+//		Integer val = Integer.parseInt(id);
 		seleccionado= getService().findByDocumento(id);
 		query = seleccionado!=null?seleccionado.toString():null;
 		postSelect();

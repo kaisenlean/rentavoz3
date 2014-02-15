@@ -14,8 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 
@@ -25,6 +28,11 @@ import co.innovate.rentavoz.model.almacen.venta.Venta;
  */
 @Entity
 @Table(name = "terceroventa")
+@XmlRootElement
+@NamedQueries({
+		@NamedQuery(name = "TerceroVenta.findAll", query = "SELECT t FROM TerceroVenta t"),
+		@NamedQuery(name = "TerceroVenta.findByIdTerVen", query = "SELECT t FROM TerceroVenta t WHERE t.idTerVen = :idTerVen"),
+		@NamedQuery(name = "TerceroVenta.findByTerVenTipo", query = "SELECT t FROM TerceroVenta t WHERE t.terVenTipo = :terVenTipo") })
 public class TerceroVenta implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id

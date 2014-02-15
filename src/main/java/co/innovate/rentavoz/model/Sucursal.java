@@ -140,6 +140,23 @@ public class Sucursal implements Serializable {
 		this.ciudadidCiudad = ciudadidCiudad;
 	}
 
+//	@XmlTransient
+//	public List<SucursalSimcard> getSucursalSimcardList() {
+//		return sucursalSimcardList;
+//	}
+//
+//	public void setSucursalSimcardList(List<SucursalSimcard> sucursalSimcardList) {
+//		this.sucursalSimcardList = sucursalSimcardList;
+//	}
+//
+//	@XmlTransient
+//	public List<SucursalTercero> getSucursalTerceroList() {
+//		return sucursalTerceroList;
+//	}
+//
+//	public void setSucursalTerceroList(List<SucursalTercero> sucursalTerceroList) {
+//		this.sucursalTerceroList = sucursalTerceroList;
+//	}
 
 	@Override
 	public int hashCode() {

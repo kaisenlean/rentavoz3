@@ -240,6 +240,63 @@ public class Linea implements Serializable {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the sucursalLineaList
+//	 */
+//	public List<SucursalLinea> getSucursalLineaList() {
+//		return sucursalLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param sucursalLineaList
+//	 *            the sucursalLineaList to set
+//	 */
+//	public void setSucursalLineaList(List<SucursalLinea> sucursalLineaList) {
+//		this.sucursalLineaList = sucursalLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the planLineaList
+//	 */
+//	public List<PlanLinea> getPlanLineaList() {
+//		return planLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param planLineaList
+//	 *            the planLineaList to set
+//	 */
+//	public void setPlanLineaList(List<PlanLinea> planLineaList) {
+//		this.planLineaList = planLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @return the ventaLineaList
+//	 */
+//	public List<VentaLinea> getVentaLineaList() {
+//		return ventaLineaList;
+//	}
+//
+//	/**
+//	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+//	 * @date 2/06/2013
+//	 * @param ventaLineaList
+//	 *            the ventaLineaList to set
+//	 */
+//	public void setVentaLineaList(List<VentaLinea> ventaLineaList) {
+//		this.ventaLineaList = ventaLineaList;
+//	}
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

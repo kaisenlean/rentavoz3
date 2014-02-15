@@ -63,9 +63,7 @@ public class VentaItemEjb implements Serializable {
 			existencias.add(beTemp);
 		}
 		/*registramos la venta */		
-		VentaItem ventaTmp=ventaItemService.save(venta);
-		
-		venta=ventaTmp;
+		venta=ventaItemService.save(venta);
 		
 		/*luego editamos las existencias a vendida*/
 		for (BodegaExistencia bodegaExistencia : existencias) {
