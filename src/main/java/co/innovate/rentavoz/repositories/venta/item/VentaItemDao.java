@@ -40,4 +40,7 @@ public interface VentaItemDao extends GenericRepository<VentaItem, Integer> {
 	*/
 	public int countFindVentaByFechas(Date start, Date end);
 	
+	
+	
+	
 }

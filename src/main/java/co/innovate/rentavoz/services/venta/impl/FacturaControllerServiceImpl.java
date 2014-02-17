@@ -12,10 +12,16 @@ import org.springframework.stereotype.Service;
 import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
+import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
+import co.innovate.rentavoz.model.venta.VentaItem;
+import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.services.almacen.CuotaService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaService;
 import co.innovate.rentavoz.services.venta.FacturaControllerService;
+import co.innovate.rentavoz.services.venta.item.VentaItemService;
+import co.innovate.rentavoz.services.venta.item.cuota.VentaItemCuotaService;
+import co.innovate.rentavoz.services.venta.item.detalle.VentaItemDetalleItemService;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -43,6 +49,16 @@ public class FacturaControllerServiceImpl implements FacturaControllerService, S
 	
 	@Autowired
 	private VentaLineaService ventaLineaService;
+	
+	@Autowired
+	private VentaItemService ventaItemService;
+	
+	
+	@Autowired
+	private VentaItemCuotaService ventaItemCuotaService;
+	
+	@Autowired
+	private VentaItemDetalleItemService ventaItemDetalleItemService;
 
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.services.venta.FacturaControllerService#cargarFactura(co.innovate.rentavoz.model.almacen.venta.Venta)
@@ -61,8 +77,30 @@ public class FacturaControllerServiceImpl implements FacturaControllerService, S
 	public Venta pagarCuota(Cuota cuota) {
 		cuota.setEstadoCuota(EstadoCuotaEnum.PAGADA);
 		cuota.setFechaPago(Calendar.getInstance().getTime());
-		cuota=cuotaService.save(cuota);
+		cuotaService.save(cuota);
 		return cargarFactura(cuota.getVenta());
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.venta.FacturaControllerService#cargarFacturaItem(co.innovate.rentavoz.model.venta.VentaItem)
+	 */
+	@Override
+	public VentaItem cargarFacturaItem(VentaItem venta) {
+		
+		venta.setCuotas(ventaItemCuotaService.findCuotasByVenta(venta));
+		venta.setExistencias(ventaItemDetalleItemService.findByVentaItem(venta));
+		return venta;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.venta.FacturaControllerService#pagarCuotaItem(co.innovate.rentavoz.model.venta.VentaItemCuota)
+	 */
+	@Override
+	public VentaItem pagarCuotaItem(VentaItemCuota cuota) {
+		cuota.setEstado(EstadoVentaItemCuotaEnum.PAGADA);
+		cuota.setFechaPago(Calendar.getInstance().getTime());
+		ventaItemCuotaService.save(cuota);
+		return cargarFacturaItem(cuota.getIdVenta());
 	}
 	
 	

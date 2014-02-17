@@ -72,8 +72,9 @@
 
 				<h:panelGrid columns="3">
 					<h:outputText style="font-weight: bolder" value="Cliente" />
-					<p:autoComplete size="50" style="width:400px" id="proveedorIngreso"
-						value="#{beanVentaItem.autocompleteTercero.query}"
+					<p:autoComplete size="50" style="width:400px" id="proveedorIngreso" 	var="it" itemLabel="#{it}" itemValue="#{it}"
+					converter="#{beanVentaItem.autocompleteTercero.conversorClientes}"
+						value="#{beanVentaItem.autocompleteTercero.seleccionado}"
 						completeMethod="#{beanVentaItem.autocompleteTercero.completarBusqueda}">
 						<p:ajax event="itemSelect" update="@all" process="@this"
 							listener="#{beanVentaItem.autocompleteTercero.seleccionar}">

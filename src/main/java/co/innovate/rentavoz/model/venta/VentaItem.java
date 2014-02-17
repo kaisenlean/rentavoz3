@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.Cuentas;
 import co.innovate.rentavoz.model.Tercero;
@@ -164,6 +165,10 @@ public class VentaItem implements Serializable {
 	@JoinColumn(name="fecha_facturacion")
 	private FechaFacturacion fechaFacturacion;
 	
+	
+	
+	@Transient
+	private Double valorAbono;
 	
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -428,5 +433,23 @@ public void setFechaFacturacion(FechaFacturacion fechaFacturacion) {
 	this.fechaFacturacion = fechaFacturacion;
 }
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 17/02/2014
+ * @return the valorAbono
+ */
+public Double getValorAbono() {
+	return valorAbono;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 17/02/2014
+ * @param valorAbono the valorAbono to set
+ */
+public void setValorAbono(Double valorAbono) {
+	this.valorAbono = valorAbono;
+}
 
 }

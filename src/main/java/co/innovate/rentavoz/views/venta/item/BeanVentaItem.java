@@ -183,6 +183,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	private AutocompleteColaboradores autocompleteColaboradores2;
 	private VentaItemDetalleItem item;
 
+	
+
+	
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -837,5 +840,6 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	public void setItem(VentaItemDetalleItem item) {
 		this.item = item;
 	}
+	
 	
 }

@@ -153,7 +153,7 @@ public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements 
 		
 		Query query = getEntityManager()
 				.createQuery(new StringBuilder(
-						"SELECT SUM(c.valor) FROM VentaItemCuota c WHERE c.idVenta.fecha BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota AND c.idVenta.vendedor = :vendedor").toString());
+						"SELECT SUM(c.valor) FROM VentaItemCuota c WHERE c.fechaPago BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota AND c.idVenta.vendedor = :vendedor").toString());
 
 		query.setParameter(START, inicio.getTime());
 		query.setParameter(END, fin.getTime());
