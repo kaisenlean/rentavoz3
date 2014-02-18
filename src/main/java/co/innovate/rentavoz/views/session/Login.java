@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
@@ -52,12 +53,12 @@ public class Login extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{cajaService}")
 	private CajaService cajaService;
-	
-	private List<Sucursal> sucursales=new ArrayList<Sucursal>();
-		
-	@ManagedProperty(value="#{sucursalTerceroService}")
+
+	private List<Sucursal> sucursales = new ArrayList<Sucursal>();
+
+	@ManagedProperty(value = "#{sucursalTerceroService}")
 	private SucursalTerceroService sucursalTerceroService;
-	
+
 	private Usuario user;
 	private String usuario;
 	private String contrasena;
@@ -66,11 +67,12 @@ public class Login extends BaseBean implements Serializable {
 
 	private double valorCaja;
 	private double valorCajaLineas;
-	
+
 	private Boolean pertenecePrinicpal;
 
 	private Logger log = Logger.getAnonymousLogger();
-
+	
+	private List<SelectItem> sucursalItems= new ArrayList<SelectItem>();
 
 	/**
 	 * 
@@ -84,13 +86,13 @@ public class Login extends BaseBean implements Serializable {
 		logOut();
 	}
 
+	public void validateSession() {
 
-	public void validateSession(){
-		
-		if (user==null ) {
+		if (user == null) {
 			logOut();
 		}
 	}
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -100,7 +102,7 @@ public class Login extends BaseBean implements Serializable {
 		try {
 
 			valorCaja = cajaService.valorCaja(getTercero());
-			valorCajaLineas=cajaService.valorCajaLineas(getTercero());
+			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
 		}
@@ -129,9 +131,9 @@ public class Login extends BaseBean implements Serializable {
 			loggedIn = true;
 			context.addCallbackParam("loggedIn", loggedIn);
 			buscarTercero();
-			 cajaService.abrirCaja(user);
-			 valorCaja=cajaService.valorCaja(getTercero());
-			 valorCajaLineas=cajaService.valorCajaLineas(getTercero());
+			cajaService.abrirCaja(user);
+			valorCaja = cajaService.valorCaja(getTercero());
+			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;
@@ -149,27 +151,54 @@ public class Login extends BaseBean implements Serializable {
 	 */
 	private void buscarTercero() {
 		tercero = terceroService.findByUsuario(user);
-		sucursales=new ArrayList<Sucursal>();
-		tercero.setSucursalTerceroList(sucursalTerceroService.findByTercero(tercero));
-		if (tercero != null) {
-			if (!tercero.getSucursalTerceroList().isEmpty()) {
-				sucursal = tercero.getSucursalTerceroList().get(0)
-						.getSucursalidSucursal();
-			for (SucursalTercero sucursalTercero : tercero.getSucursalTerceroList()) {
+		sucursales = new ArrayList<Sucursal>();
+		if (tercero == null) {
+			mensajeError("Por favor asignale un tercero a este usuario para poder ingresar");
+			return;
+		}
+		if (user.getAdministrador()) {
+			tercero.setSucursalTerceroList(sucursalTerceroService.findAll());
+		} else {
+			tercero.setSucursalTerceroList(sucursalTerceroService
+					.findByTercero(tercero));
+		}
+
+		if (!tercero.getSucursalTerceroList().isEmpty()) {
+			sucursal = tercero.getSucursalTerceroList().get(0)
+					.getSucursalidSucursal();
+			for (SucursalTercero sucursalTercero : tercero
+					.getSucursalTerceroList()) {
 				sucursales.add(sucursalTercero.getSucursalidSucursal());
-				
-			}
 
 			}
-			
+			if (user.getAdministrador()) {
+				pertenecePrinicpal=true;
+			}else{
+
 			for (Sucursal sucursal : sucursales) {
 				if (sucursal.getPrincipal()) {
-					pertenecePrinicpal=true;
+					pertenecePrinicpal = true;
 					break;
 				}
 			}
+			}
 		}
+		
+		cargarItemsBySucursales(sucursales);
 
+	}
+
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 17/02/2014
+	* @param sucursales2
+	*/
+	private void cargarItemsBySucursales(List<Sucursal> sucursales2) {
+		sucursalItems=new ArrayList<SelectItem>();
+		for (Sucursal sucursal : sucursales2) {
+			sucursalItems.add(new SelectItem(sucursal.getIdSucursal(),sucursal.getSucNombre()));
+			
+		}
 	}
 
 	/**
@@ -180,21 +209,18 @@ public class Login extends BaseBean implements Serializable {
 	public void logOut() {
 		ExternalContext ctx = FacesContext.getCurrentInstance()
 				.getExternalContext();
-		 String ctxPath = ((ServletContext)
-		 ctx.getContext()).getContextPath();
+		String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
 
 		try {
 			// Usar el contexto de JSF para invalidar la sesión,
 			// NO EL DE SERVLETS (nada de HttpServletRequest)
 			((HttpSession) ctx.getSession(false)).invalidate();
-			
-	
 
 			// Redirección de nuevo con el contexto de JSF,
 			// si se usa una HttpServletResponse fallará.
 			// Sin embargo, como ya está fuera del ciclo de vida
 			// de JSF se debe usar la ruta completa -_-U
-			 ctx.redirect(ctxPath + "/");
+			ctx.redirect(ctxPath + "/");
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}
@@ -382,7 +408,6 @@ public class Login extends BaseBean implements Serializable {
 		this.usuario = usuario;
 	}
 
-	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -391,16 +416,17 @@ public class Login extends BaseBean implements Serializable {
 	public List<Sucursal> getSucursales() {
 		return sucursales;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param sucursales the sucursales to set
+	 * @param sucursales
+	 *            the sucursales to set
 	 */
 	public void setSucursales(List<Sucursal> sucursales) {
 		this.sucursales = sucursales;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -409,26 +435,28 @@ public class Login extends BaseBean implements Serializable {
 	public Boolean getPertenecePrinicpal() {
 		return pertenecePrinicpal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param pertenecePrinicpal the pertenecePrinicpal to set
+	 * @param pertenecePrinicpal
+	 *            the pertenecePrinicpal to set
 	 */
 	public void setPertenecePrinicpal(Boolean pertenecePrinicpal) {
 		this.pertenecePrinicpal = pertenecePrinicpal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 * @param sucursalTerceroService
+	 *            the sucursalTerceroService to set
 	 */
 	public void setSucursalTerceroService(
 			SucursalTerceroService sucursalTerceroService) {
 		this.sucursalTerceroService = sucursalTerceroService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 9/02/2014
@@ -437,13 +465,33 @@ public class Login extends BaseBean implements Serializable {
 	public double getValorCajaLineas() {
 		return valorCajaLineas;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 9/02/2014
-	 * @param valorCajaLineas the valorCajaLineas to set
+	 * @param valorCajaLineas
+	 *            the valorCajaLineas to set
 	 */
 	public void setValorCajaLineas(double valorCajaLineas) {
 		this.valorCajaLineas = valorCajaLineas;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/02/2014
+	 * @return the sucursalItems
+	 */
+	public List<SelectItem> getSucursalItems() {
+		return sucursalItems;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/02/2014
+	 * @param sucursalItems the sucursalItems to set
+	 */
+	public void setSucursalItems(List<SelectItem> sucursalItems) {
+		this.sucursalItems = sucursalItems;
 	}
 }
