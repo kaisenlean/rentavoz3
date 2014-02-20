@@ -9,13 +9,39 @@
 
 	<ui:define name="content">
 		<h:form id="form" style="width:100%">
-			<h:outputLabel value="Actualizacion de consumo de lineas" class="h1" />
+			<h:outputLabel value="Actualizacion de consumo de lineas Celulares" class="h1" />
 
 
-			<p:fileUpload update="@all" process="@all"
-				fileUploadListener="#{beanLineaConsumo.uploadHandler}"></p:fileUpload>
-			<p:inputTextarea value="#{beanLineaConsumo.salida}" cols="100"
-				rows="30"></p:inputTextarea>
+			<p:fileUpload rendered="#{beanConsumo.consumos.size()==0}" update="@all" process="@this"
+				fileUploadListener="#{beanConsumo.cargarConsumosClaro}"></p:fileUpload>
+			
+			
+			<h:panelGrid columns="2">
+			<p:commandButton value="Guardar Datos" process="@this" update="@all" actionListener="#{beanConsumo.guardarConsumos()}" disabled="#{beanConsumo.consumos.size() eq 0}"></p:commandButton>
+			<p:commandButton value="Cancelar" process="@this" update="@all" actionListener="#{beanConsumo.init()}" disabled="#{beanConsumo.consumos.size() eq 0}"></p:commandButton>
+			</h:panelGrid>
+			<p:dataTable value="#{beanConsumo.consumos}" var="consumo"  paginator="true" rows="#{opcionLoader.numRows}">
+			
+			<f:facet name="header">
+			#{beanConsumo.consumos.size()} Registro(s) en total
+			</f:facet>
+			<p:column headerText="Linea">
+			<h:outputText value="#{consumo.linea.linNumero}" />
+			</p:column>
+			
+			<p:column headerText="Minutos a Claro">
+			<h:outputText value="#{consumo.claro}" />
+			</p:column>
+			
+			
+			<p:column headerText="Minutos a fijo">
+			<h:outputText value="#{consumo.fijo}" />
+			</p:column>
+			
+			<p:column headerText="Minutos Otros Operadores">
+			<h:outputText value="#{consumo.otros}" />
+			</p:column>
+			</p:dataTable>
 		</h:form>
 
 	</ui:define>

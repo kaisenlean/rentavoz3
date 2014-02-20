@@ -9,18 +9,17 @@
 
 	<ui:define name="content">
 		<h:form id="form" style="width:100%">
-			<h:outputLabel value="Actualizacion de consumo de lineas" class="h1" />
-			<p:autoComplete size="100" style="width:800px" id="autocomp"
-				widgetVar="autocomp"
-				value="#{consultaLineaConsumo.autocompleteLinea.query}"
-				completeMethod="#{consultaLineaConsumo.autocompleteLinea.completarBusqueda}">
-				<p:ajax event="itemSelect" update="@all"
-					listener="#{consultaLineaConsumo.autocompleteLinea.seleccionar}">
-				</p:ajax>
-			</p:autoComplete>
+			<h:outputLabel value="Consulta  de consumo de lineas" class="h1" />
+		<h:panelGrid columns="3">
+		
+			<p:inputText size="50" placeholder="Digita el número de la linea" value="#{beanConsumo.numeroLinea}" onkeypress="if (event.keyCode == 13) { btnBusquedaConsumos.jq.click();  return false; }">
+			
+			</p:inputText>
+			<p:commandButton actionListener="#{beanConsumo.buscarConsumoLinea()}" process="@all" update="@all" value="Consultar" widgetVar="btnBusquedaConsumos"></p:commandButton>
+		</h:panelGrid>
 
 
-			<p:dataTable value="#{consultaLineaConsumo.consumos}" var="consumo">
+			<p:dataTable value="#{beanConsumo.consumos}" var="consumo">
 				<p:column headerText="Fecha">
 					<h:outputText value="#{consumo.fecha}">
 						<f:convertDateTime pattern="dd/MM/yyyy" />

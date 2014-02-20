@@ -30,7 +30,7 @@ public class LineaConsumo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	private int id;
+	private Integer id;
 
 	private int claro;
 
@@ -54,11 +54,11 @@ public class LineaConsumo implements Serializable {
 	public LineaConsumo() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
