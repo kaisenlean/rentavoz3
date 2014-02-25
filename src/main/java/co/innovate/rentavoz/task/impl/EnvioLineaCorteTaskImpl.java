@@ -14,11 +14,12 @@ import co.innovate.rentavoz.model.cron.CronActivity;
 import co.innovate.rentavoz.model.cron.CronActivityParametro;
 import co.innovate.rentavoz.services.cron.CronActivityService;
 import co.innovate.rentavoz.services.notificacionlinea.EnvioCorteLineaService;
+import co.innovate.rentavoz.task.EnvioLineaCorteTask;
 
-@Service("runMeTask")
-public class RunMeTaskImpl  implements co.innovate.rentavoz.task.RunMeTask{
+@Service("envioLineaCorteTask")
+public class EnvioLineaCorteTaskImpl  implements EnvioLineaCorteTask{
 
-	private Logger logger= Logger.getLogger(RunMeTaskImpl.class);
+	private Logger logger= Logger.getLogger(EnvioLineaCorteTaskImpl.class);
 	
 	@Autowired
 	private EnvioCorteLineaService envioCorteLineaService;

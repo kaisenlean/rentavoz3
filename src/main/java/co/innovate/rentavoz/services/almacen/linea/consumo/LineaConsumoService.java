@@ -7,6 +7,7 @@ import java.util.List;
 
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.LineaConsumo;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.services.GenericService;
 
 /**
@@ -26,4 +27,15 @@ public interface LineaConsumoService extends GenericService<LineaConsumo, Intege
 	* @return
 	*/
 	List<LineaConsumo> findByLinea(Linea linea);
+	
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 25/02/2014
+	* @param fechaFacturacion
+	* @return
+	*/
+	List<Linea> findLineasNoVendidasConConsumo(FechaFacturacion fechaFacturacion,int corte);
 }

@@ -1,6 +1,6 @@
 package co.innovate.rentavoz.task;
 
-public interface RunMeTask {
+public interface EnvioLineaCorteTask {
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>

@@ -72,7 +72,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 */
 	private static final int ESTADO_LINEA_DISPONIBLE_USO = 4;
-	private static final Integer ESTADO_LINEA_REPO = 2;
+	public static final Integer ESTADO_LINEA_REPO = 2;
 	
 	
 	private Logger logger= Logger.getLogger(LineaDaoImpl.class);

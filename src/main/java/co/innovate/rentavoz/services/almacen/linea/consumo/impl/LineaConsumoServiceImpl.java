@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.LineaConsumo;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.almacen.linea.consumo.LineaConsumoDao;
 import co.innovate.rentavoz.services.almacen.linea.consumo.LineaConsumoService;
@@ -50,6 +51,15 @@ public class LineaConsumoServiceImpl extends GenericServiceImpl<LineaConsumo, In
 	@Override
 	public List<LineaConsumo> findByLinea(Linea linea) {
 		return lineaConsumoDao.findByLinea(linea);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.linea.consumo.LineaConsumoService#findLineasNoVendidasConConsumo(co.innovate.rentavoz.model.facturacion.FechaFacturacion)
+	 */
+	@Override
+	public List<Linea> findLineasNoVendidasConConsumo(
+			FechaFacturacion fechaFacturacion,int corte) {
+		return lineaConsumoDao.findLineasNoVendidasConConsumo(fechaFacturacion,corte);
 	}
 
 }
