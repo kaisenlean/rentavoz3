@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Gestión de Formatos" class="h1" />
+
+			<h:panelGrid columns="2" rendered="${!beanFormato.form}">
+				<h:commandButton value="Nuevo Formato"
+					actionListener="${beanFormato.verFormNuevo(true)}" />
+			</h:panelGrid>
+
+
+			<p:panel rendered="${beanFormato.form}"
+				header="Informacion del Formato" style="width: 100%">
+				<h:panelGrid columns="3">
+				
+
+					<h:outputLabel value="Título" />
+					<h:inputTextarea rows="5" cols="70" id="nomDept"
+						value="${beanFormato.objeto.titulo}" required="true"
+						requiredMessage="Por favor digita un Titulo valido" />
+					<p:message for="nomDept" />
+					
+					<h:outputLabel value="Título" />
+					<p:selectOneMenu id="tipoFormato" value="#{beanFormato.tipoFormato}">
+					<f:selectItems  value="#{selectorTipoFormato.items}"/>
+					<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="tipoFormato" />
+					
+					
+					<h:outputLabel value="Archivo" />
+					<p:fileUpload id="archivo" fileUploadListener="#{beanFormato.uploadDocumento}" process="@this"  ></p:fileUpload>
+					<p:message for="archivo" />
+					
+					
+	
+					<h:commandButton value="Aceptar" action="${beanFormato.aceptar()}" />
+					<h:commandButton value="Cancelar" immediate="true"
+						action="${beanFormato.reglaNavegacion()}" />
+				</h:panelGrid>
+			</p:panel>
+
+
+			
+			<p:dataTable  paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!beanFormato.form}" style="width: 100%"
+				value="#{beanFormato.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column style="width: 10%" headerText="Codigo"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+				<p:column headerText="Titulo" styleClass="styleColumn"
+					>
+					<p:outputLabel value="${item.titulo}" />
+				</p:column>
+				<p:column headerText="Tipo" styleClass="styleColumn"
+					>
+					<p:outputLabel value="${item.tipo}" />
+				</p:column>
+			
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${beanFormato.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.id}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.id}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${beanFormato.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar"
+								onclick="pnl${item.id}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

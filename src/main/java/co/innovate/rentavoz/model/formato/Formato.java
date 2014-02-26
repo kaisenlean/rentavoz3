@@ -3,6 +3,8 @@
  */
 package co.innovate.rentavoz.model.formato;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -14,6 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -52,6 +58,9 @@ public class Formato  implements Serializable{
 	@Lob
 	@Column
 	private byte[] archivo;
+	
+	 @Transient
+	 private StreamedContent streamedContent;
 	
 	
 	/**
@@ -159,6 +168,16 @@ public class Formato  implements Serializable{
 	 */
 	public void setArchivo(byte[] archivo) {
 		this.archivo = archivo;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 25/02/2014
+	 * @return the streamedContent
+	 */
+	public StreamedContent getStreamedContent() {
+		InputStream inputStream=new ByteArrayInputStream(archivo);
+		return new DefaultStreamedContent(inputStream,null,nombreArchivo);
 	}
 	
 	

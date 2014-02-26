@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Descarga de Guías y formatos " class="h1" />
+
+
+
+			
+			<p:dataTable  paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!beanFormato.form}" style="width: 100%"
+				value="#{beanFormato.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column style="width: 10%" headerText="Codigo"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+				<p:column headerText="Titulo" styleClass="styleColumn"
+					>
+					<p:outputLabel value="${item.titulo}" />
+				</p:column>
+				<p:column headerText="Tipo" styleClass="styleColumn"
+					>
+					<p:outputLabel value="${item.tipo}" />
+				</p:column>
+			
+				<p:column width="7%">
+			<p:commandButton ajax="false" value="Descargar" icon="ui-icon-circle-arrow-s">
+			<p:fileDownload value="#{item.streamedContent}"></p:fileDownload>
+			</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
