@@ -6,12 +6,15 @@ package co.innovate.rentavoz.views.venta.linea;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -19,6 +22,7 @@ import org.apache.log4j.Logger;
 import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.logic.venta.linea.VentaControllerService;
 import co.innovate.rentavoz.model.Opcion;
+import co.innovate.rentavoz.model.SucursalTercero;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.Cuota;
@@ -35,6 +39,8 @@ import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
 import co.innovate.rentavoz.services.opcion.OpcionService;
+import co.innovate.rentavoz.services.sucursal.SucursalService;
+import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
@@ -88,6 +94,9 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{ciudadService}")
 	private CiudadService ciudadService;
 	
+	@ManagedProperty(value="#{sucursalTerceroService}")
+	private SucursalTerceroService sucursalTerceroService;
+	
 	private String modoPago;
 	
 	private Venta venta;
@@ -111,6 +120,12 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{cuentasService}")
 	private CuentasService cuentasService;
 	private Logger logger= Logger.getLogger(BeanVentaLinea.class);
+	
+	private int idSucursal;
+	
+
+	@ManagedProperty(value="#{sucursalService}")
+	private SucursalService sucursalService;
 
 	@PostConstruct
 	public void init() {
@@ -168,6 +183,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			}
 		};
 		inicializarValoresVenta();
+		login.updateValorCaja();
 	}
 
 	/**
@@ -220,6 +236,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			cuota.setEstadoCuota(EstadoCuotaEnum.PAGADA);
 			cuota.setFechaPago(new Date());
 			cuota.setValorCuota(venta.getVenSaldo());
+			venta.getCuotas().add(cuota);
 			break;
 		default:
 			break;
@@ -228,8 +245,10 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		
 		try {
 			venta.setCuenta(cuentasService.findById(selCuota));
+			venta.setSucursal(sucursalService.findById(idSucursal));
 		venta=ventaControllerService.guardarVentaLinea(venta);
 		addAttribute(SessionParams.ENTITY_BACK, venta);
+		login.updateValorCaja();
 		goTo("/paginas/almacen/venta/linea/respuesta.jsf");
 		} catch (Exception e) {
 			logger.error(e);
@@ -323,6 +342,12 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public void loadItem(VentaLinea ventaItem){
 		this.ventaItem=ventaItem;
 		runJavascript("dialogo.show();");
+		
+		
+	}
+	public void loadItem2(VentaLinea ventaItem){
+		this.ventaItem=ventaItem;
+		runJavascript("dialogo2.show();");
 		
 		
 	}
@@ -715,5 +740,50 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	 */
 	public void setCuentasService(CuentasService cuentasService) {
 		this.cuentasService = cuentasService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 */
+	public void setSucursalTerceroService(
+			SucursalTerceroService sucursalTerceroService) {
+		this.sucursalTerceroService = sucursalTerceroService;
+	}
+	
+	public List<SelectItem> getItemsSucursales(){
+		List<SelectItem> lista=new ArrayList<SelectItem>();
+		for (SucursalTercero st : sucursalTerceroService.findByTercero(login.getTercero())) {
+			lista.add(new SelectItem(st.getSucursalidSucursal().getIdSucursal(),st.getSucursalidSucursal().getSucNombre()));
+		}
+		return lista;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @return the idSucursal
+	 */
+	public int getIdSucursal() {
+		return idSucursal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param idSucursal the idSucursal to set
+	 */
+	public void setIdSucursal(int idSucursal) {
+		this.idSucursal = idSucursal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursalService the sucursalService to set
+	 */
+	public void setSucursalService(SucursalService sucursalService) {
+		this.sucursalService = sucursalService;
 	}
 }

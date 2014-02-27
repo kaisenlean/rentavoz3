@@ -10,8 +10,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
 import co.innovate.rentavoz.logic.venta.item.VentaItemEjb;
+import co.innovate.rentavoz.model.SucursalTercero;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
@@ -27,6 +29,8 @@ import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
 import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
+import co.innovate.rentavoz.services.sucursal.SucursalService;
+import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
@@ -183,6 +187,13 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	private AutocompleteColaboradores autocompleteColaboradores2;
 	private VentaItemDetalleItem item;
 
+	@ManagedProperty(value="#{sucursalTerceroService}")
+	private SucursalTerceroService sucursalTerceroService;
+	
+	@ManagedProperty(value="#{sucursalService}")
+	private SucursalService sucursalService;
+	
+	private int idSucursal;
 	
 
 	
@@ -330,6 +341,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		venta.setCliente(autocompleteTercero.getSeleccionado());
 		venta.setModoPago(ModoPagoEnum.valueOf(modoPago));
 		venta.setFechaFacturacion(fechaFacturacionService.findById(selFechaFacturacion));
+		venta.setSucursal(sucursalService.findById(idSucursal));
 
 		if (venta.getModoPago().equals(ModoPagoEnum.CONTADO)) {
 			VentaItemCuota cuota = new VentaItemCuota();
@@ -841,5 +853,47 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		this.item = item;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 */
+	public void setSucursalTerceroService(
+			SucursalTerceroService sucursalTerceroService) {
+		this.sucursalTerceroService = sucursalTerceroService;
+	}
 	
+	public List<SelectItem> getItemsSucursales(){
+		List<SelectItem> lista=new ArrayList<SelectItem>();
+		for (SucursalTercero st : sucursalTerceroService.findByTercero(login.getTercero())) {
+			lista.add(new SelectItem(st.getSucursalidSucursal().getIdSucursal(),st.getSucursalidSucursal().getSucNombre()));
+		}
+		return lista;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @return the idSucursal
+	 */
+	public int getIdSucursal() {
+		return idSucursal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param idSucursal the idSucursal to set
+	 */
+	public void setIdSucursal(int idSucursal) {
+		this.idSucursal = idSucursal;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursalService the sucursalService to set
+	 */
+	public void setSucursalService(SucursalService sucursalService) {
+		this.sucursalService = sucursalService;
+	}
 }

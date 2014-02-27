@@ -27,6 +27,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import co.innovate.rentavoz.model.Cuentas;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
@@ -132,6 +133,10 @@ public class Venta implements Serializable {
 	
 	@Transient
 	private String valorCuota;
+	
+	@ManyToOne
+	@JoinColumn(name="sucursal")
+	private Sucursal sucursal;
 	
 	/**
 	 * 
@@ -579,5 +584,24 @@ public class Venta implements Serializable {
 	 */
 	public void setValorCuota(String valorCuota) {
 		this.valorCuota = valorCuota;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @return the sucursal
+	 */
+	public Sucursal getSucursal() {
+		return sucursal;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursal the sucursal to set
+	 */
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
 	}
 }

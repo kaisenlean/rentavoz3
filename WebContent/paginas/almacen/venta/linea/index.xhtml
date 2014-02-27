@@ -11,8 +11,8 @@
 	<ui:define name="content">
 		<h:form>
 			<div style="font-size: 16px;">
-<script src="http://www.java.com/js/deployJava.js"></script>
-<script type="text/javascript">
+				<script src="http://www.java.com/js/deployJava.js"></script>
+				<script type="text/javascript">
 function runApplet(){
     var attributes = {
     code : 'jzebra.PrintApplet.class',
@@ -83,22 +83,30 @@ function runApplet(){
 						</p:ajax>
 					</p:autoComplete>
 
+
+
+					<h:outputText style="font-weight: bolder" value="Sucursal" />
+					<p:selectOneMenu value="#{beanVentaLinea.idSucursal}">
+						<f:selectItems value="#{beanVentaLinea.itemsSucursales}" />
+						<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
 				</h:panelGrid>
 				<p:spacer height="20px"></p:spacer>
 
 				<h:panelGrid columns="3">
 					<h:outputText style="font-weight: bolder" value="Cliente" />
-					<p:autoComplete size="50" style="width:400px" var="it" itemLabel="#{it}" itemValue="#{it}"  id="proveedorIngreso"
+					<p:autoComplete size="50" style="width:400px" var="it"
+						itemLabel="#{it}" itemValue="#{it}" id="proveedorIngreso"
 						value="#{beanVentaLinea.autocompleteTercero.seleccionado}"
 						completeMethod="#{beanVentaLinea.autocompleteTercero.completarBusqueda}"
 						converter="#{beanVentaLinea.autocompleteTercero.conversorClientes}">
-						
+
 						<p:ajax event="itemSelect" update="@all" process="@this"
 							listener="#{beanVentaLinea.autocompleteTercero.seleccionar}">
 
 						</p:ajax>
 					</p:autoComplete>
-			
+
 					<p:commandButton value="Nuevo Cliente"
 						onclick="dlgNewCliente.show();"></p:commandButton>
 
@@ -206,15 +214,15 @@ function runApplet(){
 						</p:column>
 
 						<p:column headerText="Precio Venta">
-							<h:outputText value="#{detalle.ventLinPrecio}" >
-							<f:convertNumber type="currency" currencySymbol="$"/>
+							<h:outputText value="#{detalle.ventLinPrecio}">
+								<f:convertNumber type="currency" currencySymbol="$" />
 							</h:outputText>
-							
+
 						</p:column>
 
 						<p:column headerText="Valor Depósito">
-							<h:outputText value="#{detalle.ventLinDeposito}" >
-							<f:convertNumber type="currency" currencySymbol="$"/>
+							<h:outputText value="#{detalle.ventLinDeposito}">
+								<f:convertNumber type="currency" currencySymbol="$" />
 							</h:outputText>
 						</p:column>
 
@@ -227,6 +235,15 @@ function runApplet(){
 
 
 						</p:column>
+							<p:column>
+							<p:commandButton value="Cambiar Valor Deposito" process="@this"
+								update="@this"
+								actionListener="#{beanVentaLinea.loadItem2(detalle)}"
+								onclick="dialogo2.show();">
+							</p:commandButton>
+
+
+						</p:column>
 						<p:column>
 							<p:commandButton value="Eliminar"
 								actionListener="#{beanVentaLinea.deleteLinea(detalle)}"
@@ -235,15 +252,31 @@ function runApplet(){
 
 					</p:dataTable>
 
-					<p:dialog widgetVar="dialogo" id="dialogo" appendToBody="true" modal="true"
-						header="Nuevo precio">
-						<p:inputText value="#{beanVentaLinea.ventaItem.ventLinPrecio}" 
-							id="txtValor"  onkeypress="if (event.keyCode == 13) { addPrecioBtn.jq.click();  return false; }">	</p:inputText>
-						<p:commandButton widgetVar="addPrecioBtn" id="addPrecioBtn" actionListener="#{beanVentaLinea.saveEditRow}"
-							value="Cambiar" process="@this,txtValor" partialSubmit="true"
-							update="@all">
-						
-							</p:commandButton>
+					<p:dialog widgetVar="dialogo" id="dialogo" appendToBody="true"
+						modal="true" header="Nuevo precio">
+						<p:inputText value="#{beanVentaLinea.ventaItem.ventLinPrecio}"
+							id="txtValor"
+							onkeypress="if (event.keyCode == 13) { addPrecioBtn.jq.click();  return false; }">
+						</p:inputText>
+						<p:commandButton widgetVar="addPrecioBtn" id="addPrecioBtn"
+							actionListener="#{beanVentaLinea.saveEditRow}" value="Cambiar"
+							process="@this,txtValor" partialSubmit="true" update="@all">
+
+						</p:commandButton>
+
+					</p:dialog>
+					
+						<p:dialog widgetVar="dialogo2" id="dialogo2" appendToBody="true"
+						modal="true" header="Nuevo precio">
+						<p:inputText value="#{beanVentaLinea.ventaItem.ventLinDeposito}"
+							id="txtValor2"
+							onkeypress="if (event.keyCode == 13) { addPrecioBtn2.jq.click();  return false; }">
+						</p:inputText>
+						<p:commandButton widgetVar="addPrecioBtn2" id="addPrecioBtn2"
+							actionListener="#{beanVentaLinea.saveEditRow}" value="Cambiar"
+							process="@this,txtValor2" partialSubmit="true" update="@all">
+
+						</p:commandButton>
 
 					</p:dialog>
 				</p:panel>
@@ -276,8 +309,8 @@ function runApplet(){
 
 						</h:panelGrid>
 
-						<p:dataTable value="#{beanVentaLinea.venta.cuotas}" var="cuota" widgetVar="tablaCuotas" id="tablaCuotas"
-							style="width:50%">
+						<p:dataTable value="#{beanVentaLinea.venta.cuotas}" var="cuota"
+							widgetVar="tablaCuotas" id="tablaCuotas" style="width:50%">
 							<p:column headerText="Valor">
 								<h:outputLabel value="#{cuota.valorCuota}">
 									<f:convertNumber type="currency" />
@@ -299,7 +332,7 @@ function runApplet(){
 
 					</p:panel>
 				</p:panel>
-				
+
 
 				<h:panelGrid columns="2">
 					<h:outputText style="font-weight: bolder;font-size: 18px;"
@@ -322,15 +355,15 @@ function runApplet(){
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Guardar Venta"
-						actionListener="#{beanVentaLinea.guardarVenta()}"
-						process="@this" update="@all">
+						actionListener="#{beanVentaLinea.guardarVenta()}" process="@this"
+						update="@all">
 					</p:commandButton>
 
 					<p:commandButton ajax="false" value="Nueva Venta" rendered="true"
 						widgetVar="btnDespues" id="btnDespues" process="@this"
 						update="@all" action="/paginas/almacen/venta/linea/index.jsf"></p:commandButton>
 				</h:panelGrid>
-				
+
 			</div>
 		</h:form>
 

@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.Cuentas;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 
@@ -169,6 +170,10 @@ public class VentaItem implements Serializable {
 	
 	@Transient
 	private Double valorAbono;
+	
+	@ManyToOne
+	@JoinColumn(name="sucursal")
+	private Sucursal sucursal;
 	
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -450,6 +455,25 @@ public Double getValorAbono() {
  */
 public void setValorAbono(Double valorAbono) {
 	this.valorAbono = valorAbono;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/02/2014
+ * @return the sucursal
+ */
+public Sucursal getSucursal() {
+	return sucursal;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/02/2014
+ * @param sucursal the sucursal to set
+ */
+public void setSucursal(Sucursal sucursal) {
+	this.sucursal = sucursal;
 }
 
 }
