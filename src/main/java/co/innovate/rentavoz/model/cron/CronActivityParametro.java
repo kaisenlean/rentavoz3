@@ -14,4 +14,5 @@ public interface CronActivityParametro {
 
 	String ENVIO_LINEA_CORTE="ENVIO_LINEA_CORTE";
 	String ENVIO_LINEA_CONSUMO = "ENVIO_LINEA_CONSUMO";
+	String ENVIO_CIERRE_CAJA = "ENVIO_CIERRE_CAJA";
 }

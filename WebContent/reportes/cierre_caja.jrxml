@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="departamentos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="001bb846-f20c-477c-bf14-352e828408b5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FECHA_CIERRE" class="java.util.Date"/>
+	<parameter name="IMAGEN" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cuotasEquipos" class="java.util.List">
+		<fieldDescription><![CDATA[cuotasEquipos]]></fieldDescription>
+	</field>
+	<field name="cuotasLineas" class="java.util.List">
+		<fieldDescription><![CDATA[cuotasLineas]]></fieldDescription>
+	</field>
+	<field name="sucursal" class="co.innovate.rentavoz.model.Sucursal">
+		<fieldDescription><![CDATA[sucursal]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="valorEquipos" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorEquipos]]></fieldDescription>
+	</field>
+	<field name="valorLineas" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorLineas]]></fieldDescription>
+	</field>
+	<variable name="total_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4bf15976-ad25-4393-a207-2bd3375bf93e" x="0" y="10" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cierre de Caja de ]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="e3b6b261-521f-499b-be51-d24ad2456386" x="143" y="10" width="137" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{FECHA_CIERRE}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="10400880-bd94-4336-908e-7df29f4cbf78" x="280" y="4" width="192" height="26"/>
+				<imageExpression><![CDATA[$P{IMAGEN}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2564b65e-0a87-40aa-96d6-d1b6ef9b400c" x="0" y="4" width="340" height="20" forecolor="#939D9C"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Informe general de cierre de cajas]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fa492c44-caa6-475d-b6b1-46160618ebb4" mode="Opaque" x="0" y="10" width="164" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sucursal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b30ab201-19e7-4473-abc8-f1fe0b259b1a" mode="Opaque" x="164" y="10" width="176" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Equipos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4855dc6d-8f2f-4458-9332-35532499a968" mode="Opaque" x="340" y="10" width="192" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Lineas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d3f442bb-4750-4694-912b-136a0cfa0f28" mode="Opaque" x="532" y="10" width="192" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="47e100af-8435-44d7-b064-72e174278756" x="340" y="0" width="192" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorLineas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="48c195c1-3b25-4941-bd03-153d9778ae99" x="0" y="0" width="164" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sucursal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="e5c8816e-5174-4cca-98ba-dcd686d89326" x="164" y="0" width="176" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorEquipos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="40992a5c-2f72-463d-b1bb-ce8406b9c7d2" x="532" y="0" width="192" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="16">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="78262335-7de6-4a74-b972-dc79c60ed325" x="532" y="0" width="192" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d4a8e107-a5f7-4171-a100-6f5792841199" x="447" y="0" width="85" height="16"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gran Total :]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<image>
+				<reportElement uuid="1d11ca20-b83f-4bf4-97ac-2464c840e4c1" x="0" y="2" width="280" height="24"/>
+				<imageExpression><![CDATA["/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

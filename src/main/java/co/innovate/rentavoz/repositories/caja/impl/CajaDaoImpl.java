@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.repositories.caja.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,9 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
 import co.innovate.rentavoz.model.caja.Caja;
@@ -21,6 +24,7 @@ import co.innovate.rentavoz.model.caja.EstadoCaja;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemEnum;
+import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.repositories.caja.CajaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 
@@ -215,6 +219,125 @@ public class CajaDaoImpl extends GenericJpaRepository<Caja, Integer> implements 
 		
 		
 		return Double.valueOf(salida.toString());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCajaLineasBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double valorCajaLineasBySucursal(Sucursal sucursal, Date fecha) {
+		Query query = getEntityManager().createQuery("SELECT SUM(c.valorCuota) FROM Cuota c WHERE c.venta.venFecha = :fecha AND c.venta.sucursal = :sucursal  AND c.estadoCuota = :estado");
+		query.setParameter("fecha", fecha);
+		query.setParameter("sucursal", sucursal);
+		query.setParameter("estado", EstadoCuotaEnum.PAGADA);
+		query.setMaxResults(BigInteger.ONE.intValue());
+		
+		if (query.getSingleResult() !=null) {
+			Double valor = Double.valueOf(query.getSingleResult().toString());
+			return valor;
+		}
+		return BigInteger.ZERO.doubleValue();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCajaLineasBySucursalDetalle(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cuota> valorCajaLineasBySucursalDetalle(Sucursal sucursal,
+			Date fecha) {
+		Query query = getEntityManager().createQuery("SELECT  c FROM Cuota c WHERE c.venta.venFecha = :fecha AND c.venta.sucursal = :sucursal  AND c.estadoCuota = :estado");
+		query.setParameter("fecha", fecha);
+		query.setParameter("sucursal", sucursal);
+		query.setParameter("estado", EstadoCuotaEnum.PAGADA);
+		
+		
+		return query.getResultList();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCajaEquiposBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double valorCajaEquiposBySucursal(Sucursal sucursal, Date fecha) {
+		Calendar inicio = Calendar.getInstance();
+		inicio.setTime(fecha);
+		Calendar fin = Calendar.getInstance();
+		fin.setTime(fecha);
+		inicio.set(Calendar.HOUR, ZERO);
+		inicio.set(Calendar.HOUR_OF_DAY, ZERO);
+		inicio.set(Calendar.MINUTE, ZERO);
+		inicio.set(Calendar.SECOND, ZERO);
+		inicio.set(Calendar.MILLISECOND, ZERO);
+
+		fin.set(Calendar.HOUR, NUMBER_23);
+		fin.set(Calendar.HOUR_OF_DAY, NUMBER_23);
+		fin.set(Calendar.MINUTE, NUMBER_59);
+		fin.set(Calendar.SECOND, NUMBER_59);
+		fin.set(Calendar.MILLISECOND, NUMBER_59);
+		
+		Query query = getEntityManager()
+				.createQuery(new StringBuilder(
+						"SELECT SUM(c.valor) FROM VentaItemCuota c WHERE c.fechaPago BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota AND c.idVenta.sucursal = :sucursal").toString());
+
+		query.setParameter(START, inicio.getTime());
+		query.setParameter(END, fin.getTime());
+		query.setParameter(ESTADO_VENTA, EstadoVentaItemEnum.ACTIVO);
+		query.setParameter(ESTADO_CUOTA, EstadoVentaItemCuotaEnum.PAGADA);
+		query.setParameter("sucursal", sucursal);
+		
+		query.setMaxResults(BigInteger.ONE.intValue());
+		
+		Object salida = query.getSingleResult();
+		if (salida==null) {
+			
+			return ZERO;
+		}
+		
+		
+		return Double.valueOf(salida.toString());
+	}
+
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.caja.CajaDao#valorCajaEquiposBySucursalDetalle(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VentaItemCuota> valorCajaEquiposBySucursalDetalle(
+			Sucursal sucursal, Date fecha) {
+		Calendar inicio = Calendar.getInstance();
+		inicio.setTime(fecha);
+		Calendar fin = Calendar.getInstance();
+		fin.setTime(fecha);
+		inicio.set(Calendar.HOUR, ZERO);
+		inicio.set(Calendar.HOUR_OF_DAY, ZERO);
+		inicio.set(Calendar.MINUTE, ZERO);
+		inicio.set(Calendar.SECOND, ZERO);
+		inicio.set(Calendar.MILLISECOND, ZERO);
+
+		fin.set(Calendar.HOUR, NUMBER_23);
+		fin.set(Calendar.HOUR_OF_DAY, NUMBER_23);
+		fin.set(Calendar.MINUTE, NUMBER_59);
+		fin.set(Calendar.SECOND, NUMBER_59);
+		fin.set(Calendar.MILLISECOND, NUMBER_59);
+		
+		Query query = getEntityManager()
+				.createQuery(new StringBuilder(
+						"SELECT c FROM VentaItemCuota c WHERE c.fechaPago BETWEEN :start AND :end  AND c.idVenta.estado = :estadoVenta AND c.estado = :estadoCuota AND c.idVenta.sucursal = :sucursal").toString());
+
+		query.setParameter(START, inicio.getTime());
+		query.setParameter(END, fin.getTime());
+		query.setParameter(ESTADO_VENTA, EstadoVentaItemEnum.ACTIVO);
+		query.setParameter(ESTADO_CUOTA, EstadoVentaItemCuotaEnum.PAGADA);
+		query.setParameter("sucursal", sucursal);
+		
+		
+		
+		return query.getResultList();
 	}
 
 }

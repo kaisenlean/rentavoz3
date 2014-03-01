@@ -4,14 +4,19 @@
 package co.innovate.rentavoz.services.caja.impl;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.profile.Usuario;
+import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.caja.CajaDao;
 import co.innovate.rentavoz.services.caja.CajaService;
@@ -88,6 +93,40 @@ public class CajaServiceImpl extends GenericServiceImpl<Caja, Integer>
 	@Override
 	public double valorCajaLineas(Tercero vendedor) throws BaseException {
 		return cajaDao.valorCajaLineas(vendedor);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCajaLineasBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double valorCajaLineasBySucursal(Sucursal sucursal, Date fecha) {
+		return cajaDao.valorCajaLineasBySucursal(sucursal, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCajaLineasBySucursalDetalle(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public List<Cuota> valorCajaLineasBySucursalDetalle(Sucursal sucursal,
+			Date fecha) {
+		return cajaDao.valorCajaLineasBySucursalDetalle(sucursal, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCajaEquiposBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double valorCajaEquiposBySucursal(Sucursal sucursal, Date fecha) {
+		return cajaDao.valorCajaEquiposBySucursal(sucursal, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.caja.CajaService#valorCajaEquiposBySucursalDetalle(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public List<VentaItemCuota> valorCajaEquiposBySucursalDetalle(
+			Sucursal sucursal, Date fecha) {
+		return cajaDao.valorCajaEquiposBySucursalDetalle(sucursal, fecha);
 	}
 
 }

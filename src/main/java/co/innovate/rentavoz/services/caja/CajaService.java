@@ -3,10 +3,16 @@
  */
 package co.innovate.rentavoz.services.caja;
 
+import java.util.Date;
+import java.util.List;
+
 import co.innovate.rentavoz.exception.BaseException;
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.caja.Caja;
 import co.innovate.rentavoz.model.profile.Usuario;
+import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.services.GenericService;
 
 /**
@@ -44,7 +50,47 @@ public interface CajaService extends GenericService<Caja, Integer>
 	* @return
 	* @throws BaseException
 	*/
-	public double valorCajaLineas(Tercero vendedor) throws BaseException ;
+	 double valorCajaLineas(Tercero vendedor) throws BaseException ;
+	 
+	 
+	 /**
+	  * Método que consulta el valor de la caja del dia por sucursal
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/02/2014
+	* @param sucursal
+	* @return
+	*/
+	double valorCajaLineasBySucursal(Sucursal sucursal,Date fecha);
 
+	/**
+	 * Método que consulta el valor de la caja del dia por sucursal detallando la lista de cuotas
+	 * 
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursal
+	 * @return
+	 */
+	List<Cuota> valorCajaLineasBySucursalDetalle(Sucursal sucursal, Date fecha);
 	
+	
+
+	/**
+	 * Método que consulta el valor de la caja del dia por sucursal
+	 * 
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursal
+	 * @return
+	 */
+	double valorCajaEquiposBySucursal(Sucursal sucursal, Date fecha);
+	
+	/**
+	 * Método que consulta el valor de la caja del dia por sucursal detallando la lista de cuotas
+	 * 
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/02/2014
+	 * @param sucursal
+	 * @return
+	 */
+	List<VentaItemCuota> valorCajaEquiposBySucursalDetalle(Sucursal sucursal, Date fecha);
 }

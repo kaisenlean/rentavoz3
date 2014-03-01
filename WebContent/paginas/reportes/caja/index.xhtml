@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form id="form" style="width:100%">
+			<h:outputLabel value="Reporte de Cajas" class="h1" />
+
+			<p:panel header="Sucursales">
+				<h:panelGrid columns="2">
+					<h:outputText value="Selecciona una sucursal" />
+					<p:selectOneMenu value="#{beanReportesCaja.codSucursal}">
+						<f:selectItem itemLabel="- -Todas las sucursales - -"
+							itemValue="0" />
+						<f:selectItems value="#{login.sucursalItems}"></f:selectItems>
+						<p:ajax event="change" partialSubmit="true" process="@this"></p:ajax>
+
+					</p:selectOneMenu>
+					<h:outputText value="Fecha de cierre" />
+					<p:calendar value="#{beanReportesCaja.fechaCierre}"
+						></p:calendar>
+
+					<p:commandButton value="Consultar"
+						actionListener="#{beanReportesCaja.consultarCajas()}"
+						process="@all" update="@all"></p:commandButton>
+					
+							<p:commandButton ajax="false" disabled="#{beanReportesCaja.lista.size() == 0}" value="Imprimir"
+						actionListener="#{beanReportesCaja.imprimir()}"
+						></p:commandButton>
+				</h:panelGrid>
+			</p:panel>
+
+
+			<p:dataTable emptyMessage="Datos no encontrados"
+				value="#{beanReportesCaja.lista}" var="detalle" paginator="true"
+				rows="15">
+				<p:column  style="background-color:#F2F5F9" headerText="Detalle">
+					<p:rowToggler />
+				</p:column>
+				<p:column  style="background-color:#F2F5F9" headerText="Sucursal">
+					<h:outputText value="#{detalle.sucursal.sucNombre}" />
+				</p:column>
+
+				<p:column  style="background-color:#F2F5F9" headerText="Total Lineas">
+					<h:outputText value="#{detalle.valorLineas}" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Total Equipos" style="background-color:#F2F5F9">
+					<h:outputText value="#{detalle.valorEquipos}" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Total" style="background-color:#F2F5F9">
+				<f:facet name="footer">
+				  <p:column>  
+               <h:outputText value="#{beanReportesCaja.valorCaja}" style="color:red" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+            </p:column> 
+				</f:facet>
+					<b><h:outputText value="#{detalle.total}" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText></b>
+				</p:column>
+			 
+				
+				<p:rowExpansion>
+				<h:panelGrid columns="2">
+				
+					<p:dataTable value="#{detalle.cuotasLineas}" var="det"
+						paginator="true" rows="15">
+						<f:facet name="header">
+							<h:outputText value="Detalle de facturas de Lineas" />
+						</f:facet>
+						<p:column headerText="Factura">
+							<h:outputText value="#{det.venta.idVenta}" />
+						</p:column>
+
+						<p:column headerText="Valor Cuota">
+							
+							<h:outputText value="#{det.valorCuota}" >
+							<f:convertNumber type="currency" currencySymbol="$"/>
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+					
+					<p:dataTable value="#{detalle.cuotasEquipos}" var="detE"
+						paginator="true" rows="15">
+						<f:facet name="header">
+							<h:outputText value="Detalle de facturas de Equipos" />
+						</f:facet>
+						<p:column headerText="Factura">
+							<h:outputText value="#{detE.idVenta.idVenta}" />
+						</p:column>
+
+						<p:column headerText="Valor Cuota">
+							<h:outputText value="#{detE.valor}" >
+							<f:convertNumber type="currency" currencySymbol="$"/>
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+
+				</h:panelGrid>
+				</p:rowExpansion>
+			</p:dataTable>
+
+
+
+		
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
