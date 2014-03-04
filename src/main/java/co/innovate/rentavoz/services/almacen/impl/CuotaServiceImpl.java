@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.services.almacen.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,13 @@ public class CuotaServiceImpl extends GenericServiceImpl<Cuota, Integer> impleme
 	@Override
 	public List<Cuota> findByVenta(Venta venta) {
 		return cuotaDao.findByVenta(venta);
+	}
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.CuotaService#findDeudoresMorosos(java.util.Date)
+	 */
+	@Override
+	public List<Tercero> findDeudoresMorosos(Date fechaCierre) {
+		return cuotaDao.findDeudoresMorosos(fechaCierre);
 	}
 
 }

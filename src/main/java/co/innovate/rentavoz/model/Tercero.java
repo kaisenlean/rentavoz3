@@ -22,12 +22,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.profile.Usuario;
 
-/**
- * 
- * @author ejody
- */
 /**
 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 * @project co.com.rentavoz.model.jpa
@@ -103,6 +100,13 @@ public class Tercero implements Serializable {
 	
 	@Transient
 	private Boolean mayorista;
+	
+	@Transient
+	private List<Cuota> cuotasMora;
+	
+	
+	@Transient
+	private Double valorCuotasMora;
 	/**
 	 * co.com.rentavoz.logica.jpa.entidades
 	 * co.com.rentavoz.model.jpa
@@ -567,6 +571,44 @@ public class Tercero implements Serializable {
 		this.eliminados = eliminados;
 	}
 	
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 4/03/2014
+	 * @return the cuotasMora
+	 */
+	public List<Cuota> getCuotasMora() {
+		return cuotasMora;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 4/03/2014
+	 * @param cuotasMora the cuotasMora to set
+	 */
+	public void setCuotasMora(List<Cuota> cuotasMora) {
+		this.cuotasMora = cuotasMora;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 4/03/2014
+	 * @return the valorCuotasMora
+	 */
+	public Double getValorCuotasMora() {
+		return valorCuotasMora;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 4/03/2014
+	 * @param valorCuotasMora the valorCuotasMora to set
+	 */
+	public void setValorCuotasMora(Double valorCuotasMora) {
+		this.valorCuotasMora = valorCuotasMora;
+	}
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

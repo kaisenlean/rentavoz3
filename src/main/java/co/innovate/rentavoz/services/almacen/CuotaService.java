@@ -3,6 +3,7 @@
  */
 package co.innovate.rentavoz.services.almacen;
 
+import java.util.Date;
 import java.util.List;
 
 import co.innovate.rentavoz.model.Tercero;
@@ -47,4 +48,14 @@ public interface CuotaService extends GenericService<Cuota, Integer>{
 	* @return
 	*/
 	List<Cuota> findByVenta(Venta venta);
+	
+	
+	/**
+	 * Método que consulta los clientes que deben cuotas en base a una fecha de cierre de las mismas
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 4/03/2014
+	* @param fechaCierre
+	* @return
+	*/
+	List<Tercero> findDeudoresMorosos(Date fechaCierre);
 }

@@ -26,6 +26,7 @@
 
 					<h:outputLabel value="Fecha de Inicio" />
 					<p:calendar id="nomDept"
+					locale="es_CO" 
 						value="${fechaFacturacionBean.objeto.fechaInicio}" required="true"
 						requiredMessage="Por favor digita una fecha de inicio">
 
@@ -38,6 +39,7 @@
 
 					<h:outputLabel value="Fecha Finalización" />
 					<p:calendar id="fechPlan"
+					locale="es_CO" 
 						value="${fechaFacturacionBean.objeto.fechaFin}" required="true"
 						requiredMessage="Por favor selecciona una fecha de finalizacion">
 						<p:ajax event="dateSelect" process="@this,nomDept" update="@all"

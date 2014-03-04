@@ -19,6 +19,8 @@ import org.primefaces.context.RequestContext;
  */
 public class BaseBean{
 
+	
+	public static final String LAST_URL="LAST_URL";
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -141,9 +143,31 @@ public class BaseBean{
 			// Sin embargo, como ya está fuera del ciclo de vida
 			// de JSF se debe usar la ruta completa -_-U
 			ctx.redirect(ctxPath + "/"+dir);
+			removeCookie(LAST_URL);
+			addCookie(LAST_URL,"/"+dir );
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}
 		
 	}
+	
+	public void addCookie(String name,String value){
+		FacesContext.getCurrentInstance()
+		 .getExternalContext()
+		 .addResponseCookie(name, value, null);
+		
+	}
+	public void removeCookie(String name){
+		FacesContext.getCurrentInstance()
+		 .getExternalContext().getRequestCookieMap().remove(name);
+		
+	}
+	
+	public void getCookie(String name){
+		FacesContext.getCurrentInstance()
+		 .getExternalContext()
+		 .getRequestCookieMap().get(name);
+		
+	}
+	
 }

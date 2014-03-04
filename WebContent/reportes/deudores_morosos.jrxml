@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deudores morosos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="001bb846-f20c-477c-bf14-352e828408b5">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMAGEN" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="barrio" class="java.lang.String">
+		<fieldDescription><![CDATA[barrio]]></fieldDescription>
+	</field>
+	<field name="centrope" class="co.innovate.rentavoz.model.Centrope">
+		<fieldDescription><![CDATA[centrope]]></fieldDescription>
+	</field>
+	<field name="ciudad" class="co.innovate.rentavoz.model.Ciudad">
+		<fieldDescription><![CDATA[ciudad]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="cuotasMora" class="java.util.List">
+		<fieldDescription><![CDATA[cuotasMora]]></fieldDescription>
+	</field>
+	<field name="eliminados" class="java.util.List">
+		<fieldDescription><![CDATA[eliminados]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
+	</field>
+	<field name="idTecero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[idTecero]]></fieldDescription>
+	</field>
+	<field name="mayorista" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[mayorista]]></fieldDescription>
+	</field>
+	<field name="repTerClave" class="java.lang.String">
+		<fieldDescription><![CDATA[repTerClave]]></fieldDescription>
+	</field>
+	<field name="sucursalTerceroList" class="java.util.List">
+		<fieldDescription><![CDATA[sucursalTerceroList]]></fieldDescription>
+	</field>
+	<field name="terApellidos" class="java.lang.String">
+		<fieldDescription><![CDATA[terApellidos]]></fieldDescription>
+	</field>
+	<field name="terDireccion" class="java.lang.String">
+		<fieldDescription><![CDATA[terDireccion]]></fieldDescription>
+	</field>
+	<field name="terDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[terDocumento]]></fieldDescription>
+	</field>
+	<field name="terNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[terNombre]]></fieldDescription>
+	</field>
+	<field name="terTelefono" class="java.lang.String">
+		<fieldDescription><![CDATA[terTelefono]]></fieldDescription>
+	</field>
+	<field name="tipo" class="co.innovate.rentavoz.model.TipoTerceroEnum">
+		<fieldDescription><![CDATA[tipo]]></fieldDescription>
+	</field>
+	<field name="tipoAsString" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoAsString]]></fieldDescription>
+	</field>
+	<field name="usuario" class="co.innovate.rentavoz.model.profile.Usuario">
+		<fieldDescription><![CDATA[usuario]]></fieldDescription>
+	</field>
+	<field name="valorCuotasMora" class="java.lang.Double">
+		<fieldDescription><![CDATA[valorCuotasMora]]></fieldDescription>
+	</field>
+	<variable name="valorCuotasMora_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorCuotasMora}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4bf15976-ad25-4393-a207-2bd3375bf93e" x="0" y="10" width="153" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deudores Morosos :]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="10400880-bd94-4336-908e-7df29f4cbf78" x="323" y="0" width="192" height="36"/>
+				<imageExpression><![CDATA[$P{IMAGEN}]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="7621289e-8340-43b4-9948-bcd1850bcfe6" x="153" y="10" width="154" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2564b65e-0a87-40aa-96d6-d1b6ef9b400c" x="0" y="4" width="199" height="20" forecolor="#939D9C"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Informe general de deudores morosos]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fa492c44-caa6-475d-b6b1-46160618ebb4" mode="Opaque" x="0" y="10" width="164" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b30ab201-19e7-4473-abc8-f1fe0b259b1a" mode="Opaque" x="164" y="10" width="176" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero de Cuotas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4855dc6d-8f2f-4458-9332-35532499a968" mode="Opaque" x="340" y="10" width="192" height="20" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="47e100af-8435-44d7-b064-72e174278756" x="340" y="0" width="192" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{valorCuotasMora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="48c195c1-3b25-4941-bd03-153d9778ae99" x="0" y="0" width="164" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[($F{terNombre}+" "+$F{terApellidos})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="e5c8816e-5174-4cca-98ba-dcd686d89326" x="164" y="0" width="176" height="14"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuotasMora}.size()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22">
+			<textField>
+				<reportElement uuid="15306f08-0585-4e01-8afe-657c7b124824" x="340" y="0" width="192" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{valorCuotasMora_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="abf2e002-825a-465d-9a06-32148569de9c" mode="Opaque" x="164" y="0" width="176" height="12" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Total]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<image>
+				<reportElement uuid="1d11ca20-b83f-4bf4-97ac-2464c840e4c1" x="0" y="2" width="280" height="24"/>
+				<imageExpression><![CDATA["/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+</jasperReport>

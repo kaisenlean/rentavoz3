@@ -221,6 +221,8 @@ public class Login extends BaseBean implements Serializable {
 			// Sin embargo, como ya está fuera del ciclo de vida
 			// de JSF se debe usar la ruta completa -_-U
 			ctx.redirect(ctxPath + "/");
+			removeCookie(LAST_URL);
+			addCookie(LAST_URL,"/" );
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}

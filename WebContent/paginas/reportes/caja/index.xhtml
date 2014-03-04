@@ -22,7 +22,7 @@
 
 					</p:selectOneMenu>
 					<h:outputText value="Fecha de cierre" />
-					<p:calendar value="#{beanReportesCaja.fechaCierre}"
+					<p:calendar  maxdate="now" locale="es_CO" showOtherMonths="true" navigator="true" value="#{beanReportesCaja.fechaCierre}"
 						></p:calendar>
 
 					<p:commandButton value="Consultar"
