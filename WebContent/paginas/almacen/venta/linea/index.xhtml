@@ -45,9 +45,9 @@ function runApplet(){
 
 					<h:outputText style="font-weight: bolder"
 						value="Fecha de facturacion : " />
-					<p:selectOneMenu value="#{beanVentaLinea.selFechaFacturacion}">
+					<p:selectOneMenu id="selectFechaFact" value="#{beanVentaLinea.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
-						<p:ajax event="change" process="@this" update="@this"></p:ajax>
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
 
 					<h:outputText style="font-weight: bolder" value="Cuenta" />
@@ -101,7 +101,7 @@ function runApplet(){
 						completeMethod="#{beanVentaLinea.autocompleteTercero.completarBusqueda}"
 						converter="#{beanVentaLinea.autocompleteTercero.conversorClientes}">
 
-						<p:ajax event="itemSelect" update="@all" process="@this"
+						<p:ajax event="itemSelect" update="@this" process="@this"
 							listener="#{beanVentaLinea.autocompleteTercero.seleccionar}">
 
 						</p:ajax>
@@ -197,10 +197,10 @@ function runApplet(){
 
 					<h:panelGrid columns="4">
 						<h:outputText style="font-weight: bolder" value="Producto ID :" />
-						<p:inputText id="txtpid" value="#{beanVentaLinea.numeroLinea}"
+						<p:inputText id="txtpid" value="#{beanVentaLinea.numeroLinea}" widgetVar="txtpid"
 							onkeypress="if (event.keyCode == 13) { aceptBtn.jq.click();  return false; }"></p:inputText>
 						<p:commandButton id="aceptBtn" widgetVar="aceptBtn" value="Añadir"
-							actionListener="#{beanVentaLinea.buscarLinea()}" process="@all"
+							actionListener="#{beanVentaLinea.buscarLinea()}" process="@this,selectFechaFact,txtpid"
 							update="@all"></p:commandButton>
 						<p:focus for="txtpid"></p:focus>
 					</h:panelGrid>
@@ -355,7 +355,7 @@ function runApplet(){
 
 				<h:panelGrid columns="2">
 					<p:commandButton value="Guardar Venta"
-						actionListener="#{beanVentaLinea.guardarVenta()}" process="@this"
+						actionListener="#{beanVentaLinea.guardarVenta()}" process="@all"
 						update="@all">
 					</p:commandButton>
 

@@ -186,10 +186,30 @@
 		</property>
  
 	</bean>
+	
+	
+	<bean name="envioClientesMoraJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+ 
+		<property name="jobClass" value="co.innovate.rentavoz.task.impl.EnvioDeudoresMorososJobImpl" />
+		<property name="jobDataAsMap">
+		  <map>
+			<entry key="envioDeudoresMorososTask" value-ref="envioDeudoresMorososTask" />
+		  </map>
+		</property>
+ 
+	</bean>
  
  
 	
-	<!-- Cron Trigger, run every 5 seconds -->
+	<bean id="triggerDeudoresMorosos" 
+                class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 
+		<property name="jobDetail" ref="envioClientesMoraJob" />
+	
+		<property name="cronExpression" value="0 0/1 * 1/1 * ? *" />
+ 
+	</bean>
+	
 	<bean id="triggerLineaCorte" 
                 class="org.springframework.scheduling.quartz.CronTriggerBean">
  
@@ -223,6 +243,7 @@
 				<ref bean="triggerLineaCorte" />
 				<ref bean="triggerLineaConsumo"/>
 				<ref bean="triggerCierreCaja"/>
+				<ref bean="triggerDeudoresMorosos"/>
 			</list>
 		</property>
 	</bean>

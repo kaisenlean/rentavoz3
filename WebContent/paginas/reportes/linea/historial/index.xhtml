@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form id="form" style="width:100%">
+			<h:outputLabel value="Reporte Historial de Lineas Celulares" class="h1" />
+
+			<p:panel header="Linea">
+				<h:panelGrid columns="2">
+					<h:outputText value="Numero de Linea :" />
+					<p:inputText value="#{beanHistorialFacturacion.lineaTxt}"></p:inputText>
+					
+
+					<p:commandButton value="Consultar"
+						actionListener="#{beanHistorialFacturacion.cargarHistorial()}"
+						process="@all" update="@all"></p:commandButton>
+					
+							<p:commandButton ajax="false" disabled="#{beanHistorialFacturacion.historia.size() == 0}" value="Imprimir"
+						
+						></p:commandButton>
+				</h:panelGrid>
+			</p:panel>
+
+
+			<p:dataTable emptyMessage="Datos no encontrados"
+				value="#{beanHistorialFacturacion.historia}" var="detalle" paginator="true"
+				rows="15">
+				
+				<p:column  style="background-color:#F2F5F9" headerText="Valor Venta">
+					<h:outputText value="#{detalle.ventLinPrecio}" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+				</p:column>
+
+				<p:column  style="background-color:#F2F5F9" headerText="Valor Deposito">
+					<h:outputText value="#{detalle.ventLinDeposito}" >
+					<f:convertNumber type="currency" currencySymbol="$"/>
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Numero Factura" style="background-color:#F2F5F9">
+					<h:outputText value="#{detalle.ventaidVenta.idVenta}" >
+					
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Periodo Facturación" style="background-color:#F2F5F9">
+					<h:outputText value="#{detalle.ventaidVenta.fechaFacturacion.label}" >
+					
+					</h:outputText>
+				</p:column>
+				
+				
+			</p:dataTable>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

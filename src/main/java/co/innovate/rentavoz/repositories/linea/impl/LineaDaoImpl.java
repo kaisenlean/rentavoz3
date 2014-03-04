@@ -4,7 +4,7 @@
 package co.innovate.rentavoz.repositories.linea.impl;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -22,6 +22,7 @@ import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.estadolinea.EstadoLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 import co.innovate.rentavoz.repositories.linea.LineaDao;
@@ -36,6 +37,19 @@ import co.innovate.rentavoz.repositories.linea.LineaDao;
 @Repository("lineaDao")
 public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implements Serializable,LineaDao {
 
+	/**
+	 * 4/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * ESTADO_LINEA_SUSPENDIDA
+	 */
+	private static final int ESTADO_LINEA_SUSPENDIDA = 4;
+	
+	/**
+	 * 4/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * ESTADO_LINEA_SUSPENDIDA
+	 */
+	private static final int ESTADO_LINEA_INACTIVA = 5;
 	/**
 	 * 2/02/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -73,6 +87,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 */
 	private static final int ESTADO_LINEA_DISPONIBLE_USO = 4;
 	public static final Integer ESTADO_LINEA_REPO = 2;
+	public static final Integer ESTADO_LINEA_VENDIDA = 3;
 	
 	
 	private Logger logger= Logger.getLogger(LineaDaoImpl.class);
@@ -139,14 +154,15 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#findByNumeroObjeto(java.lang.String)
 	 */
-	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException{
+	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales,FechaFacturacion fechaFacturacion)throws BaseException{
 		
 		
 		
 		Query q = getEntityManager().createQuery(
-				"SELECT l FROM Linea l WHERE l.linNumero = :numero AND l.estadoLineaidEstadoLinea.idEstadoLinea = :estado AND l.sucursal IN (:sucursales)");
+				"SELECT l FROM Linea l WHERE l.linNumero = :numero AND l.sucursal IN (:sucursales)");
 		q.setParameter("numero", linNumero);
-		q.setParameter("estado", ESTADO_LINEA_REPO);
+		
+		
 		q.setParameter("sucursales", sucursales);
 		q.setMaxResults(1);
 		
@@ -155,8 +171,20 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 			return null;
 		} else if (q.getSingleResult() != null) {
 			
-			Query query= getEntityManager().createQuery("SELECT l FROM VentaLinea l WHERE :hoy >= l.ventaidVenta.fechaFacturacion.fechaInicio AND :hoy < l.ventaidVenta.fechaFacturacion.fechaFin AND l.lineaidLinea = :linea");
-			query.setParameter("hoy", Calendar.getInstance().getTime());
+			Linea linea= (Linea) q.getSingleResult();
+			
+			if (linea==null) {
+				return null;
+			}
+			
+			if (linea.getEstadoLineaidEstadoLinea().getIdEstadoLinea()==ESTADO_LINEA_SUSPENDIDA) {
+				throw new BaseException("Esta linea actualmente esta suspendida");
+			}
+			if (linea.getEstadoLineaidEstadoLinea().getIdEstadoLinea()==ESTADO_LINEA_INACTIVA) {
+				throw new BaseException("Esta linea actualmente esta Inactiva en el sistema");
+			}
+			Query query= getEntityManager().createQuery("SELECT l FROM VentaLinea l WHERE l.ventaidVenta.fechaFacturacion = :periodo AND l.lineaidLinea = :linea");
+			query.setParameter("periodo", fechaFacturacion);
 			query.setParameter("linea", (Linea)q.getSingleResult());
 			
 			if (query.getResultList().isEmpty()) {
@@ -313,5 +341,23 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
 		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
 		return countByCriteria(criterion,criterion2);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#getByNumeroLinea(java.lang.String)
+	 */
+	@Override
+	public Linea getByNumeroLinea(String linNumero) {
+		Query q = getEntityManager().createQuery(
+				"SELECT l FROM Linea l WHERE l.linNumero = :numero ");
+		q.setParameter("numero", linNumero);
+		q.setMaxResults(BigInteger.ONE.intValue());
+		if (q.getResultList().isEmpty()) {
+			return null;
+		} else if (q.getSingleResult() != null) {
+			return (Linea) q.getSingleResult();
+		} else {
+			return null;
+		}
 	}
 }

@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.services.GenericService;
 
 /**
@@ -49,7 +50,7 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	 * @param linNumero
 	 * @return
 	 */
-	Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException;
+	Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales,FechaFacturacion fechaFacturacion)throws BaseException;
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -128,6 +129,14 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	*/
 	int countByCriteria(String query,List<Sucursal> sucursales);
 	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 4/03/2014
+	* @param linNumero
+	* @return
+	*/
+	Linea getByNumeroLinea(String linNumero);
 	
 
 

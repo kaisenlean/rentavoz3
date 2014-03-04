@@ -19,6 +19,7 @@ import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.traslado.linea.TrasladoLinea;
 import co.innovate.rentavoz.model.traslado.linea.TrasladoLineaDetalle;
+import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
 import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.traslado.linea.TrasladoLineaDetalleService;
@@ -59,6 +60,9 @@ public class BeanTrasladoLinea extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{trasladoLineaDetalleService}")
 	private TrasladoLineaDetalleService trasladoLineaDetalleService;
 	
+	@ManagedProperty(value="#{fechaFacturacionService}")
+	private FechaFacturacionService fechaFacturacionService;
+	
 	private List<Linea> lineas = new ArrayList<Linea>();
 
 	private Integer selSucursalOrigen;
@@ -90,7 +94,7 @@ public class BeanTrasladoLinea extends BaseBean implements Serializable {
 		try {
 
 			Linea linea = lineaService.findByNumeroObjeto(numeroLinea,
-					sucursales);
+					sucursales,fechaFacturacionService.findByFecha(Calendar.getInstance().getTime()));
 			if (linea==null) {
 				mensajeError("Linea no encontrada");
 				return;
@@ -282,5 +286,15 @@ public void setTrasladoLineaService(TrasladoLineaService trasladoLineaService) {
  */
 public void setLogin(Login login) {
 	this.login = login;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 4/03/2014
+ * @param fechaFacturacionService the fechaFacturacionService to set
+ */
+public void setFechaFacturacionService(
+		FechaFacturacionService fechaFacturacionService) {
+	this.fechaFacturacionService = fechaFacturacionService;
 }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -49,5 +50,13 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	@Override
 	public List<VentaLinea> findByVenta(Venta venta) {
 		return ventaLineaDao.findByVenta(venta);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#findHistorialFacturacion(co.innovate.rentavoz.model.almacen.Linea)
+	 */
+	@Override
+	public List<VentaLinea> findHistorialFacturacion(Linea linea) {
+		return ventaLineaDao.findHistorialFacturacion(linea);
 	}
 }

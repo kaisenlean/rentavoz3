@@ -246,6 +246,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		try {
 			venta.setCuenta(cuentasService.findById(selCuota));
 			venta.setSucursal(sucursalService.findById(idSucursal));
+			venta.setFechaFacturacion(fechaFacturacionService.findById(selFechaFacturacion));
 		venta=ventaControllerService.guardarVentaLinea(venta);
 		addAttribute(SessionParams.ENTITY_BACK, venta);
 		login.updateValorCaja();
@@ -296,8 +297,9 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			mensajeError("Por favor selecciona un cliente para continuar");
 			return;
 		}
+		
 		Linea linea;
-			linea = lineaService.findByNumeroObjeto(numeroLinea,login.getSucursales());
+			linea = lineaService.findByNumeroObjeto(numeroLinea,login.getSucursales(),fechaFacturacionService.findById(selFechaFacturacion));
 		if (linea == null) {
 			mensajeError("No se ha encontrado la linea ".concat(numeroLinea));
 			return;

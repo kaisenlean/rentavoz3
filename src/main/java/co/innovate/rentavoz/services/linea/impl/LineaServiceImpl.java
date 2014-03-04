@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.linea.LineaDao;
 import co.innovate.rentavoz.services.impl.GenericServiceImpl;
@@ -66,8 +67,8 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 	 * @see co.innovate.rentavoz.services.linea.LineaService#findByNumeroObjeto(java.lang.String)
 	 */
 	@Override
-	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales)throws BaseException{
-		return lineaDao.findByNumeroObjeto(linNumero,sucursales);
+	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales,FechaFacturacion fechaFacturacion)throws BaseException{
+		return lineaDao.findByNumeroObjeto(linNumero,sucursales,fechaFacturacion);
 	}
 
 	/* (non-Javadoc)
@@ -150,6 +151,14 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 	@Override
 	public int countByCriteria(String query,List<Sucursal> sucursales) {
 		return lineaDao.countByCriteria(query,sucursales);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.linea.LineaService#getByNumeroLinea(java.lang.String)
+	 */
+	@Override
+	public Linea getByNumeroLinea(String linNumero) {
+		return lineaDao.getByNumeroLinea(linNumero);
 	}
 
 	
