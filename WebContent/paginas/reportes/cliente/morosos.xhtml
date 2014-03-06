@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form id="form" style="width:100%">
+			<h:outputLabel value="Consulta de Clientes Morosos" class="h1" />
+			<br />
+			<h:panelGrid columns="2">
+			<p:commandButton value="Consultar clientes " process="@this"
+				update="@all"
+				actionListener="#{beanConsultaClientesMora.consultar()}"></p:commandButton>
+				<p:commandButton value="Imprimir" rendered="#{beanConsultaClientesMora.deudores.size() != 0}" ajax="false" process="@this" actionListener="#{beanConsultaClientesMora.imprimir()}"></p:commandButton>
+			</h:panelGrid>
+
+			<p:dataTable emptyMessage="Clientes no encontrados"
+				value="#{beanConsultaClientesMora.deudores}" var="cliente"
+				paginator="true" rows="15">
+
+				<p:column>
+					<p:rowToggler></p:rowToggler>
+				</p:column>
+				<p:column style="background-color:#F2F5F9"
+					headerText=" Nombre cliente">
+					<h:outputText value="#{cliente.nombreCompleto}">
+					</h:outputText>
+				</p:column>
+
+				<p:column style="background-color:#F2F5F9" headerText="Ciudad">
+					<h:outputText
+						value="#{cliente.ciudad eq null? 'No definida' : cliente.ciudad.ciuNombre}">
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Numero de cuotas"
+					style="background-color:#F2F5F9">
+					<h:outputText value="#{cliente.cuotasMora.size()}">
+
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Valor total de las cuotas"
+				
+					style="background-color:#F2F5F9">
+					<f:facet name="footer">
+						<h:outputText value=" Total : #{beanConsultaClientesMora.valorTotal}" style="color:red;" >
+						<f:convertNumber type="currency" currencySymbol="$"/>
+						</h:outputText>
+					</f:facet>
+					<h:outputText value="#{cliente.valorCuotasMora}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+				
+				
+				<p:rowExpansion>
+					<p:dataTable value="#{cliente.cuotasMora}" var="cuota" rows="5"
+						paginator="true">
+
+						<p:column width="15%" headerText="Numero de Factura : ">
+							<h:outputText value="#{cuota.venta.idVenta}" />
+						</p:column>
+
+						<p:column headerText="Valor : ">
+							<h:outputText value="#{cuota.valorCuota}">
+								<f:convertNumber type="currency" currencySymbol="$" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Fecha de ciere : ">
+							<h:outputText value="#{cuota.fechaPago}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Factura">
+							<p:commandButton value="Detalle" process="@this" update="@this"
+								
+								actionListener="#{beanConsultaClientesMora.cargarFactura(cuota.venta)}" oncomplete="pushButton.jq.click();"></p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+
+				</p:rowExpansion>
+
+
+
+			</p:dataTable>
+<p:commandButton style="visibility:hidden;" widgetVar="pushButton" id="pushButton" process="@this"  update="dialogFactura" oncomplete="dialogFactura.show();" ></p:commandButton>
+
+
+			<p:dialog appendTo="@(body)" closable="true"
+			 widgetVar="dialogFactura" id="dialogFactura"
+				modal="true" header="Detalle de Factura">
+				<h:panelGrid columns="2">
+					<h:outputText value="Valor Factura :" />
+					<h:outputText value="#{beanConsultaClientesMora.factura.venSaldo}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+					<h:outputText value="Periodo de Facturación :" />
+					<h:outputText
+						value="#{beanConsultaClientesMora.factura.fechaFacturacion.label}">
+					</h:outputText>
+
+
+				</h:panelGrid>
+				<br/>
+				<b>Lineas Facturadas</b>
+				<p:dataTable paginator="true" rows="10"
+					value="#{beanConsultaClientesMora.factura.ventaLineaList}"
+					var="linea">
+					<p:column headerText="Linea" filterBy="#{linea.lineaidLinea.linNumero}">
+						<h:outputText value="#{linea.lineaidLinea.linNumero}" />
+					</p:column>
+
+				</p:dataTable>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

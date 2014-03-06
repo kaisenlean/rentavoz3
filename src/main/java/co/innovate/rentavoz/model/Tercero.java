@@ -5,6 +5,7 @@
 package co.innovate.rentavoz.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.lang.StringUtils;
 
 import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.profile.Usuario;
@@ -314,7 +317,18 @@ public class Tercero implements Serializable {
 		this.terDocumento = terDocumento;
 	}
 
-	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 6/03/2014
+	*/
+	public String getNombreCompleto(){
+		 StringBuffer buffer= new StringBuffer(terNombre==null?StringUtils.EMPTY:terNombre.equals(StringUtils.EMPTY)?"":terNombre);
+		 buffer.append(StringUtils.repeat(" ", BigInteger.ONE.intValue()));
+		 buffer.append(terApellidos==null?StringUtils.EMPTY:terApellidos.equals(StringUtils.EMPTY)?"":terApellidos);
+		 
+		 return buffer.toString();
+		
+	}
 
 
 

@@ -214,10 +214,12 @@ public class Venta implements Serializable {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "com.invte.rentavoz.logica.entidades.Venta[ idVenta=" + idVenta
-				+ " ]";
+		return "Venta [idVenta=" + idVenta + "]";
 	}
 
 	/**
@@ -604,4 +606,6 @@ public class Venta implements Serializable {
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
+	
+	
 }

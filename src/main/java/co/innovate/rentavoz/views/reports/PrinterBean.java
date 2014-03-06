@@ -38,6 +38,16 @@ import co.innovate.rentavoz.views.session.OpcionConstants;
 @ApplicationScoped
 public class PrinterBean extends BaseBean {
 
+	/**
+	 * 6/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * IMAGEN
+	 */
+	private static final String IMAGEN = "IMAGEN";
+
+
+
+
 	@PostConstruct
 	public void init() {
 		try {
@@ -84,6 +94,9 @@ public class PrinterBean extends BaseBean {
 	 */
 	private static final String JASPER_EXTENSION = ".jasper";
 	protected JasperPrint jasperPrint;
+	
+	
+	
 
 	/**
 	 * 
@@ -100,6 +113,11 @@ public class PrinterBean extends BaseBean {
 				.getRealPath(REPORT_PATH + reportName + JASPER_EXTENSION);
 		try {
 
+			if (parameters!=null) {
+				if (!parameters.containsKey(IMAGEN)) {
+					parameters.put(IMAGEN, opcionService.findByClave(OpcionConstants.IMAGEN_EMPRESA).getValor());
+				}
+			}
 			if (secondDatasource == null) {
 				jasperPrint = JasperFillManager.fillReport(reportPath,
 						parameters, establishConnection());

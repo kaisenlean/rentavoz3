@@ -101,7 +101,7 @@
 				<p:ajaxStatus onstart="PF('statusDialog').show();" 
 					onsuccess="PF('statusDialog').hide();" />
 
-				<p:dialog appendToBody="true" modal="true" widgetVar="statusDialog"
+				<p:dialog appendTo="@(body)" modal="true" widgetVar="statusDialog"
 					header="Por favor espere ..." draggable="false" closable="false">
 					<p:graphicImage value="/imagenes/ajaxloadingbar.gif" />
 				</p:dialog>
