@@ -5,6 +5,7 @@ package co.innovate.rentavoz.services.almacen.venta.linea;
 
 import java.util.List;
 
+import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
@@ -37,4 +38,13 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @return
 	*/
 	List<VentaLinea> findHistorialFacturacion(Linea linea);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 6/03/2014
+	* @param tercero
+	* @return
+	*/
+	List<VentaLinea> findLineasConDevolucionByCliente(Tercero tercero);
 }

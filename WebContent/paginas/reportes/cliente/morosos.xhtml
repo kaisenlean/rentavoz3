@@ -25,13 +25,13 @@
 				<p:column>
 					<p:rowToggler></p:rowToggler>
 				</p:column>
-				<p:column style="background-color:#F2F5F9"
+				<p:column style="background-color:#F2F5F9" filterBy="#{cliente.nombreCompleto}"
 					headerText=" Nombre cliente">
 					<h:outputText value="#{cliente.nombreCompleto}">
 					</h:outputText>
 				</p:column>
 
-				<p:column style="background-color:#F2F5F9" headerText="Ciudad">
+				<p:column style="background-color:#F2F5F9" headerText="Ciudad" filterBy="#{cliente.ciudad.ciuNombre}}">
 					<h:outputText
 						value="#{cliente.ciudad eq null? 'No definida' : cliente.ciudad.ciuNombre}">
 					</h:outputText>

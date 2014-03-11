@@ -117,6 +117,8 @@ public class PrinterBean extends BaseBean {
 				if (!parameters.containsKey(IMAGEN)) {
 					parameters.put(IMAGEN, opcionService.findByClave(OpcionConstants.IMAGEN_EMPRESA).getValor());
 				}
+				
+				
 			}
 			if (secondDatasource == null) {
 				jasperPrint = JasperFillManager.fillReport(reportPath,

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaIndividual" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9df5d9b2-2dea-44f2-a19a-30e574e85332">
 	<property name="ireport.zoom" value="2.8531167061100033"/>
 	<property name="ireport.x" value="433"/>
-	<property name="ireport.y" value="768"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -109,7 +109,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="392" splitType="Stretch">
+		<band height="303" splitType="Stretch">
 			<textField>
 				<reportElement uuid="73f14130-82d6-4ec1-aef6-cde55fcc11b0" x="259" y="22" width="123" height="11"/>
 				<textElement markup="none">
@@ -210,14 +210,7 @@
 				<text><![CDATA[Esta factura de venta se asimila en todos sus efectos legales a una letra de cambio segun ariculo 774 del codigo de comercio.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0b2a190f-ffac-4cd3-9d54-054057c6e017" x="260" y="214" width="128" height="38"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ TELEFONOS TODAS LAS MARCAS , SIM CARD , POSPAGO Y PREPAGO , ACCESORIOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="d398427d-1ed7-4e0f-a8ba-ef20e7082191" x="259" y="252" width="128" height="11"/>
+				<reportElement uuid="d398427d-1ed7-4e0f-a8ba-ef20e7082191" x="259" y="214" width="128" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -225,34 +218,20 @@
 			</staticText>
 			<elementGroup>
 				<textField>
-					<reportElement uuid="f1f5cb96-1969-47f6-80db-e2e476df1369" x="262" y="263" width="125" height="12"/>
+					<reportElement uuid="f1f5cb96-1969-47f6-80db-e2e476df1369" x="265" y="225" width="125" height="12"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{vendedor}.toString()]]></textFieldExpression>
 				</textField>
 			</elementGroup>
 			<staticText>
-				<reportElement uuid="773ff2f3-046e-4577-8754-c4b1a08b9cc6" x="259" y="275" width="128" height="20"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[*  * SERIALES EQUIPOS CELULAR *  *]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="5cb5680d-ec71-45d5-bc3c-71db3ef0ae6c" x="259" y="296" width="128" height="19"/>
+				<reportElement uuid="5cb5680d-ec71-45d5-bc3c-71db3ef0ae6c" x="261" y="238" width="128" height="19"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONSERVE SU TIQUETE POR SU GARANTIA DE 30 DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="28dd5310-561c-454b-a7fc-868138417ab6" x="259" y="316" width="128" height="30"/>
-				<textElement>
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Un mes de garantia por software , no se responden por daños causados]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="c3a3bd64-0f02-4185-97aa-b655b2a92749" x="262" y="347" width="128" height="12"/>
+				<reportElement uuid="c3a3bd64-0f02-4185-97aa-b655b2a92749" x="263" y="258" width="128" height="12"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
@@ -265,28 +244,25 @@
 				<reportElement uuid="478f0773-b57f-4f71-b4af-f2b72b772dd4" x="259" y="68" width="121" height="1"/>
 			</line>
 			<line>
-				<reportElement uuid="4b39863f-607a-44c4-8e05-dc1a501448f7" x="257" y="295" width="124" height="1"/>
+				<reportElement uuid="4b39863f-607a-44c4-8e05-dc1a501448f7" x="263" y="237" width="124" height="1"/>
 			</line>
 			<line>
-				<reportElement uuid="60727ecc-e5dd-41c6-8611-6612d974b2ae" x="258" y="315" width="122" height="1"/>
+				<reportElement uuid="60727ecc-e5dd-41c6-8611-6612d974b2ae" x="265" y="257" width="122" height="1"/>
 			</line>
 			<textField>
-				<reportElement uuid="cc291fd9-76e2-4a00-ab99-4c645fa463c5" x="263" y="370" width="125" height="20"/>
+				<reportElement uuid="cc291fd9-76e2-4a00-ab99-4c645fa463c5" x="265" y="281" width="125" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{idVenta}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="262" y="359" width="128" height="11"/>
+				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="265" y="270" width="128" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CODIGO DE VENTA :]]></text>
 			</staticText>
-			<line>
-				<reportElement uuid="980d5fab-ac5b-4002-9456-88864bc44ba9" x="258" y="346" width="126" height="1"/>
-			</line>
 			<textField>
 				<reportElement uuid="d2ac10cd-38b2-474c-b874-4280a7711684" mode="Transparent" x="259" y="0" width="121" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">

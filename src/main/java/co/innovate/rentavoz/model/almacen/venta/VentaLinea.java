@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import co.innovate.rentavoz.model.almacen.Linea;
@@ -39,8 +42,6 @@ public class VentaLinea implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idVentaLinea")
 	private Integer idVentaLinea;
-	// @Max(value=?) @Min(value=?)//if you know range of your decimal fields
-	// consider using these annotations to enforce field validation
 	@Basic(optional = false)
 	@NotNull
 	@Column(name = "ventLinPrecio")
@@ -70,6 +71,17 @@ public class VentaLinea implements Serializable {
 	@Column(name = "descuento")
 	private Double descuento;
 
+	@Column(name="estado_devolucion")
+	 @Enumerated(EnumType.STRING)
+	private EstadoDevolucionEnum estadoDevolucion;
+	
+	@Column(name="fecha_devolucion")
+	@Temporal(TemporalType.DATE)
+	private Date fechaDevolucion;
+	
+	
+	@Transient
+	private boolean seleccionado;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -312,6 +324,60 @@ public class VentaLinea implements Serializable {
 	 */
 	public void setDescuento(Double descuento) {
 		this.descuento = descuento;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/03/2014
+	 * @return the estadoDevolucion
+	 */
+	public EstadoDevolucionEnum getEstadoDevolucion() {
+		return estadoDevolucion;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/03/2014
+	 * @param estadoDevolucion the estadoDevolucion to set
+	 */
+	public void setEstadoDevolucion(EstadoDevolucionEnum estadoDevolucion) {
+		this.estadoDevolucion = estadoDevolucion;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/03/2014
+	 * @return the fechaDevolucion
+	 */
+	public Date getFechaDevolucion() {
+		return fechaDevolucion;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/03/2014
+	 * @param fechaDevolucion the fechaDevolucion to set
+	 */
+	public void setFechaDevolucion(Date fechaDevolucion) {
+		this.fechaDevolucion = fechaDevolucion;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @return the seleccionado
+	 */
+	public boolean isSeleccionado() {
+		return seleccionado;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @param seleccionado the seleccionado to set
+	 */
+	public void setSeleccionado(boolean seleccionado) {
+		this.seleccionado = seleccionado;
 	}
 
 }

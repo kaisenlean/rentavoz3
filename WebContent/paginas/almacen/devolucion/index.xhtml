@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+
+			<h:outputLabel value="Devolucion de Lineas Celulares" class="h1" />
+
+			<h:panelGrid columns="2">
+				<h:outputText style="font-weight: bolder" value="Cliente" />
+
+				<p:autoComplete size="30" style="width:100px" id="buscadorCobrador"
+					var="it" itemLabel="#{it}" itemValue="#{it}"
+					converter="#{beanDevolucionSim.autocompleteTercero.conversorClientes}"
+					value="#{beanDevolucionSim.autocompleteTercero.seleccionado}"
+					completeMethod="#{beanDevolucionSim.autocompleteTercero.completarBusqueda}">
+					<p:ajax event="itemSelect" update="@all" process="@this"
+						listener="#{beanDevolucionSim.autocompleteTercero.seleccionar}">
+
+					</p:ajax>
+				</p:autoComplete>
+			</h:panelGrid>
+			<p:dataTable value="#{beanDevolucionSim.lineas}" var="linea"
+				paginator="true" rows="15">
+				<p:column>
+					<p:selectBooleanCheckbox value="#{linea.seleccionado}">
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectBooleanCheckbox>
+				</p:column>
+				<p:column headerText="Linea">
+					<h:outputText value="#{linea.lineaidLinea.linNumero}" />
+				</p:column>
+				<p:column headerText="Corte">
+					<h:outputText value="#{linea.lineaidLinea.linCorte}" />
+				</p:column>
+
+				<p:column headerText="Valor Deposito">
+					<h:outputText value="#{linea.ventLinDeposito}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Fecha de venta">
+					<h:outputText value="#{linea.ventaidVenta.fecha}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<p:commandButton value="Realizar Devolución" process="@this"
+						update="@all"
+						actionListener="#{beanDevolucionSim.realizarDevolucion(linea)}">
+						<p:confirm header="Realizar Devolución" icon="ui-icon-alert"
+							message="Esta segúro de realizar esta transacción ?"></p:confirm>
+					</p:commandButton>
+				</p:column>
+
+
+			</p:dataTable>
+			<p:commandButton process="@this" update="@all" actionListener="#{beanDevolucionSim.realizarDevoluciones()}" value="Realizar devoluciones seleccionadas"
+				>
+				<p:confirm header="Realizar Devolución" icon="ui-icon-alert"
+							message="Esta segúro de realizar esta transacción ?"></p:confirm>
+				</p:commandButton>
+			<p:confirmDialog appendTo="@(body)" closeOnEscape="true"
+				global="true">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

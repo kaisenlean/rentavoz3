@@ -30,6 +30,7 @@ import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.ModalidaVentaEnum;
+import co.innovate.rentavoz.model.almacen.venta.EstadoDevolucionEnum;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.model.venta.ModoPagoEnum;
@@ -309,6 +310,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 
 		
 		VentaLinea ventaLinea = new VentaLinea();
+		ventaLinea.setEstadoDevolucion(EstadoDevolucionEnum.PENDIENTE);
 		ventaLinea.setLineaidLinea(linea);
 		ventaLinea.setVentLinPrecio(BigDecimal.valueOf(linea.getPlan()
 				.getValorPlan()));

@@ -54,7 +54,9 @@ public class UtilidadFechaServiceImpl implements UtilidadFechaService,Serializab
 		buffer.append(format.format(inicio));
 		buffer.append(" - ");
 		buffer.append(format.format(fin));
-		
+		buffer.append("(");
+		buffer.append(new SimpleDateFormat("yyyy").format(inicio));
+		buffer.append(")");
 		return buffer.toString().toUpperCase();
 	}
 

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+
+	<meta http-equiv="Pragma" content="nocache" />
+
+	<script type="text/javascript">
+        function codeAddress() {
+        	 btnExec.jq.click();
+        }
+        window.onload = codeAddress;
+        </script>
+</h:head>
+<h:body>
+
+	<h:form>
+
+<h1>Imprimiendo...</h1>
+		<p:commandButton ajax="false" style="visibility:hidden"
+			actionListener="#{printerDevolucionBean.init()}" widgetVar="btnExec"
+			id="btnExec"></p:commandButton>
+
+	</h:form>
+
+</h:body>
+
+</html>
