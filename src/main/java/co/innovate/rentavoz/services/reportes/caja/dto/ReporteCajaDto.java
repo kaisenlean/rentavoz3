@@ -8,6 +8,7 @@ import java.util.List;
 
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Cuota;
+import co.innovate.rentavoz.model.facturacion.NotaCredito;
 import co.innovate.rentavoz.model.venta.VentaItemCuota;
 
 /**
@@ -30,10 +31,12 @@ public class ReporteCajaDto implements Serializable{
 	
 	private double valorLineas;
 	private double valorEquipos;
+	private double valorDevolucionOtros;
 	private double total;
 	
 	private List<Cuota> cuotasLineas;
 	private List<VentaItemCuota> cuotasEquipos;
+	private List<NotaCredito> notaCreditos;
 	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -149,5 +152,41 @@ public class ReporteCajaDto implements Serializable{
 	 */
 	public void setTotal(double total) {
 		this.total = total;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the valorDevolucionOtros
+	 */
+	public double getValorDevolucionOtros() {
+		return valorDevolucionOtros;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param valorDevolucionOtros the valorDevolucionOtros to set
+	 */
+	public void setValorDevolucionOtros(double valorDevolucionOtros) {
+		this.valorDevolucionOtros = valorDevolucionOtros;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the notaCreditos
+	 */
+	public List<NotaCredito> getNotaCreditos() {
+		return notaCreditos;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param notaCreditos the notaCreditos to set
+	 */
+	public void setNotaCreditos(List<NotaCredito> notaCreditos) {
+		this.notaCreditos = notaCreditos;
 	}
 }

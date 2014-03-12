@@ -18,15 +18,18 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.EstadoDevolucionEnum;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.NotaCredito;
 import co.innovate.rentavoz.repositories.linea.impl.LineaDaoImpl;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.estadolinea.EstadoLineaService;
+import co.innovate.rentavoz.services.facturacion.NotaCreditoService;
 import co.innovate.rentavoz.services.linea.LineaService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 import co.innovate.rentavoz.views.reports.PrinterBean;
+import co.innovate.rentavoz.views.session.Login;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -71,6 +74,13 @@ public class BeanDevolucionSim extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{printerBean}")
 	private PrinterBean printerBean;
 	
+	@ManagedProperty(value="#{login}")
+	private Login login;
+	
+	
+	@ManagedProperty(value="#{notaCreditoService}")
+	private NotaCreditoService notaCreditoService;
+	
 
 	
 	@PostConstruct
@@ -103,12 +113,15 @@ public class BeanDevolucionSim extends BaseBean implements Serializable {
 		DevolucionDto dto= new DevolucionDto();
 		
 		dto.setCliente(linea.getVentaidVenta().getTercero());
-		dto.setVendedor(linea.getVentaidVenta().getVendedor());
+		dto.setVendedor(login.getTercero());
 		dto.setValorDevolucion(linea.getVentLinDeposito().doubleValue());
+		dto.setVentaLinea(linea);
 		List<DevolucionDto> lista= new ArrayList<DevolucionDto>();
 		lista.add(dto);
 		lineas.remove(linea);
 		 addAttribute(SessionParams.ENTITY_BACK, lista);
+		 
+		 saveNotaCredito(dto);
 		runJavascript("window.open('respuesta.jsf','_blank','width=900px,height=300px');");
 		
 		
@@ -116,6 +129,25 @@ public class BeanDevolucionSim extends BaseBean implements Serializable {
 	}
 	
 	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 11/03/2014
+	* @param dto
+	*/
+	private void saveNotaCredito(DevolucionDto dto) {
+
+		NotaCredito notaCredito=new NotaCredito();
+		notaCredito.setCliente(dto.getCliente());
+		notaCredito.setCodigoFactura(dto.getVentaLinea().getVentaidVenta().getIdVenta().toString());
+		notaCredito.setConcepto("Devolución de depósito de linea ".concat(dto.getVentaLinea().getLineaidLinea().getLinNumero()));
+		notaCredito.setCreador(login.getTercero());
+		notaCredito.setFechaEmision(Calendar.getInstance().getTime());
+		notaCredito.setValor(dto.getVentaLinea().getVentLinDeposito().doubleValue());
+		notaCredito.setSucursal(login.getSucursalContable());
+		notaCreditoService.save(notaCredito);
+	}
+
+
 	public void realizarDevoluciones(){
 		List<DevolucionDto> lista= new ArrayList<DevolucionDto>();
 		Tercero cliente=null;
@@ -140,8 +172,8 @@ public class BeanDevolucionSim extends BaseBean implements Serializable {
 				dto.setCliente(linea.getVentaidVenta().getTercero());
 				dto.setVendedor(linea.getVentaidVenta().getVendedor());
 				dto.setValorDevolucion(linea.getVentLinDeposito().doubleValue());
-				
-	
+				dto.setVentaLinea(linea);
+				saveNotaCredito(dto);
 				lista.add(dto);
 			}
 		}
@@ -266,5 +298,32 @@ public class BeanDevolucionSim extends BaseBean implements Serializable {
 	 */
 	public void setPrinterBean(PrinterBean printerBean) {
 		this.printerBean = printerBean;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @param notaCreditoService the notaCreditoService to set
+	 */
+	public void setNotaCreditoService(NotaCreditoService notaCreditoService) {
+		this.notaCreditoService = notaCreditoService;
+	}
+	
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @return the login
+	 */
+	public Login getLogin() {
+		return login;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @param login the login to set
+	 */
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 }

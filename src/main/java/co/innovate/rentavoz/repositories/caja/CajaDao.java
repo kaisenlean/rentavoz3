@@ -86,4 +86,8 @@ public interface CajaDao extends GenericRepository<Caja, Integer> {
 	 * @return
 	 */
 	List<VentaItemCuota> valorCajaEquiposBySucursalDetalle(Sucursal sucursal, Date fecha);
+	
+	
+	
+	
 }

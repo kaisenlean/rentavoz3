@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.views.session;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +27,7 @@ import co.innovate.rentavoz.model.SucursalTercero;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.caja.CajaService;
+import co.innovate.rentavoz.services.facturacion.NotaCreditoService;
 import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.usuario.UsuarioService;
@@ -58,6 +60,9 @@ public class Login extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{sucursalTerceroService}")
 	private SucursalTerceroService sucursalTerceroService;
+	
+	@ManagedProperty(value="#{notaCreditoService}")
+	private NotaCreditoService notaCreditoService;
 
 	private Usuario user;
 	private String usuario;
@@ -71,8 +76,10 @@ public class Login extends BaseBean implements Serializable {
 	private Boolean pertenecePrinicpal;
 
 	private Logger log = Logger.getAnonymousLogger();
-	
-	private List<SelectItem> sucursalItems= new ArrayList<SelectItem>();
+
+	private List<SelectItem> sucursalItems = new ArrayList<SelectItem>();
+
+	private double devolucionOtro;
 
 	/**
 	 * 
@@ -103,6 +110,8 @@ public class Login extends BaseBean implements Serializable {
 
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
+			devolucionOtro= notaCreditoService.sumByGenerador(getTercero());
+			
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
 		}
@@ -134,6 +143,7 @@ public class Login extends BaseBean implements Serializable {
 			cajaService.abrirCaja(user);
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
+			devolucionOtro=notaCreditoService.sumByGenerador(getTercero());
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;
@@ -172,32 +182,49 @@ public class Login extends BaseBean implements Serializable {
 
 			}
 			if (user.getAdministrador()) {
-				pertenecePrinicpal=true;
-			}else{
+				pertenecePrinicpal = true;
+			} else {
 
-			for (Sucursal sucursal : sucursales) {
-				if (sucursal.getPrincipal()) {
-					pertenecePrinicpal = true;
-					break;
+				for (Sucursal sucursal : sucursales) {
+					if (sucursal.getPrincipal()) {
+						pertenecePrinicpal = true;
+						break;
+					}
 				}
 			}
-			}
 		}
-		
+
 		cargarItemsBySucursales(sucursales);
 
 	}
 
+	public Sucursal getSucursalContable() {
+
+		if (sucursales.isEmpty()) {
+			return null;
+		}
+
+		for (Sucursal sucursal : sucursales) {
+			if (sucursal.getPrincipal()) {
+				return sucursal;
+			}
+		}
+
+		return sucursales.get(BigInteger.ZERO.intValue());
+
+	}
+
 	/**
-	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 17/02/2014
-	* @param sucursales2
-	*/
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/02/2014
+	 * @param sucursales2
+	 */
 	private void cargarItemsBySucursales(List<Sucursal> sucursales2) {
-		sucursalItems=new ArrayList<SelectItem>();
+		sucursalItems = new ArrayList<SelectItem>();
 		for (Sucursal sucursal : sucursales2) {
-			sucursalItems.add(new SelectItem(sucursal.getIdSucursal(),sucursal.getSucNombre()));
-			
+			sucursalItems.add(new SelectItem(sucursal.getIdSucursal(), sucursal
+					.getSucNombre()));
+
 		}
 	}
 
@@ -222,7 +249,7 @@ public class Login extends BaseBean implements Serializable {
 			// de JSF se debe usar la ruta completa -_-U
 			ctx.redirect(ctxPath + "/");
 			removeCookie(LAST_URL);
-			addCookie(LAST_URL,"/" );
+			addCookie(LAST_URL, "/");
 		} catch (Exception ex) {
 			mensaje("Error", ex.toString());
 		}
@@ -477,7 +504,7 @@ public class Login extends BaseBean implements Serializable {
 	public void setValorCajaLineas(double valorCajaLineas) {
 		this.valorCajaLineas = valorCajaLineas;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 17/02/2014
@@ -486,14 +513,42 @@ public class Login extends BaseBean implements Serializable {
 	public List<SelectItem> getSucursalItems() {
 		return sucursalItems;
 	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/02/2014
+	 * @param sucursalItems
+	 *            the sucursalItems to set
+	 */
+	public void setSucursalItems(List<SelectItem> sucursalItems) {
+		this.sucursalItems = sucursalItems;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param notaCreditoService the notaCreditoService to set
+	 */
+	public void setNotaCreditoService(NotaCreditoService notaCreditoService) {
+		this.notaCreditoService = notaCreditoService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the devolucionOtro
+	 */
+	public double getDevolucionOtro() {
+		return devolucionOtro;
+	}
 	
 	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 17/02/2014
-	 * @param sucursalItems the sucursalItems to set
+	 * @date 12/03/2014
+	 * @param devolucionOtro the devolucionOtro to set
 	 */
-	public void setSucursalItems(List<SelectItem> sucursalItems) {
-		this.sucursalItems = sucursalItems;
+	public void setDevolucionOtro(double devolucionOtro) {
+		this.devolucionOtro = devolucionOtro;
 	}
 }

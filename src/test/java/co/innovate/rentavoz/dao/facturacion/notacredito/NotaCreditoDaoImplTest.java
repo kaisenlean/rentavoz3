@@ -5,6 +5,8 @@ package co.innovate.rentavoz.dao.facturacion.notacredito;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,6 +32,12 @@ public class NotaCreditoDaoImplTest  extends BaseUnit{
 	@Test
 	public void testFindAll() {
 		assertNotNull(notaCreditoDao.findAll());
+	}
+	
+	@Test
+	public void testFindBYFecha(){
+		
+		assertNotNull(notaCreditoDao.findByFecha(Calendar.getInstance().getTime()));
 	}
 
 }

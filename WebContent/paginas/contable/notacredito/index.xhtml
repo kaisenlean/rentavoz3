@@ -45,6 +45,13 @@
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
+				
+				<h:outputText value="Sucursal de emisión :" />
+				<p:selectOneMenu value="#{notaCreditoBean.selSucursal}" >
+				<f:selectItems value="#{login.sucursalItems}"/>
+				<p:ajax event="change" partialSubmit="true"></p:ajax>
+				</p:selectOneMenu>
+				
 					<h:outputText value="Fecha de emisión :" />
 					<p:calendar value="#{notaCreditoBean.objeto.fechaEmision}"></p:calendar>
 

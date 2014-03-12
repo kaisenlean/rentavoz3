@@ -6,6 +6,7 @@ package co.innovate.rentavoz.views.venta.linea.devolucion;
 import java.io.Serializable;
 
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -29,6 +30,9 @@ public class DevolucionDto implements Serializable {
 	private Tercero cliente;
 	
 	private Tercero vendedor;
+	
+	
+	private VentaLinea ventaLinea;
 
 
 	/**
@@ -104,7 +108,24 @@ public class DevolucionDto implements Serializable {
 		this.vendedor = vendedor;
 	}
 	
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 11/03/2014
+ * @return the ventaLinea
+ */
+public VentaLinea getVentaLinea() {
+	return ventaLinea;
+}
 
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 11/03/2014
+ * @param ventaLinea the ventaLinea to set
+ */
+public void setVentaLinea(VentaLinea ventaLinea) {
+	this.ventaLinea = ventaLinea;
+}
 	
 	
 }

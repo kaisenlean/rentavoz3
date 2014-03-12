@@ -59,20 +59,27 @@
 					<h:outputLabel value="Caja de telefonos : "
 						style="font-weight: bolder;font-size:16px" />
 					<h:outputLabel value="#{login.valorCaja}"
-						style="font-weight: bolder;font-size:16px;color:red">
+						style="font-weight: bolder;font-size:16px;color:green">
 						<f:convertNumber  currencySymbol="$"   type="currency" />
 					</h:outputLabel>
 					<h:outputLabel value="Caja de lineas : "
 						style="font-weight: bolder;font-size:16px" />
 					<h:outputLabel value="#{login.valorCajaLineas}"
+						style="font-weight: bolder;font-size:16px;color:green">
+						<f:convertNumber  currencySymbol="$"   type="currency" />
+					</h:outputLabel>
+					
+						<h:outputLabel value="Devoluciones u otros : "
+						style="font-weight: bolder;font-size:16px" />
+					<h:outputLabel value="${login.devolucionOtro}"
 						style="font-weight: bolder;font-size:16px;color:red">
 						<f:convertNumber  currencySymbol="$"   type="currency" />
 					</h:outputLabel>
 					
 					<h:outputLabel value="Total : "
 						style="font-weight: bolder;font-size:16px" />
-					<h:outputLabel value="#{login.valorCajaLineas + login.valorCaja}"
-						style="font-weight: bolder;font-size:16px;color:red">
+					<h:outputLabel value="#{login.valorCajaLineas + login.valorCaja -login.devolucionOtro}"
+						style="font-weight: bolder;font-size:16px;color: ${(login.valorCajaLineas + login.valorCaja -login.devolucionOtro)>=0?'green':'red'}">
 						<f:convertNumber  currencySymbol="$"   type="currency" />
 					</h:outputLabel>
 

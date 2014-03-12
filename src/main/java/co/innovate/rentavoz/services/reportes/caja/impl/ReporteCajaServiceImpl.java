@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.services.caja.CajaService;
+import co.innovate.rentavoz.services.facturacion.NotaCreditoService;
 import co.innovate.rentavoz.services.reportes.caja.ReporteCajaService;
 import co.innovate.rentavoz.services.reportes.caja.dto.ReporteCajaDto;
 
@@ -36,6 +37,9 @@ public class ReporteCajaServiceImpl implements ReporteCajaService,Serializable{
 	
 	@Autowired
 	private CajaService cajaService;
+	
+	@Autowired
+	private NotaCreditoService notaCreditoService;
 
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.services.reportes.caja.ReporteCajaService#reporteCajasBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
@@ -51,7 +55,9 @@ public class ReporteCajaServiceImpl implements ReporteCajaService,Serializable{
 		dto.setValorLineas(cajaService.valorCajaLineasBySucursal(sucursal, fechaCierre));
 		dto.setValorEquipos(cajaService.valorCajaEquiposBySucursal(sucursal, fechaCierre));
 		dto.setCuotasEquipos(cajaService.valorCajaEquiposBySucursalDetalle(sucursal, fechaCierre));
-		dto.setTotal(dto.getValorEquipos()+dto.getValorLineas());
+		dto.setNotaCreditos(notaCreditoService.findBySucursal(sucursal));
+		dto.setValorDevolucionOtros(-notaCreditoService.sumBySucursal(sucursal));
+		dto.setTotal(dto.getValorEquipos()+dto.getValorLineas()+ dto.getValorDevolucionOtros());
 		lista.add(dto);
 		return lista;
 	}

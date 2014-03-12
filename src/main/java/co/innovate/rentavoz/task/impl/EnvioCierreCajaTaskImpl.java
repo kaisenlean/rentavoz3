@@ -19,6 +19,7 @@ import co.innovate.rentavoz.model.cron.CronActivity;
 import co.innovate.rentavoz.model.cron.CronActivityParametro;
 import co.innovate.rentavoz.services.cron.CronActivityService;
 import co.innovate.rentavoz.services.notificacioncaja.EnvioCierreCajaService;
+import co.innovate.rentavoz.services.notificacionnotacredito.NotificacionNotaCreditoService;
 import co.innovate.rentavoz.task.EnvioCierreCajaTask;
 
 /**
@@ -45,6 +46,9 @@ public class EnvioCierreCajaTaskImpl implements EnvioCierreCajaTask,
 
 	@Autowired
 	private EnvioCierreCajaService envioCierreCajaService;
+	
+	@Autowired
+	private NotificacionNotaCreditoService notificacionNotaCreditoService;
 
 	private Logger logger = Logger.getLogger(getClass());
 
@@ -86,6 +90,34 @@ public class EnvioCierreCajaTaskImpl implements EnvioCierreCajaTask,
 				logger.info("====== Fin de la actividad =========");
 			}
 		}
+		
+		 cronActivity = cronActivityService
+					.findById(CronActivityParametro.ENVIO_NOTAS_CREDITO);
+		 if (cronActivity == null) {
+				return;
+			}
+
+			 nowTime = format.format(Calendar.getInstance().getTime());
+			if (cronActivity.getMultiEjecucion()) {
+
+				List<String> jobTimes = Arrays.asList(cronActivity.getEjecuciones()
+						.split(";"));
+
+				if (jobTimes.contains(nowTime)) {
+					logger.info("====== Iniciando busqueda =========");
+					notificacionNotaCreditoService.enviarNotificacionNotasCredito();
+					logger.info("====== Fin de la actividad =========");
+				}
+
+			} else {
+				String schedule = format.format(cronActivity.getHoraInicio());
+
+				if (schedule.equals(nowTime)) {
+					logger.info("====== Iniciando Actividad programada =========");
+					notificacionNotaCreditoService.enviarNotificacionNotasCredito();
+					logger.info("====== Fin de la actividad =========");
+				}
+			}
 
 	}
 

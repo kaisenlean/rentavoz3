@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 
 /**
@@ -66,6 +67,10 @@ public class NotaCredito implements Serializable {
 	
 	@Column
 	private Double valor;
+	
+	@ManyToOne
+	@JoinColumn(name="sucursal")
+	private Sucursal sucursal;
 
 
 	/**
@@ -281,6 +286,23 @@ public class NotaCredito implements Serializable {
 	}
 	
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @return the sucursal
+	 */
+	public Sucursal getSucursal() {
+		return sucursal;
+	}
 	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/03/2014
+	 * @param sucursal the sucursal to set
+	 */
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
+	}
 	
 }
