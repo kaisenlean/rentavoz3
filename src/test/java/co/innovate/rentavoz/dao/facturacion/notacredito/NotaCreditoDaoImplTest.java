@@ -3,7 +3,7 @@
  */
 package co.innovate.rentavoz.dao.facturacion.notacredito;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
 

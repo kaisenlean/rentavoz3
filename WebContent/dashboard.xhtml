@@ -121,7 +121,7 @@
 					<div>
 						<p:dataTable value="#{tareaBean.tareas}" var="tarea">
 							<p:column headerText="Tarea">
-								<h:outputText value="#{tarea.descripcion}" />
+								<h:outputText value="#{tarea.nombre}" />
 							</p:column>
 							<p:column>
 								<h:commandButton action="#{tareaBean.loadTask(tarea)}"

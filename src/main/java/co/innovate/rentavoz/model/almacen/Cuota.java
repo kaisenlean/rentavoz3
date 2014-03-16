@@ -73,6 +73,12 @@ public class Cuota implements Serializable {
 	
 	@Transient
 	private boolean seleccionada;
+	
+	@Transient
+	private BigDecimal valorCuota2;
+	
+	@Transient
+	private Date fechaSgtePago;
 
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -246,5 +252,43 @@ public class Cuota implements Serializable {
 			
 		}
 		
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the valorCuota2
+	 */
+	public BigDecimal getValorCuota2() {
+		return valorCuota2;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param valorCuota2 the valorCuota2 to set
+	 */
+	public void setValorCuota2(BigDecimal valorCuota2) {
+		this.valorCuota2 = valorCuota2;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the fechaSgtePago
+	 */
+	public Date getFechaSgtePago() {
+		return fechaSgtePago;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param fechaSgtePago the fechaSgtePago to set
+	 */
+	public void setFechaSgtePago(Date fechaSgtePago) {
+		this.fechaSgtePago = fechaSgtePago;
 	}
 }

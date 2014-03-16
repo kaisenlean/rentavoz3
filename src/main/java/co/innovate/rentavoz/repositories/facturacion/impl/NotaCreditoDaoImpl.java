@@ -36,6 +36,12 @@ public class NotaCreditoDaoImpl extends
 		Serializable {
 
 	/**
+	 * 14/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * FECHA_EMISION
+	 */
+	private static final String FECHA_EMISION = "fechaEmision";
+	/**
 	 * 12/03/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * SUCURSAL2
@@ -134,7 +140,7 @@ public class NotaCreditoDaoImpl extends
 	 */
 	@Override
 	public List<NotaCredito> findByFecha(Date fecha) {
-		Criterion criterion = Restrictions.eq("fechaEmision", fecha);
+		Criterion criterion = Restrictions.eq(FECHA_EMISION, fecha);
 		return findByCriteria(criterion);
 	}
 
@@ -182,6 +188,64 @@ public class NotaCreditoDaoImpl extends
 
 		Criterion criterion = Restrictions.eq(SUCURSAL2,sucursal);
 		criteria.add(criterion);
+		criteria.setProjection(Projections.sum("valor"));
+		if (criteria.list().isEmpty()) {
+			return BigInteger.ZERO.doubleValue();
+		}
+		return Double.valueOf(criteria.list().get(0)==null?BigInteger.ZERO.toString():criteria.list().get(0).toString());
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.facturacion.NotaCreditoDao#findByGenerador(co.innovate.rentavoz.model.Tercero, java.util.Date)
+	 */
+	@Override
+	public List<NotaCredito> findByGenerador(Tercero tercero, Date fecha) {
+		Criterion criterion = Restrictions.eq(CREADOR,tercero);
+		Criterion criterion2= Restrictions.eq("fechaEmision", fecha);
+		return findByCriteria(criterion,criterion2);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.facturacion.NotaCreditoDao#sumByGenerador(co.innovate.rentavoz.model.Tercero, java.util.Date)
+	 */
+	@Override
+	public double sumByGenerador(Tercero tercero, Date date) {
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria criteria = session.createCriteria(NotaCredito.class);
+
+		Criterion criterion = Restrictions.eq(CREADOR,tercero);
+		Criterion criterion2 = Restrictions.eq(FECHA_EMISION,date);
+		criteria.add(criterion);
+		criteria.add(criterion2);
+		criteria.setProjection(Projections.sum("valor"));
+		
+		return Double.valueOf(criteria.list().get(0)==null?BigInteger.ZERO.toString():criteria.list().get(0).toString());
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.facturacion.NotaCreditoDao#findBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public List<NotaCredito> findBySucursal(Sucursal sucursal, Date fecha) {
+		Criterion criterion = Restrictions.eq(SUCURSAL2,sucursal);
+		Criterion criterion2 = Restrictions.eq(FECHA_EMISION, fecha);
+		return findByCriteria(criterion,criterion2);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.facturacion.NotaCreditoDao#sumBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double sumBySucursal(Sucursal sucursal, Date fecha) {
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria criteria = session.createCriteria(NotaCredito.class);
+
+		Criterion criterion = Restrictions.eq(SUCURSAL2,sucursal);
+		Criterion criterion2 = Restrictions.eq(FECHA_EMISION, fecha);
+		criteria.add(criterion);
+		criteria.add(criterion2);
 		criteria.setProjection(Projections.sum("valor"));
 		if (criteria.list().isEmpty()) {
 			return BigInteger.ZERO.doubleValue();

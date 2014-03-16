@@ -103,6 +103,38 @@ public class NotaCreditoServiceImpl extends GenericServiceImpl<NotaCredito, Inte
 	public double sumBySucursal(Sucursal sucursal) {
 		return notaCreditoDao.sumBySucursal(sucursal);
 	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.facturacion.NotaCreditoService#sumBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public double sumBySucursal(Sucursal sucursal, Date fecha) {
+		return notaCreditoDao.sumBySucursal(sucursal, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.facturacion.NotaCreditoService#findBySucursal(co.innovate.rentavoz.model.Sucursal, java.util.Date)
+	 */
+	@Override
+	public List<NotaCredito> findBySucursal(Sucursal sucursal, Date fecha) {
+		return notaCreditoDao.findBySucursal(sucursal, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.facturacion.NotaCreditoService#findByGenerador(co.innovate.rentavoz.model.Tercero, java.util.Date)
+	 */
+	@Override
+	public List<NotaCredito> findByGenerador(Tercero tercero, Date fecha) {
+		return notaCreditoDao.findByGenerador(tercero, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.facturacion.NotaCreditoService#sumByGenerador(co.innovate.rentavoz.model.Tercero, java.util.Date)
+	 */
+	@Override
+	public double sumByGenerador(Tercero tercero, Date fecha) {
+		return notaCreditoDao.sumByGenerador(tercero, fecha);
+	}
 	
 	
 	

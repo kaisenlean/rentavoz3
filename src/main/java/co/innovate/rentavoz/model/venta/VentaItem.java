@@ -175,6 +175,22 @@ public class VentaItem implements Serializable {
 	@JoinColumn(name="sucursal")
 	private Sucursal sucursal;
 	
+	
+	@Column(name="fecha_anulacion")
+	@Temporal(TemporalType.DATE)
+	private Date fechaAnulacion;
+	
+	@Lob
+	@Column(name="justificacion_anulacion")
+	private String justificacionAnulacion;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="responsable_anulacion")
+	private Tercero responsableAnulacion;
+	
+	
+	
 	/**
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 29/10/2013
@@ -474,6 +490,60 @@ public Sucursal getSucursal() {
  */
 public void setSucursal(Sucursal sucursal) {
 	this.sucursal = sucursal;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @return the fechaAnulacion
+ */
+public Date getFechaAnulacion() {
+	return fechaAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @param fechaAnulacion the fechaAnulacion to set
+ */
+public void setFechaAnulacion(Date fechaAnulacion) {
+	this.fechaAnulacion = fechaAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @return the justificacionAnulacion
+ */
+public String getJustificacionAnulacion() {
+	return justificacionAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @param justificacionAnulacion the justificacionAnulacion to set
+ */
+public void setJustificacionAnulacion(String justificacionAnulacion) {
+	this.justificacionAnulacion = justificacionAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @return the responsableAnulacion
+ */
+public Tercero getResponsableAnulacion() {
+	return responsableAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 16/03/2014
+ * @param responsableAnulacion the responsableAnulacion to set
+ */
+public void setResponsableAnulacion(Tercero responsableAnulacion) {
+	this.responsableAnulacion = responsableAnulacion;
 }
 
 }

@@ -13,12 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import co.innovate.rentavoz.model.Centrope;
+import co.innovate.rentavoz.model.Tercero;
 
 /**
  * The persistent class for the tarea database table.
@@ -26,7 +26,6 @@ import co.innovate.rentavoz.model.Centrope;
  */
 @Entity
 @Table(name = "tarea")
-@NamedQuery(name = "Tarea.findAll", query = "SELECT t FROM Tarea t")
 public class Tarea implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -103,6 +102,22 @@ public class Tarea implements Serializable {
 	
 	@Column(name = "goURL")
 	private String goDir;
+	
+	
+	@Column(name="fecha_finaliza")
+	@Temporal(TemporalType.DATE)
+	private Date fechaFinaliza;
+	
+	
+	
+	@JoinColumn(name="usuario_finaliza")
+	@ManyToOne
+	private Tercero usuarioFinaliza;
+	
+	
+	@Column(name="tipo_tarea")
+	@Enumerated(EnumType.STRING)
+	private TipoTareaEnum tipoTarea;
 	
 	public Tarea() {
 	}
@@ -289,5 +304,61 @@ public class Tarea implements Serializable {
 	}
 	
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 15/03/2014
+	 * @return the fechaFinaliza
+	 */
+	public Date getFechaFinaliza() {
+		return fechaFinaliza;
+	}
+	
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 15/03/2014
+	 * @return the usuarioFinaliza
+	 */
+	public Tercero getUsuarioFinaliza() {
+		return usuarioFinaliza;
+	}
+	
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 15/03/2014
+	 * @param fechaFinaliza the fechaFinaliza to set
+	 */
+	public void setFechaFinaliza(Date fechaFinaliza) {
+		this.fechaFinaliza = fechaFinaliza;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 15/03/2014
+	 * @param usuarioFinaliza the usuarioFinaliza to set
+	 */
+	public void setUsuarioFinaliza(Tercero usuarioFinaliza) {
+		this.usuarioFinaliza = usuarioFinaliza;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 16/03/2014
+	 * @return the tipoTarea
+	 */
+	public TipoTareaEnum getTipoTarea() {
+		return tipoTarea;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 16/03/2014
+	 * @param tipoTarea the tipoTarea to set
+	 */
+	public void setTipoTarea(TipoTareaEnum tipoTarea) {
+		this.tipoTarea = tipoTarea;
+	}
 
 }

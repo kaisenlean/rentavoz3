@@ -46,11 +46,16 @@
 					</h:outputText>
 				</p:column>
 				<p:column headerText="Saldo">
-					<h:outputText value="#{cuota.valorCuota}">
+					<h:outputText value="#{cuota.valorCuota - cuota.valorCuota2}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</h:outputText>
 				</p:column>
 				<p:column>
+					<p:commandButton value="Cambiar valor cuota" process="@this"
+								update="@this"
+								actionListener="#{beanConsultaCuota.loadCuota(cuota)}"
+								onclick="dialogo.show();">
+							</p:commandButton>
 					<p:commandButton icon="ui-icon-shuffle" value="Efectuar pago"
 						process="@this" update="@all"
 						actionListener="#{beanConsultaCuota.pagarCuota(cuota)}">
@@ -65,6 +70,24 @@
 
 				</p:column>
 			</p:dataTable>
+			
+			<p:dialog widgetVar="dialogo" id="dialogo" appendTo="@(body)"
+						modal="true" header="Nuevo valor cuota">
+						<h:panelGrid >
+						    
+						<p:inputText value="#{beanConsultaCuota.cuota.valorCuota2}"
+							id="txtValor"
+							onkeypress="if (event.keyCode == 13) { addPrecioBtn.jq.click();  return false; }">
+						</p:inputText>
+						<p:calendar widgetVar="fechPagSig" id="fechPagSig" placeholder="Siguiente pago" value="#{beanConsultaCuota.cuota.fechaSgtePago}"></p:calendar>
+						<p:commandButton widgetVar="addPrecioBtn" id="addPrecioBtn"
+							actionListener="#{beanConsultaCuota.saveEditRow}" value="Cambiar"
+							process="@this,txtValor,fechPagSig" partialSubmit="true" update="@all">
+
+						</p:commandButton>
+						</h:panelGrid>
+
+					</p:dialog>
 			<h:panelGrid>
 			<p:commandButton actionListener="#{beanConsultaCuota.pagarCuotasSeleccionadas()}" value="Pagar facturas seleccionadas" process="@this" update="@all" >
 			<p:confirm header="Pago masivo de cuotas" message="Esta seguro de pagar las cuotas seleccionadas ?" icon="ui-icon-alert"></p:confirm>

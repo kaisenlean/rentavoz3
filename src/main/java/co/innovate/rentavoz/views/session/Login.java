@@ -6,6 +6,7 @@ package co.innovate.rentavoz.views.session;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -110,7 +111,7 @@ public class Login extends BaseBean implements Serializable {
 
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
-			devolucionOtro= notaCreditoService.sumByGenerador(getTercero());
+			devolucionOtro= notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime());
 			
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
@@ -143,7 +144,7 @@ public class Login extends BaseBean implements Serializable {
 			cajaService.abrirCaja(user);
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
-			devolucionOtro=notaCreditoService.sumByGenerador(getTercero());
+			devolucionOtro=notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime());
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;

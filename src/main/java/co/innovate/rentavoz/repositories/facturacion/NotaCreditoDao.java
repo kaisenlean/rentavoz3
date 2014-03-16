@@ -69,6 +69,14 @@ public interface NotaCreditoDao  extends GenericRepository<NotaCredito, Integer>
 	*/
 	List<NotaCredito> findByGenerador(Tercero tercero);
 	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 12/03/2014
+	* @param tercero
+	* @return
+	*/
+	List<NotaCredito> findByGenerador(Tercero tercero,Date fecha);
+	
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -77,6 +85,15 @@ public interface NotaCreditoDao  extends GenericRepository<NotaCredito, Integer>
 	* @return
 	*/
 	double sumByGenerador(Tercero tercero);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 12/03/2014
+	* @param tercero
+	* @return
+	*/
+	double sumByGenerador(Tercero tercero,Date date);
 	
 
 	/**
@@ -87,6 +104,15 @@ public interface NotaCreditoDao  extends GenericRepository<NotaCredito, Integer>
 	*/
 	List<NotaCredito> findBySucursal(Sucursal sucursal);
 	
+
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 12/03/2014
+	* @param tercero
+	* @return
+	*/
+	List<NotaCredito> findBySucursal(Sucursal sucursal,Date fecha);
+	
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -95,4 +121,14 @@ public interface NotaCreditoDao  extends GenericRepository<NotaCredito, Integer>
 	* @return
 	*/
 	double sumBySucursal(Sucursal sucursal);
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 12/03/2014
+	* @param tercero
+	* @return
+	*/
+	double sumBySucursal(Sucursal sucursal,Date fecha);
 }

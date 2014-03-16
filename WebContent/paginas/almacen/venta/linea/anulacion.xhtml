@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+			<h1>
+				<h:outputLabel
+					value="Solicitud de anulacion de facturas de venta de lineas celulares"
+					class="h1" />
+			</h1>
+
+
+			<h:panelGrid columns="3">
+				<h:outputText value="Codigo de factura de venta" />
+				<p:inputText value="#{anularVentaBean.idVenta}"
+					onkeypress="if (event.keyCode == 13) { btnBuscar.jq.click();  return false; }" readonly="#{anularVentaBean.verAprobarAnulacion}"></p:inputText>
+				<p:commandButton widgetVar="btnBuscar" id="btnBuscar" value="Buscar Facura"
+					actionListener="#{anularVentaBean.loadVenta()}" process="@all"
+					update="@all" disabled="#{anularVentaBean.verAprobarAnulacion}"></p:commandButton>
+
+
+			</h:panelGrid>
+
+				<p:panel header="Factura de venta"
+					rendered="#{anularVentaBean.venta !=null}">
+					<h:panelGrid columns="2" cellpadding="8">
+						<h:outputLabel value="Codigo de factura :" />
+						<h:outputLabel
+							value="#{anularVentaBean.venta.fechaFacturacion.label}" />
+
+
+						<h:outputLabel value="Fecha de venta :" />
+						<h:outputLabel value="#{anularVentaBean.venta.fecha}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputLabel>
+
+						<h:outputLabel value="Vendedor :" />
+						<h:outputLabel
+							value="#{anularVentaBean.venta.vendedor.nombreCompleto}" />
+
+						<h:outputLabel value="Cliente :" />
+						<h:outputLabel
+							value="#{anularVentaBean.venta.tercero.nombreCompleto}" />
+							
+							
+							<h:outputLabel value="Sucursal factura :" />
+						<h:outputLabel
+							value="#{anularVentaBean.venta.sucursal.sucNombre}" />
+							
+							<h:outputLabel value="Valor factura :" />
+						<h:outputLabel
+							value="#{anularVentaBean.venta.venSaldo}" >
+							<f:convertNumber type="currency" currencySymbol="$"/>
+							</h:outputLabel>
+							
+							
+							
+							
+					</h:panelGrid>
+					<br></br>
+					<h:panelGrid >
+					<h:outputText value="Justificación de la anulación" />
+					<p:inputTextarea readonly="#{anularVentaBean.verAprobarAnulacion}" value="#{anularVentaBean.venta.justificacionAnulacion}" cols="50" rows="10"> </p:inputTextarea>
+					
+					</h:panelGrid>
+					
+					<h:panelGrid columns="2">
+					<p:commandButton rendered="#{!anularVentaBean.verAprobarAnulacion}" value="Enviar solicitud" process="@all" update="@all" actionListener="#{anularVentaBean.enviarSolicitud()}"></p:commandButton>
+					<p:commandButton rendered="#{anularVentaBean.verAprobarAnulacion}" value="Aprobar Anulación" process="@all" update="@all" actionListener="#{anularVentaBean.aprobarAnulacion()}"></p:commandButton>
+					<p:commandButton value="Cancelar" immediate="true" process="@this" update="@all" actionListener="#{anularVentaBean.goTo('paginas/almacen/venta/linea/anulacion.jsf')}"></p:commandButton>
+					
+					</h:panelGrid>
+					
+
+				</p:panel>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.services.venta.impl;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,23 @@ public class FacturaControllerServiceImpl implements FacturaControllerService, S
 	public Venta pagarCuota(Cuota cuota) {
 		cuota.setEstadoCuota(EstadoCuotaEnum.PAGADA);
 		cuota.setFechaPago(Calendar.getInstance().getTime());
+		
+		if (cuota.getValorCuota2()!=null) {
+			if (cuota.getValorCuota2().doubleValue()>0) {
+				
+				double pendiente = cuota.getValorCuota().doubleValue()-cuota.getValorCuota2().doubleValue();
+				
+				cuota.setValorCuota(cuota.getValorCuota2());
+				
+				
+				Cuota cuota2 = new Cuota();
+				cuota2.setEstadoCuota(EstadoCuotaEnum.PENDIENTE);
+				cuota2.setValorCuota(BigDecimal.valueOf(pendiente));
+				cuota2.setFechaPago(cuota.getFechaSgtePago()==null?Calendar.getInstance().getTime():cuota.getFechaSgtePago());
+				cuota2.setVenta(cuota.getVenta());
+				cuotaService.save(cuota2);
+			}
+		}
 		cuotaService.save(cuota);
 		return cargarFactura(cuota.getVenta());
 	}

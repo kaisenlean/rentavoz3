@@ -11,7 +11,7 @@
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 
 		<locale-config>
-			<default-locale>pl</default-locale>
+			<default-locale>es_CO</default-locale>
 			<supported-locale>en</supported-locale>
 			<supported-locale>pl</supported-locale>
 		</locale-config>

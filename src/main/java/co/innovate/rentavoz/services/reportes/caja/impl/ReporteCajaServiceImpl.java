@@ -55,8 +55,8 @@ public class ReporteCajaServiceImpl implements ReporteCajaService,Serializable{
 		dto.setValorLineas(cajaService.valorCajaLineasBySucursal(sucursal, fechaCierre));
 		dto.setValorEquipos(cajaService.valorCajaEquiposBySucursal(sucursal, fechaCierre));
 		dto.setCuotasEquipos(cajaService.valorCajaEquiposBySucursalDetalle(sucursal, fechaCierre));
-		dto.setNotaCreditos(notaCreditoService.findBySucursal(sucursal));
-		dto.setValorDevolucionOtros(-notaCreditoService.sumBySucursal(sucursal));
+		dto.setNotaCreditos(notaCreditoService.findBySucursal(sucursal,fechaCierre));
+		dto.setValorDevolucionOtros(-notaCreditoService.sumBySucursal(sucursal,fechaCierre));
 		dto.setTotal(dto.getValorEquipos()+dto.getValorLineas()+ dto.getValorDevolucionOtros());
 		lista.add(dto);
 		return lista;

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaIndividual" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9df5d9b2-2dea-44f2-a19a-30e574e85332">
 	<property name="ireport.zoom" value="2.8531167061100033"/>
 	<property name="ireport.x" value="433"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="959"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -147,7 +147,7 @@
 				<textElement>
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tercero}.toString()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tercero}.getNombreCompleto()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="a8548c4d-9dfa-4a09-87f7-8c0f6c104e28" x="261" y="69" width="123" height="11"/>
@@ -248,7 +248,7 @@
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{idVenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["E"+$F{idVenta}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="259" y="369" width="128" height="11"/>

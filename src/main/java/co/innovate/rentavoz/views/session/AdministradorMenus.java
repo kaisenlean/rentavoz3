@@ -32,18 +32,22 @@ import co.innovate.rentavoz.views.BaseBean;
 public class AdministradorMenus extends BaseBean implements Serializable {
 
 	/**
+	 * 14/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+
+	/**
 	 * 17/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * MENU_RAIZ
 	 */
 	private static final String MENU_RAIZ = "root";
 
-	/**
-	 * 16/01/2014
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 1L;
+
 
 	private List<Menu> menus=new ArrayList<Menu>();
 	

@@ -69,6 +69,8 @@ public class BeanConsultaCuota extends BaseBean implements Serializable {
 
 	protected Tercero cliente;
 	
+	private Cuota cuota;
+	
 	@PostConstruct
 	public void init(){
 		login.updateValorCaja();
@@ -96,6 +98,12 @@ public class BeanConsultaCuota extends BaseBean implements Serializable {
 		runJavascript("btnPagarCuotas"+".jq.click();");
 	}
 	
+	
+	
+	public void loadCuota(Cuota cuota){
+		this.cuota=cuota;
+		
+	}
 	public void pagarSeleccionadas(){
 		HashMap<String, Object> mapa = new HashMap<String, Object>();
 		try {
@@ -174,6 +182,17 @@ public class BeanConsultaCuota extends BaseBean implements Serializable {
 	}
 	
 	
+	
+public void saveEditRow(){
+		
+		for (Cuota cuota : lista) {
+			if (cuota.equals(this.cuota)) {
+				cuota=this.cuota;
+			}
+		}
+		cuota=new Cuota();
+		runJavascript("dialogo.hide();");
+	}
 	
 	
 	/**
@@ -364,5 +383,24 @@ public class BeanConsultaCuota extends BaseBean implements Serializable {
 	 */
 	public void setSeleccionadas(List<Cuota> seleccionadas) {
 		this.seleccionadas = seleccionadas;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @return the cuota
+	 */
+	public Cuota getCuota() {
+		return cuota;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 12/03/2014
+	 * @param cuota the cuota to set
+	 */
+	public void setCuota(Cuota cuota) {
+		this.cuota = cuota;
 	}
 }
