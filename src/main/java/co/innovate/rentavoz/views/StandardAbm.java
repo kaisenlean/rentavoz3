@@ -97,6 +97,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 					SortOrder sortOrder) {
 			lista = customSearch(startingAt,maxPerPage,globalFilter,  sortField,
 					 sortOrder);
+			
 			}
 			
 			
@@ -175,7 +176,7 @@ public abstract class StandardAbm<T,PK extends Serializable> extends BaseBean im
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			mensajeError(e.toString());
 			
 			return "";

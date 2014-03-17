@@ -151,6 +151,11 @@
 				value="#{beanTercero.model}" var="item"
 				emptyMessage="No hay registros">
 
+				<f:facet name="header">
+					<h:outputText value="Cantidad de registros #{beanTercero.model.numeroRegistros}" />
+
+				</f:facet>
+
 
 				<p:column headerText="Documento" styleClass="styleColumn"
 					filterBy="${item.terDocumento}" filterMatchMode="contains">

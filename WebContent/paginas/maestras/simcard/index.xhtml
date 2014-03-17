@@ -73,6 +73,9 @@
 				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!simcardBean.form}" style="width: 100%"
 				value="#{simcardBean.model}" var="item"
 				emptyMessage="No hay registros">
+				<f:facet name="header">
+				<h:outputText value="Numero de registros #{simcardBean.model.numeroRegistros}" />
+				</f:facet>
 				<p:column style="width: 10%" headerText="Codigo"
 					filterBy="${item.idSimcard}" filterMatchMode="contains"
 					styleClass="styleColumn">

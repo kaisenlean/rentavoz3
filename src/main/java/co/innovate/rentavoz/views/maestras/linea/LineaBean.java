@@ -277,6 +277,7 @@ sucursales=login.getSucursales();
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
+		getModel().setNumeroRegistros(lineaService.countByCriteria(globalFilter,sucursales));
 		return lineaService.countByCriteria(globalFilter,sucursales);
 	}
 

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+
+			<h:outputLabel value="Operaciones sobre lineas celulares" class="h1" />
+
+			<h:panelGrid columns="2">
+			<h:outputText value="Tarea a ejecutar :" />
+			<h:selectOneMenu styleClass="ui-selectonemenu-label ui-inputfield ui-corner-all" value="#{registrarLogLinea.tarea}" >
+			<f:selectItems value="#{selectorAccionLinea.items}"/>
+			<p:ajax event="change" partialSubmit="true"></p:ajax>
+			</h:selectOneMenu>
+			<h:outputText value="Numero de linea :" />
+			<p:inputText value="#{registrarLogLinea.numeroLinea}" onkeypress="if (event.keyCode == 13) { btnAgregar.jq.click();  return false; }" ></p:inputText>
+			<p:commandButton value="Agregar" widgetVar="btnAgregar" id="btnAgregar" process="@all" update="@all" actionListener="#{registrarLogLinea.addLinea()}"></p:commandButton>
+			</h:panelGrid>
+			
+			<p:commandButton value="Guardar" process="@all" update="@all" actionListener="#{registrarLogLinea.guardar()}" ></p:commandButton>
+			<p:dataTable value="#{registrarLogLinea.lineas}" var="linea">
+			<p:column headerText="Numero de linea">
+			<h:outputText value="#{linea.linea.linNumero}" />
+			</p:column>
+			<p:column headerText="Tarea">
+			<h:outputText value="#{linea.accion}" />
+			</p:column>
+			
+			<p:column headerText="Observacion">
+			<p:inputTextarea value="#{linea.observacion}" />
+			</p:column>
+			
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

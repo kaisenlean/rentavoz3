@@ -42,7 +42,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * ESTADO_LINEA_SUSPENDIDA
 	 */
-	private static final int ESTADO_LINEA_SUSPENDIDA = 4;
+	public static final int ESTADO_LINEA_SUSPENDIDA = 4;
 	
 	/**
 	 * 4/03/2014
@@ -50,6 +50,13 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * ESTADO_LINEA_SUSPENDIDA
 	 */
 	private static final int ESTADO_LINEA_INACTIVA = 5;
+	
+	/**
+	 * 4/03/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * ESTADO_LINEA_SUSPENDIDA
+	 */
+	public static final int ESTADO_LINEA_LOCAL = 6;
 	/**
 	 * 2/02/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -321,7 +328,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		if (estadoLinea==null) {
 			logger.error(new StrBuilder(NO_ENCONTRADO_MSG).append(ESTADO_LINEA_REPO).toString());
 		}
-		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE));
 		
 		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
 		

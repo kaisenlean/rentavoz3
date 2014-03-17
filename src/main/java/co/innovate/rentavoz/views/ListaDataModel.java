@@ -22,9 +22,11 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 	private static final long serialVersionUID = 1L;
 
 	protected List<T> lista;
-	
+
+	private int numeroRegistros;
+
 	protected SortOrder sortOrder;
-	
+
 	protected String sortField;
 
 	public abstract GenericService<T, PK> getService();
@@ -46,17 +48,16 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 	 * @date 22/01/2014
 	 */
 	public abstract void customLoad(int startingAt, int maxPerPage,
-			String globalFilter, String sortField,
-			SortOrder sortOrder);
+			String globalFilter, String sortField, SortOrder sortOrder);
 
 	@Override
 	public List<T> load(int startingAt, int maxPerPage, String sortField,
 			SortOrder sortOrder, Map<String, String> filters) {
 		String globalFilter = null;
-		this.sortField=sortField;
-		this.sortOrder=sortOrder;
-		if (sortOrder==null) {
-			sortOrder=SortOrder.UNSORTED;
+		this.sortField = sortField;
+		this.sortOrder = sortOrder;
+		if (sortOrder == null) {
+			sortOrder = SortOrder.UNSORTED;
 		}
 		try {
 			try {
@@ -66,12 +67,13 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 				if (globalFilter == null) {
 					globalFilter = String.valueOf("");
 				}
-				customLoad(startingAt, maxPerPage, globalFilter,  sortField,
-						 sortOrder);
+				customLoad(startingAt, maxPerPage, globalFilter, sortField,
+						sortOrder);
 				if (lista == null) {
 					lista = getService().findByCriteria(startingAt, maxPerPage);
 
 				}
+
 				setWrappedData(lista);
 
 			} finally {
@@ -93,7 +95,7 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 				setRowCount(count);
 			}
 		}
-
+		numeroRegistros = getRowCount();
 		// set the page dize
 		setPageSize(maxPerPage);
 
@@ -130,5 +132,24 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 	 */
 	public List<T> getLista() {
 		return lista;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 16/03/2014
+	 * @return the numeroRegistros
+	 */
+	public int getNumeroRegistros() {
+		return numeroRegistros;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 16/03/2014
+	 * @param numeroRegistros
+	 *            the numeroRegistros to set
+	 */
+	public void setNumeroRegistros(int numeroRegistros) {
+		this.numeroRegistros = numeroRegistros;
 	}
 }

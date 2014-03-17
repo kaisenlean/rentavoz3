@@ -47,6 +47,10 @@
 				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!departamentoBean.form}" style="width: 100%"
 				value="#{departamentoBean.model}" var="item"
 				emptyMessage="No hay registros">
+				
+					<f:facet name="header">
+				<h:outputText value="Total Registros #{departamentoBean.model.numeroRegistros}" />
+				</f:facet>
 				<p:column style="width: 10%" headerText="Codigo"
 					filterBy="${item.idDepartamento}" filterMatchMode="contains"
 					styleClass="styleColumn">

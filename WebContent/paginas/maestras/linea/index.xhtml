@@ -119,7 +119,9 @@
 
 
 				<f:facet name="header">
+										<h:outputText value="Cantidad de registros #{lineaBean.model.numeroRegistros}" />
 					<p:outputPanel style="float: right">
+					
 					<p:selectBooleanCheckbox onchange="tablaLineas.filter();" rendered="#{login.pertenecePrinicpal}" value="#{lineaBean.verTodas}" valueChangeListener="#{lineaBean.cambioVerTodas}">
 					<p:ajax process="@this" partialSubmit="true"></p:ajax>
 					</p:selectBooleanCheckbox>

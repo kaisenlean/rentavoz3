@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="./../../../plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Historial de operaciones sobre lineas"
+				class="h1" />
+
+
+			<p:panel id="pnlPanel" header="Filtros" style="width: 100%">
+				<h:panelGrid columns="8">
+					<h:outputLabel value="Numero de linea :" />
+					<p:inputText  value="#{logLineaBean.numeroLinea}"></p:inputText>
+					<h:outputLabel value="Entre las fechas :" />
+					<h:outputText value="Inicio " />
+					<p:calendar value="#{logLineaBean.start}"></p:calendar>
+					
+						<h:outputText value="Fin " />
+					<p:calendar value="#{logLineaBean.end}"></p:calendar>
+				</h:panelGrid>
+				
+						<h:panelGrid columns="5">
+						<h:outputText value="Responsable" />
+							<p:autoComplete size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{logLineaBean.autocompleteTercero.conversorClientes}"
+						value="#{logLineaBean.autocompleteTercero.seleccionado}"
+						completeMethod="#{logLineaBean.autocompleteTercero.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{logLineaBean.autocompleteTercero.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+					
+					<h:outputText value="Operación realizada" />
+					<h:selectOneMenu styleClass="ui-selectonemenu-label ui-inputfield ui-corner-all" value="#{logLineaBean.accion}">
+					<f:selectItems value="#{selectorAccionLinea.items}"/>
+					<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</h:selectOneMenu>
+						</h:panelGrid>
+						<h:panelGrid columns="2">
+						<p:commandButton value="Buscar" actionListener="#{logLineaBean.filtrar()}" process="@all" update="@all"></p:commandButton>
+						<p:commandButton value="Limpiar busqueda"></p:commandButton>
+						</h:panelGrid>
+
+			</p:panel>
+
+
+			<p:dataTable paginator="true" rows="#{opcionLoader.numRows}"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				value="#{logLineaBean.model}" style="width: 100%"
+				 var="item"
+				emptyMessage="No hay registros" id="tablaLineas"
+				widgetVar="tablaLineas">
+
+
+				<f:facet name="header">
+					<h:outputText
+						value="Cantidad de registros #{logLineaBean.model.numeroRegistros}" />
+				</f:facet>
+
+				<p:column style="width: 7%" headerText="Codigo Transaccion" >
+					<p:outputLabel value="#{item.id}" />
+				</p:column>
+				<p:column headerText="Numero linea" styleClass="styleColumn"
+				>
+					<p:outputLabel value="${item.linea.linNumero}" />
+				</p:column>
+				<p:column headerText="Corte" style="width : 5%"
+					styleClass="styleColumn" >
+					<p:outputLabel value="${item.linea.linCorte}" />
+				</p:column>
+
+
+				<p:column headerText="Plan" styleClass="styleColumn">
+					<p:outputLabel value="${item.linea.plan.plaNombre}" />
+				</p:column>
+
+
+				<p:column headerText="Sucursal" sortBy="sucursal"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.linea.sucursal.sucNombre}" />
+				</p:column>
+
+
+
+				<p:column headerText="Empresa" 
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.linea.empresaidEmpresa.empNombre}" />
+				</p:column>
+				
+				<p:column headerText="Responsable" 
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.usuarioCrea.nombreCompleto}" />
+				</p:column>
+				
+				<p:column headerText="Operación" 
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.accion}" />
+				</p:column>
+				
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
