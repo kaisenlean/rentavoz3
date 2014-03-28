@@ -119,7 +119,7 @@
 					<p:graphicImage url="/imagenes/#{opcionLoader.imagenEmpresa}"></p:graphicImage>
 					<h:outputLabel value="Mi bandeja de tareas" styleClass="h1" />
 					<div>
-						<p:dataTable value="#{tareaBean.tareas}" var="tarea">
+						<p:dataTable value="#{tareaBean.tareas}" var="tarea" emptyMessage="No hay tareas por realizar">
 							<p:column headerText="Tarea">
 								<h:outputText value="#{tarea.nombre}" />
 							</p:column>

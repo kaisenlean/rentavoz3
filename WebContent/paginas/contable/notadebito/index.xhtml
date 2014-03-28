@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+
+			<h:outputLabel value="Notas de Débito" class="h1" />
+
+			<h:panelGrid columns="2" rendered="#{!notaDebitoBean.form}">
+				<p:commandButton value="Nueva nota de debito" process="@this"
+					update="@all"
+					actionListener="#{notaDebitoBean.verFormNuevo(true)}"></p:commandButton>
+			</h:panelGrid>
+
+			<p:panel header="Información de la nota de crédito"
+				rendered="#{notaDebitoBean.form}">
+
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Cliente :" />
+					<p:autoComplete size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{notaDebitoBean.autocompleteCliente.conversorClientes}"
+						value="#{notaDebitoBean.autocompleteCliente.seleccionado}"
+						completeMethod="#{notaDebitoBean.autocompleteCliente.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{notaDebitoBean.autocompleteCliente.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+
+					<h:outputLabel value="Código de factura :" />
+					<p:inputText value="#{notaDebitoBean.objeto.codigoFactura}"></p:inputText>
+					<h:outputLabel value="Concepto :" />
+					<p:inputTextarea cols="50" rows="10" required="true"
+						requiredMessage="Digita el concepto de la nota"
+						value="#{notaDebitoBean.objeto.concepto}"></p:inputTextarea>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+				
+				<h:outputText value="Sucursal de emisión :" />
+				<p:selectOneMenu value="#{notaDebitoBean.selSucursal}" >
+				<f:selectItems value="#{login.sucursalItems}"/>
+				<p:ajax event="change" partialSubmit="true"></p:ajax>
+				</p:selectOneMenu>
+				
+					<h:outputText value="Fecha de emisión :" />
+					<p:calendar value="#{notaDebitoBean.objeto.fechaEmision}"></p:calendar>
+
+					<h:outputText value="Valor :" />
+					<p:inputText required="true"
+						requiredMessage="Digita el valor de la nota"
+						value="#{notaDebitoBean.objeto.valor}"></p:inputText>
+
+					<p:commandButton value="Aceptar" process="@all" update="@all"
+						action="#{notaDebitoBean.aceptar()}"></p:commandButton>
+					<p:commandButton value="Cancelar" process="@all" update="@all"
+						immediate="true" action="#{notaDebitoBean.reglaNavegacion()}"></p:commandButton>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:dataTable paginator="true" rows="#{opcionLoader.numRows}"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!notaDebitoBean.form}" style="width: 100%"
+				value="#{notaDebitoBean.model}" var="item"
+				emptyMessage="No hay registros" id="tablaNotasCredito"
+				widgetVar="tablaNotasCredito">
+
+
+				<f:facet name="header">
+					<p:outputPanel style="float: right">
+						<p:inputText id="globalFilter" placeholder="Busqueda"
+							onkeypress="if (event.keyCode == 13) { tablaNotasCredito.filter();  return false; }"
+							style="width:150px" />
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column style="width: 7%" headerText="Codigo" sortBy="id">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+				<p:column headerText="Código de factura" styleClass="styleColumn"
+					sortBy="codigoFactura">
+					<p:outputLabel value="${item.codigoFactura}" />
+				</p:column>
+				<p:column headerText="Concepto" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.concepto}" />
+				</p:column>
+
+
+				<p:column headerText="Valor" style="width : 10%"
+					styleClass="styleColumn" sortBy="valor">
+					<p:outputLabel value="${item.valor}" />
+				</p:column>
+				<p:column headerText="Fecha Emisión" sortBy="fechaEmision"
+					styleClass="styleColumn">
+					<p:outputLabel value="#{item.fechaEmision}" />
+				</p:column>
+
+				<p:column headerText="Cliente" sortBy="cliente"
+					styleClass="styleColumn">
+					<p:outputLabel value="#{item.cliente}" />
+				</p:column>
+
+
+				<p:column headerText="Generado por" sortBy="creador"
+					styleClass="styleColumn">
+					<p:outputLabel value="#{item.creador}" />
+				</p:column>
+
+
+
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${notaDebitoBean.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.id}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.id}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${notaDebitoBean.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar" onclick="pnl${item.id}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -16,6 +16,7 @@
 				<p:outputLabel value="Cliente : "></p:outputLabel>
 				<p:autoComplete size="100" style="width:800px"
 					value="#{consultaPagosBean.autocompleteTercero.query}"
+					
 					completeMethod="#{consultaPagosBean.autocompleteTercero.completarBusqueda}">
 					<p:ajax event="itemSelect" update="@all"
 						listener="#{consultaPagosBean.autocompleteTercero.seleccionar}">
