@@ -29,6 +29,7 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.caja.CajaService;
 import co.innovate.rentavoz.services.facturacion.NotaCreditoService;
+import co.innovate.rentavoz.services.facturacion.NotaDebitoService;
 import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.usuario.UsuarioService;
@@ -64,6 +65,9 @@ public class Login extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{notaCreditoService}")
 	private NotaCreditoService notaCreditoService;
+	
+	@ManagedProperty(value="#{notaDebitoService}")
+	private NotaDebitoService notaDebitoService;
 
 	private Usuario user;
 	private String usuario;
@@ -111,7 +115,7 @@ public class Login extends BaseBean implements Serializable {
 
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
-			devolucionOtro= notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime());
+			devolucionOtro=notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime())-notaDebitoService.sumByGenerador(getTercero(), Calendar.getInstance().getTime());
 			
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.toString());
@@ -144,7 +148,7 @@ public class Login extends BaseBean implements Serializable {
 			cajaService.abrirCaja(user);
 			valorCaja = cajaService.valorCaja(getTercero());
 			valorCajaLineas = cajaService.valorCajaLineas(getTercero());
-			devolucionOtro=notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime());
+			devolucionOtro=notaCreditoService.sumByGenerador(getTercero(),Calendar.getInstance().getTime())-notaDebitoService.sumByGenerador(getTercero(), Calendar.getInstance().getTime());
 			return "/dashboard.jsf";
 		} catch (Exception e) {
 			loggedIn = false;
@@ -551,5 +555,14 @@ public class Login extends BaseBean implements Serializable {
 	 */
 	public void setDevolucionOtro(double devolucionOtro) {
 		this.devolucionOtro = devolucionOtro;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 28/03/2014
+	 * @param notaDebitoService the notaDebitoService to set
+	 */
+	public void setNotaDebitoService(NotaDebitoService notaDebitoService) {
+		this.notaDebitoService = notaDebitoService;
 	}
 }

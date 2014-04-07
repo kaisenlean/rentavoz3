@@ -47,4 +47,11 @@ public interface LogLineaService extends GenericService<LogLinea, Integer> {
 	* @return
 	*/
 	int countByCriterio(Date start , Date end , String numeroLinea,Tercero creador,AccionLineaEnum accionLineaEnum);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 31/03/2014
+	*/
+	List<LogLinea>  cargarLineaScid(String pathFile,Tercero tercero);
 }

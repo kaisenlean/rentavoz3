@@ -18,11 +18,21 @@
 			<h:outputText value="Tarea a ejecutar :" />
 			<h:selectOneMenu styleClass="ui-selectonemenu-label ui-inputfield ui-corner-all" value="#{registrarLogLinea.tarea}" >
 			<f:selectItems value="#{selectorAccionLinea.items}"/>
-			<p:ajax event="change" partialSubmit="true"></p:ajax>
+			<p:ajax update="@all" process="@all" partialSubmit="true" event="change"></p:ajax>
 			</h:selectOneMenu>
+			
+			
 			<h:outputText value="Numero de linea :" />
 			<p:inputText value="#{registrarLogLinea.numeroLinea}" onkeypress="if (event.keyCode == 13) { btnAgregar.jq.click();  return false; }" ></p:inputText>
 			<p:commandButton value="Agregar" widgetVar="btnAgregar" id="btnAgregar" process="@all" update="@all" actionListener="#{registrarLogLinea.addLinea()}"></p:commandButton>
+			</h:panelGrid>
+			<h:panelGrid>
+			
+			
+			<p:fileUpload  update="@all" process="@this" uploadLabel="Cargar Archivo" label="Cargar"
+				fileUploadListener="#{registrarLogLinea.cargarRepos}"></p:fileUpload>
+			
+			
 			</h:panelGrid>
 			
 			<p:commandButton value="Guardar" process="@all" update="@all" actionListener="#{registrarLogLinea.guardar()}" ></p:commandButton>

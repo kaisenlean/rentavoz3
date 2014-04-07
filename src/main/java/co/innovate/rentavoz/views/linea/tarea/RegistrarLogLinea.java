@@ -3,15 +3,23 @@
  */
 package co.innovate.rentavoz.views.linea.tarea;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
 
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.log.linea.AccionLineaEnum;
@@ -22,6 +30,8 @@ import co.innovate.rentavoz.services.linea.LineaService;
 import co.innovate.rentavoz.services.log.linea.LogLineaService;
 import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.session.Login;
+
+import com.sun.faces.context.ExternalContextImpl;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -47,7 +57,7 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 
 	private LogLinea logLinea = new LogLinea();
 
-	private ArrayList<LogLinea> lineas = new ArrayList<LogLinea>();
+	private List<LogLinea> lineas = new ArrayList<LogLinea>();
 
 	private String numeroLinea;
 
@@ -58,6 +68,10 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{estadoLineaService}")
 	private EstadoLineaService estadoLineaService;
+	
+	private OutputStream out;
+	
+	private Logger logger = Logger.getLogger(RegistrarLogLinea.class);
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -107,6 +121,43 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 		
 		
 	}
+	
+
+	public void cargarRepos(FileUploadEvent event){
+		try {
+			
+		
+		InputStream in = event.getFile().getInputstream();
+		String fileName = event.getFile().getFileName();
+		fileName=event.getFile().getFileName().replace(" ", "").trim();
+
+		ExternalContextImpl request;
+		request = (ExternalContextImpl) FacesContext.getCurrentInstance()
+				.getExternalContext();
+		StringBuilder path = new StringBuilder( request.getRealPath("/"));
+		out = new FileOutputStream(path
+				+ fileName);
+		 new File(request.getRealPath(path
+				+ fileName));
+
+		if (in != null) {
+			int b = 0;
+			while (b != -1) {
+				b = in.read();
+				if (b != -1) {
+					out.write(b);
+
+				}
+
+			}
+		}
+		
+		lineas=logLineaService.cargarLineaScid(path
+				+ fileName,login.getTercero());
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
 	@ManagedProperty(value = "#{login}")
 	private Login login;
 
@@ -125,7 +176,7 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 	 * @date 16/03/2014
 	 * @return the lineas
 	 */
-	public ArrayList<LogLinea> getLineas() {
+	public List<LogLinea> getLineas() {
 		return lineas;
 	}
 

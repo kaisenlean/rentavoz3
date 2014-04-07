@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
@@ -67,6 +68,9 @@ public class LogLinea implements Serializable{
 	@Lob
 	@Column
 	private String observacion;
+	
+	@Transient
+	private String nuevoIcc;
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -177,7 +181,24 @@ public class LogLinea implements Serializable{
 	}
 	
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/03/2014
+	 * @return the nuevoIcc
+	 */
+	public String getNuevoIcc() {
+		return nuevoIcc;
+	}
 	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 31/03/2014
+	 * @param nuevoIcc the nuevoIcc to set
+	 */
+	public void setNuevoIcc(String nuevoIcc) {
+		this.nuevoIcc = nuevoIcc;
+	}
 	
 	
 	

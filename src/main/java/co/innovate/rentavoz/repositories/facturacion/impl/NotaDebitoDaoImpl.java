@@ -240,6 +240,9 @@ public class NotaDebitoDaoImpl extends
 	public double sumBySucursal(Sucursal sucursal, Date fecha) {
 		Session session = getEntityManager().unwrap(Session.class);
 
+		
+		
+		
 		Criteria criteria = session.createCriteria(NotaDebito.class);
 
 		Criterion criterion = Restrictions.eq(SUCURSAL2,sucursal);
