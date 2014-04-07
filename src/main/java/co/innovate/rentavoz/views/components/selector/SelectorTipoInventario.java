@@ -13,23 +13,23 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import co.innovate.rentavoz.model.Centrope;
-import co.innovate.rentavoz.services.centrope.CentropeService;
+import co.innovate.rentavoz.model.bodega.TipoInventario;
+import co.innovate.rentavoz.services.bodega.TipoInventarioService;
 
 @ManagedBean
 @ViewScoped
-public class SelectorCentrope implements SelectorBase<Centrope> {
+public class SelectorTipoInventario implements SelectorBase<TipoInventario> {
 
-	@ManagedProperty(value="#{centropeService}")
-	private CentropeService centropeService;
+	@ManagedProperty("#{tipoInventarioService}")
+	private TipoInventarioService tipoInventarioService;
 	private ArrayList<SelectItem> items;
 
 	@PostConstruct
 	public void init() {
-		List<Centrope> findAll = centropeService.findAll();
+		List<TipoInventario> findAll = tipoInventarioService.findAll();
 		items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(" ", "-- Seleccione un Centro de operación --"));
-		for (Centrope empresa : findAll) {
+		items.add(new SelectItem(" ", "-- Seleccione un tipo de inventario --"));
+		for (TipoInventario empresa : findAll) {
 			items.add(new SelectItem(empresa.getId(), empresa
 					.getNombre()));
 		}
@@ -41,10 +41,11 @@ public class SelectorCentrope implements SelectorBase<Centrope> {
 	
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * @date 26/01/2014
-	 * @param centropeService the centropeService to set
+	 * @date 7/04/2014
+	 * @param tipoInventarioService the tipoInventarioService to set
 	 */
-	public void setCentropeService(CentropeService centropeService) {
-		this.centropeService = centropeService;
+	public void setTipoInventarioService(
+			TipoInventarioService tipoInventarioService) {
+		this.tipoInventarioService = tipoInventarioService;
 	}
 }

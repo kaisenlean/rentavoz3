@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.TipoTrasladoEnum;
 
 @ManagedBean
@@ -23,7 +22,7 @@ public class SelectorTipoTraslado  {
 
 	@PostConstruct
 	public void init() {
-	for (int i = 0; i < TipoTerceroEnum.values().length; i++) {
+	for (int i = 0; i < TipoTrasladoEnum.values().length; i++) {
 		items.add(new SelectItem(TipoTrasladoEnum.values()[i].name(),TipoTrasladoEnum.values()[i].name().replace("_", " ") ));
 	}
 	}

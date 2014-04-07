@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -82,6 +84,10 @@ public class BodegaItem implements Serializable {
 	
 	@Transient
 	private int contadorImei=1;
+	
+	@ManyToOne
+	@JoinColumn(name="tipo_inventario")
+	private TipoInventario tipoInventario;
 
 	
 	@PostLoad
@@ -329,6 +335,23 @@ public class BodegaItem implements Serializable {
 	 */
 	public void setPrecioVentaMinimo(Double precioVentaMinimo) {
 		this.precioVentaMinimo = precioVentaMinimo;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/04/2014
+	 * @return the tipoInventario
+	 */
+	public TipoInventario getTipoInventario() {
+		return tipoInventario;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/04/2014
+	 * @param tipoInventario the tipoInventario to set
+	 */
+	public void setTipoInventario(TipoInventario tipoInventario) {
+		this.tipoInventario = tipoInventario;
 	}
 	
 }
