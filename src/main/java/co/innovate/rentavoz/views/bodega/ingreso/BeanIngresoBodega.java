@@ -20,7 +20,9 @@ import co.innovate.rentavoz.model.bodega.BodegaExistencia;
 import co.innovate.rentavoz.model.bodega.BodegaIngreso;
 import co.innovate.rentavoz.model.bodega.BodegaItem;
 import co.innovate.rentavoz.model.bodega.EstadoExistenciaEnum;
+import co.innovate.rentavoz.model.bodega.TipoInventario;
 import co.innovate.rentavoz.services.GenericService;
+import co.innovate.rentavoz.services.bodega.TipoInventarioService;
 import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
 import co.innovate.rentavoz.services.bodegaexistencia.color.BodegaExistenciaColorService;
 import co.innovate.rentavoz.services.bodegaingreso.BodegaIngresoService;
@@ -103,6 +105,14 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	
 	@ManagedProperty(value="#{opcionLoader}")
 	private OpcionLoader opcionLoader;
+	
+	@ManagedProperty(value="#{tipoInventarioService}")
+	private TipoInventarioService tipoInventarioService;
+	
+	
+	private String selTipoInventario;
+
+	private TipoInventario tipoInventario;
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 18/01/2014
@@ -341,6 +351,14 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		getObjeto().setPrecioVentaMayoristas(item.getPrecioVentaMayoristas());
 		
 		existemp = new BodegaExistencia();
+
+	}
+	
+	public void cambioItemTipoInventario() {
+		tipoInventario=tipoInventarioService.findById(Integer.valueOf(selTipoInventario));
+		if (tipoInventario!=null) {
+			selTipoInventario=tipoInventario.getClave();
+		}
 
 	}
 
@@ -730,4 +748,30 @@ public void setOpcionLoader(OpcionLoader opcionLoader) {
 	this.opcionLoader = opcionLoader;
 }
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 8/04/2014
+ * @param tipoInventarioService the tipoInventarioService to set
+ */
+public void setTipoInventarioService(TipoInventarioService tipoInventarioService) {
+	this.tipoInventarioService = tipoInventarioService;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 8/04/2014
+ * @return the selTipoInventario
+ */
+public String getSelTipoInventario() {
+	return selTipoInventario;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 8/04/2014
+ * @param selTipoInventario the selTipoInventario to set
+ */
+public void setSelTipoInventario(String selTipoInventario) {
+	this.selTipoInventario = selTipoInventario;
+}
 }

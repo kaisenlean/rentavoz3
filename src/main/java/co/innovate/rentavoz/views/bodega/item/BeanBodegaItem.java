@@ -74,6 +74,8 @@ public class BeanBodegaItem extends StandardAbm<BodegaItem,Integer> implements
 	private String nombreArchivo;
 
 	private OutputStream out;
+	
+	private int selTipoInventario;
 
 	/*
 	 * (non-Javadoc)
@@ -281,5 +283,23 @@ public class BeanBodegaItem extends StandardAbm<BodegaItem,Integer> implements
 			String globalFilter, String sortField,
 			SortOrder sortOrder) {
 		return null;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/04/2014
+	 * @return the selTipoInventario
+	 */
+	public int getSelTipoInventario() {
+		return selTipoInventario;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/04/2014
+	 * @param selTipoInventario the selTipoInventario to set
+	 */
+	public void setSelTipoInventario(int selTipoInventario) {
+		this.selTipoInventario = selTipoInventario;
 	}
 }

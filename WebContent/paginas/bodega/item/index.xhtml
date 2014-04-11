@@ -32,6 +32,11 @@
 					<p:message rendered="#{beanBodegaItem.edit}" for="codDept" />
 
 
+					<h:outputLabel value="Tipo de inventario :" />
+					<p:selectOneMenu value="#{beanBodegaItem.selTipoInventario}">
+					<f:selectItems value="#{selectorTipoInventario.items}"></f:selectItems>
+					<p:ajax process="@this" update="@all" listener=""></p:ajax>
+					</p:selectOneMenu>
 					<h:outputLabel value="Referencia(*) :" />
 					<h:inputText id="refItem" required="true"
 						requiredMessage="Por favor digita una referencia válida"
@@ -80,7 +85,7 @@
 
 
 
-					<h:outputLabel value="Numero de Imei's : " />
+					<h:outputLabel value="Numero de Seriales : " />
 					<h:inputText id="cantidadImei"
 						value="#{beanBodegaItem.objeto.cantidadImei}" required="false"
 						requiredMessage="Por favor digita unos dias de garantia válido" />

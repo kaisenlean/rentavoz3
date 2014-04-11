@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import co.innovate.rentavoz.model.almacen.ModalidaVentaEnum;
 import co.innovate.rentavoz.model.almacen.venta.EstadoDevolucionEnum;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.planpago.PlanPago;
 import co.innovate.rentavoz.model.venta.ModoPagoEnum;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.ciudad.CiudadService;
@@ -40,6 +42,7 @@ import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
 import co.innovate.rentavoz.services.opcion.OpcionService;
+import co.innovate.rentavoz.services.planpago.PlanPagoService;
 import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
@@ -62,6 +65,13 @@ import co.innovate.rentavoz.views.session.OpcionConstants;
 @ManagedBean
 @ViewScoped
 public class BeanVentaLinea extends BaseBean implements Serializable {
+
+	/**
+	 * 11/04/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * CUOTA
+	 */
+	private static final String CUOTA = "CUOTA";
 
 	/**
 	 * 5/02/2014
@@ -98,6 +108,9 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{sucursalTerceroService}")
 	private SucursalTerceroService sucursalTerceroService;
 	
+	@ManagedProperty(value="#{planPagoService}")
+	private PlanPagoService planPagoService;
+	
 	private String modoPago;
 	
 	private Venta venta;
@@ -123,6 +136,8 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	private Logger logger= Logger.getLogger(BeanVentaLinea.class);
 	
 	private int idSucursal;
+	
+	private int planPago;
 	
 
 	@ManagedProperty(value="#{sucursalService}")
@@ -185,6 +200,35 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		};
 		inicializarValoresVenta();
 		login.updateValorCaja();
+	}
+	
+	
+	public void cargarPlanPago(){
+		PlanPago plan = planPagoService.findById(planPago);
+		if (plan==null) {
+			mensajeError("No se pudo cargar el plan de pago seleccionado");
+			return;
+		}
+		modoPago=CUOTA;
+		venta.getCuotas().clear();
+		
+		double valorCuota = venta.getVenSaldo().doubleValue()/plan.getNumeroCuotas();
+		
+		Calendar cal= Calendar.getInstance();
+		for (int i = 0; i < plan.getNumeroCuotas(); i++) {
+			Cuota c= new Cuota();
+			c.setEstadoCuota(EstadoCuotaEnum.PENDIENTE);
+			c.setValorCuota(BigDecimal.valueOf(valorCuota));
+			cal.add(Calendar.DAY_OF_YEAR, plan.getDiasDiferencia());
+			if (cal.get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY) {
+				cal.add(Calendar.DAY_OF_YEAR, BigInteger.ONE.intValue());
+			}
+			c.setFechaPago(cal.getTime());
+			venta.getCuotas().add(c);
+			
+		}
+		
+		
 	}
 
 	/**
@@ -789,5 +833,31 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/04/2014
+	 * @return the planPago
+	 */
+	public int getPlanPago() {
+		return planPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/04/2014
+	 * @param planPago the planPago to set
+	 */
+	public void setPlanPago(int planPago) {
+		this.planPago = planPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 11/04/2014
+	 * @param planPagoService the planPagoService to set
+	 */
+	public void setPlanPagoService(PlanPagoService planPagoService) {
+		this.planPagoService = planPagoService;
 	}
 }
