@@ -4,14 +4,13 @@
 package co.innovate.rentavoz.logic.consumo.impl;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +58,7 @@ public class ConsumoControllerServiceImpl implements ConsumoControllerService{
 	private static int MINUTOS_CLARO=1;
 	private static int MINUTOS_OTROS_OPERADORES=2;
 	private static int MINUTOS_FIJOS=3;
+	private BufferedReader br = null;
 
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.logic.consumo.ConsumoControllerService#cargarConsumos(java.lang.String)
@@ -66,9 +66,10 @@ public class ConsumoControllerServiceImpl implements ConsumoControllerService{
 	@Override
 	public List<LineaConsumo> cargarConsumosClaro(String pathFile) {
 
+		
 		List<LineaConsumo> consumos=new ArrayList<LineaConsumo>();
-		BufferedReader br = null;
 		String line = "";
+		br=null;
 		String cvsSplitBy = ",";
 		Date fechaConsumo=Calendar.getInstance().getTime();
 		try {
@@ -80,34 +81,50 @@ public class ConsumoControllerServiceImpl implements ConsumoControllerService{
 				String[] consumo = line.split(cvsSplitBy);
 				
 				LineaConsumo lineaConsumo=new LineaConsumo();
+				if (consumo.length!=0) {
 				Linea linea= lineaService.findBNumeroObjeto(consumo[NUMERO_LINEA]);
 				if (linea==null) {
 					logger.error("linea : ".concat(consumo[NUMERO_LINEA]).concat(" no encontrada"));
 					continue;
 				}
 				lineaConsumo.setLinea(linea);
+				try {
+					
 				lineaConsumo.setClaro(Integer.valueOf(consumo[MINUTOS_CLARO]).intValue());
+				} catch (Exception e) {
+					logger.error(e);
+					
+				}
+				try {
+					
 				lineaConsumo.setFijo(Integer.valueOf(consumo[MINUTOS_FIJOS]).intValue());
+				} catch (Exception e) {
+					logger.error(e);
+				}
+				try {
+					
 				lineaConsumo.setOtros(Integer.valueOf(consumo[MINUTOS_OTROS_OPERADORES]).intValue());
+				} catch (Exception e) {
+					logger.error(e);
+				}
 				lineaConsumo.setFecha(fechaConsumo);
 				
 				consumos.add(lineaConsumo);
 	 
-			}
-	 
-	 
-		} catch (FileNotFoundException e) {
-			logger.error(e);
-		} catch (IOException e) {
-			logger.error(e);
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					logger.error(e);
 				}
 			}
+	 
+	 
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+//			if (br != null) {
+//				try {
+//					br.close();
+//				} catch (IOException e) {
+//					logger.error(e);
+//				}
+//			}
 		}
 	 
 	  

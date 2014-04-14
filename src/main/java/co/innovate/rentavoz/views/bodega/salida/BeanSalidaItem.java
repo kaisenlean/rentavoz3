@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -330,7 +331,7 @@ getObjeto().setFechaSalida(new Date());
 	public void imprimir(){
 		ArrayList<BodegaSalida> salidas = new ArrayList<BodegaSalida>();
 		salidas.add(getObjeto());
-		printerBean.exportPdf("reporteSalidas", "reporte_salida_existencias",null,salidas);
+		printerBean.exportPdf("reporteSalidas", "reporte_salida_existencias",new HashMap<String, Object>(),salidas);
 		
 	}
 	

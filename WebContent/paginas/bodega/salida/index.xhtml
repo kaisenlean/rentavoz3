@@ -38,7 +38,7 @@
 
 
 					<h:outputText value="Sucursal de Origen" />
-					<p:selectOneMenu disabled="true" id="sucOrigen"
+					<p:selectOneMenu  id="sucOrigen"
 						value="#{beanSalidaItem.sucursalOrigen}">
 						<p:ajax event="change" process="@this"></p:ajax>
 						<f:selectItems value="#{selectorSucursal.items}" />

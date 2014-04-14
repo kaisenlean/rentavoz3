@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="IMAGEN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -44,7 +45,7 @@
 			</staticText>
 			<image>
 				<reportElement uuid="3819e308-7e66-4120-b102-e89159d18e10" x="0" y="0" width="243" height="32"/>
-				<imageExpression><![CDATA["/coinvercol.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["/"+$P{IMAGEN}]]></imageExpression>
 			</image>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement uuid="ffb7021c-1966-4d38-937c-7787eed1f793" x="455" y="0" width="100" height="20"/>
