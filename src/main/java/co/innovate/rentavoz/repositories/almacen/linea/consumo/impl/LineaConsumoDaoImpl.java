@@ -6,17 +6,22 @@ package co.innovate.rentavoz.repositories.almacen.linea.consumo.impl;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.LineaConsumo;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
@@ -174,6 +179,67 @@ public class LineaConsumoDaoImpl extends
 			return null;
 		}
 		return consumos.get(BigInteger.ZERO.intValue());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.repositories.almacen.linea.consumo.LineaConsumoDao
+	 * #findByCriterio(java.lang.String, int, java.lang.String,
+	 * java.lang.String, int, int, javax.persistence.criteria.Order)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LineaConsumo> findByCriterio(String linea, int corte,
+			String maestra, String convenio, Date fecha, int firstResult,
+			int maxResults, Order order)throws BaseException {
+		Session session = getEntityManager().unwrap(Session.class);
+		Criteria crit = session.createCriteria(getEntityClass());
+		crit.createAlias("linea", "linea");
+		crit.createAlias("linea.empresaidEmpresa", "empresa");
+		Criterion criterion = Restrictions
+				.conjunction()
+				.add(linea != null && linea!=(StringUtils.EMPTY) ? Restrictions
+						.eq("linea.linNumero", linea) : Restrictions.isNotNull("linea.linNumero"))
+				.add(corte != 0 ? Restrictions.eq("linea.linCorte", corte)
+						: Restrictions.isNotNull("linea.linCorte"))
+				.add(convenio == null || convenio==(StringUtils.EMPTY) ? Restrictions
+						.isNotNull("empresa.empNombre") : Restrictions.like(
+						"empresa.empNombre", convenio,MatchMode.ANYWHERE))
+				.add(Restrictions.eq("fecha", fecha));
+		crit.addOrder(order);
+		crit.setMaxResults(maxResults);
+		crit.setFirstResult(firstResult);
+		crit.add(criterion);
+		return crit.list();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.linea.consumo.LineaConsumoDao#countByCriterio(java.lang.String, int, java.lang.String, java.lang.String, java.util.Date)
+	 */
+	@Override
+	public int countByCriterio(String linea, int corte, String maestra,
+			String convenio, Date fecha) throws BaseException {
+		
+		Session session = getEntityManager().unwrap(Session.class);
+		Criteria crit = session.createCriteria(getEntityClass());
+		crit.createAlias("linea", "linea");
+		crit.createAlias("linea.empresaidEmpresa", "empresa");
+		Criterion criterion = Restrictions
+				.conjunction()
+				.add(linea != null && linea!=(StringUtils.EMPTY) ? Restrictions
+						.eq("linea.linNumero", linea) : Restrictions.isNotNull("linea.linNumero"))
+				.add(corte != 0 ? Restrictions.eq("linea.linCorte", corte)
+						: Restrictions.isNotNull("linea.linCorte"))
+				.add(convenio == null || convenio==(StringUtils.EMPTY) ? Restrictions
+						.isNotNull("empresa.empNombre") : Restrictions.like(
+						"empresa.empNombre", convenio,MatchMode.ANYWHERE))
+				.add(Restrictions.eq("fecha", fecha));
+
+		crit.add(criterion);
+		crit.setProjection(Projections.rowCount());
+		return Long.valueOf(crit.list().get(0).toString()).intValue();
 	}
 
 }

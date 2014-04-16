@@ -241,7 +241,17 @@
 					</p:dialog>
 				</p:panel>
 
-
+				<h:panelGrid columns="3">
+					<h:outputText value="Plan de pago predefinido : " />
+					<p:selectOneMenu value="#{beanVentaItem.planPago}">
+						<f:selectItem itemLabel="- -  Seleccione - -" itemValue="" />
+						<f:selectItems value="#{selectorPlanPago.items}"></f:selectItems>
+						<p:ajax event="change" partialSubmit="true" process="@this"
+							update="@all"></p:ajax>
+					</p:selectOneMenu>
+					<p:commandButton value="Cargar" process="@this" update="@all"
+						actionListener="#{beanVentaItem.cargarPlanPago()}"></p:commandButton>
+				</h:panelGrid>
 				<p:panel header="Modalidad de pago">
 					<p:selectOneMenu value="#{beanVentaItem.modoPago}">
 						<f:selectItems value="#{selectorModoPago.items}"></f:selectItems>

@@ -35,7 +35,7 @@
 					<h:outputLabel value="Tipo de inventario :" />
 					<p:selectOneMenu value="#{beanBodegaItem.selTipoInventario}">
 					<f:selectItems value="#{selectorTipoInventario.items}"></f:selectItems>
-					<p:ajax process="@this" update="@all" listener=""></p:ajax>
+					<p:ajax process="@this" update="@all" ></p:ajax>
 					</p:selectOneMenu>
 					<h:outputLabel value="Referencia(*) :" />
 					<h:inputText id="refItem" required="true"

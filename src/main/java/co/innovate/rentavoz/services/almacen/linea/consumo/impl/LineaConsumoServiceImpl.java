@@ -4,11 +4,14 @@
 package co.innovate.rentavoz.services.almacen.linea.consumo.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.LineaConsumo;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
@@ -60,6 +63,25 @@ public class LineaConsumoServiceImpl extends GenericServiceImpl<LineaConsumo, In
 	public List<Linea> findLineasNoVendidasConConsumo(
 			FechaFacturacion fechaFacturacion,int corte) {
 		return lineaConsumoDao.findLineasNoVendidasConConsumo(fechaFacturacion,corte);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.linea.consumo.LineaConsumoService#findByCriterio(java.lang.String, int, java.lang.String, java.lang.String, java.util.Date, int, int, org.hibernate.criterion.Order)
+	 */
+	@Override
+	public List<LineaConsumo> findByCriterio(String linea, int corte,
+			String maestra, String convenio, Date fecha, int firstResult,
+			int maxResults, Order order) throws BaseException {
+		return lineaConsumoDao.findByCriterio(linea, corte, maestra, convenio, fecha, firstResult, maxResults, order);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.linea.consumo.LineaConsumoService#countByCriterio(java.lang.String, int, java.lang.String, java.lang.String, java.util.Date)
+	 */
+	@Override
+	public int countByCriterio(String linea, int corte, String maestra,
+			String convenio, Date fecha) throws BaseException {
+		return lineaConsumoDao.countByCriterio(linea, corte, maestra, convenio, fecha);
 	}
 
 }

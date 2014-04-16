@@ -123,14 +123,12 @@ public class PrinterBean extends BaseBean {
 			if (secondDatasource == null) {
 				jasperPrint = JasperFillManager.fillReport(reportPath,
 						parameters, establishConnection());
-				// JasperPrintManager.printReport(jasperPrint, false);
 				return;
 			}
 			JRBeanCollectionDataSource dts = new JRBeanCollectionDataSource(
 					secondDatasource);
 			jasperPrint = JasperFillManager.fillReport(reportPath, parameters,
 					dts);
-			// JasperPrintManager.printReport(jasperPrint, false);
 
 		} catch (Exception e) {
 			System.err.println(e);

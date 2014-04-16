@@ -1,8 +1,10 @@
 package co.innovate.rentavoz.views.venta.item;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
+import co.innovate.rentavoz.model.planpago.PlanPago;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemEnum;
 import co.innovate.rentavoz.model.venta.ModoPagoEnum;
@@ -29,6 +32,7 @@ import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
 import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
+import co.innovate.rentavoz.services.planpago.PlanPagoService;
 import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
@@ -51,6 +55,12 @@ import co.innovate.rentavoz.views.session.Login;
 @ViewScoped
 public class BeanVentaItem extends BaseBean implements Serializable {
 
+	/**
+	 * 14/04/2014
+	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * CUOTA2
+	 */
+	private static final String CUOTA2 = "CUOTA";
 	/**
 	 * 15/01/2014
 	 * 
@@ -115,6 +125,8 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{fechaFacturacionService}")
 	private FechaFacturacionService fechaFacturacionService;
+	
+	private int planPago;
 
 	/**
 	 * 30/10/2013
@@ -192,6 +204,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{sucursalService}")
 	private SucursalService sucursalService;
+	
+	@ManagedProperty(value="#{planPagoService}")
+	private PlanPagoService planPagoService;
 	
 	private int idSucursal;
 	
@@ -310,6 +325,36 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		venta.getCuotas().add(cuota);
 		cuota = new VentaItemCuota();
 
+	}
+	
+	public void cargarPlanPago(){
+		PlanPago plan = planPagoService.findById(planPago);
+		if (plan==null) {
+			mensajeError("No se pudo cargar el plan de pago seleccionado");
+			return;
+		}
+		modoPago=CUOTA2;
+		venta.getCuotas().clear();
+		
+		double valorCuota = venta.getValorPagar()/plan.getNumeroCuotas();
+		
+		Calendar cal= Calendar.getInstance();
+		for (int i = 0; i < plan.getNumeroCuotas(); i++) {
+			VentaItemCuota c= new VentaItemCuota();
+			c.setEstado(EstadoVentaItemCuotaEnum.PENDIENTE);
+			c.setValor(BigDecimal.valueOf(valorCuota).doubleValue());
+			cal.add(Calendar.DAY_OF_YEAR, plan.getDiasDiferencia());
+			if (cal.get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY) {
+				cal.add(Calendar.DAY_OF_YEAR, BigInteger.ONE.intValue());
+			}
+			c.setFechaCierre(cal.getTime());
+			venta.getCuotas().add(c);
+			
+		}
+		
+		
+		
+		
 	}
 
 	/**
@@ -895,5 +940,32 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/04/2014
+	 * @return the planPago
+	 */
+	public int getPlanPago() {
+		return planPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/04/2014
+	 * @param planPago the planPago to set
+	 */
+	public void setPlanPago(int planPago) {
+		this.planPago = planPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/04/2014
+	 * @param planPagoService the planPagoService to set
+	 */
+	public void setPlanPagoService(PlanPagoService planPagoService) {
+		this.planPagoService = planPagoService;
 	}
 }

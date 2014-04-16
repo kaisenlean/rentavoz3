@@ -117,14 +117,14 @@
 	<detail>
 		<band height="62" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="2368fb55-9c2f-4b34-bdfd-937f8676311c" x="0" y="0" width="574" height="62"/>
+				<reportElement uuid="2368fb55-9c2f-4b34-bdfd-937f8676311c" x="0" y="0" width="556" height="62"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{bodegaSalidaReferencias})]]></dataSourceExpression>
 				<subreportExpression><![CDATA["/reporteSalidas_existencias.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="30" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<textField>
 				<reportElement uuid="0b73d34f-e0bc-4dc7-8839-28081856c777" x="436" y="6" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
@@ -138,23 +138,23 @@
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="36">
+		<band height="30">
 			<staticText>
-				<reportElement uuid="d43005ed-4477-4c72-897a-051bd72d8617" x="335" y="0" width="62" height="20"/>
+				<reportElement uuid="d43005ed-4477-4c72-897a-051bd72d8617" x="364" y="0" width="62" height="12"/>
 				<textElement markup="none">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Recibe ]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="dfa776a0-dee7-4e80-9475-b0d6632f7ad0" x="416" y="30" width="129" height="1"/>
+				<reportElement uuid="dfa776a0-dee7-4e80-9475-b0d6632f7ad0" x="426" y="24" width="129" height="1"/>
 			</line>
 			<image>
-				<reportElement uuid="29474421-5e8d-4d09-bc2f-d506cfe6a162" x="0" y="12" width="280" height="24"/>
+				<reportElement uuid="29474421-5e8d-4d09-bc2f-d506cfe6a162" x="0" y="0" width="280" height="24"/>
 				<imageExpression><![CDATA["/logo.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement uuid="7ba91636-3543-4d34-b8d5-9a2dcf23346d" x="436" y="0" width="119" height="20"/>
+				<reportElement uuid="7ba91636-3543-4d34-b8d5-9a2dcf23346d" x="436" y="5" width="119" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{recibe}]]></textFieldExpression>
 			</textField>

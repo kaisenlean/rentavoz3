@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Consulta de Consumos de Lineas" class="h1" />
+
+
+			<p:panel header="Filtro" toggleable="true"
+				toggleTitle="Filtro de Busqueda" collapsed="true">
+
+				<h:panelGrid columns="4">
+					<h:outputText value="Corte" />
+					<p:inputText value="#{beanLineaConsumo.corte}"></p:inputText>
+
+
+					<h:outputText value="Linea" />
+					<p:inputText value="#{beanLineaConsumo.linea}"></p:inputText>
+
+					<h:outputText value="Maestra" />
+					<p:inputText value="#{beanLineaConsumo.maestra}"></p:inputText>
+
+					<h:outputText value="Convenio" />
+					<p:inputText value="#{beanLineaConsumo.convenio}"></p:inputText>
+
+					<h:outputText value="Fecha" />
+					<p:calendar value="#{beanLineaConsumo.fechaFiltro}"></p:calendar>
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Buscar" process="@all" update="@all"
+						onclick="tblConsumos.filter();"></p:commandButton>
+					<p:commandButton value="Limpiar"></p:commandButton>
+				</h:panelGrid>
+
+
+			</p:panel>
+			<br />
+
+			<p:dataTable widgetVar="tblConsumos" id="tblConsumos"
+				paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!beanLineaConsumo.form}" style="width: 100%"
+				value="#{beanLineaConsumo.model}" var="item"
+				emptyMessage="No se han encontrado registros">
+				<f:facet name="header">
+			Numero de Registros #{beanLineaConsumo.model.numeroRegistros}
+				</f:facet>
+				<p:column style="width: 10%" headerText="Numero Transaccion"
+					styleClass="styleColumn" sortBy="id">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Numero Linea"
+					styleClass="styleColumn" sortBy="linea.linNumero">
+					<p:outputLabel value="${item.linea.linNumero}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Corte"
+					styleClass="styleColumn" sortBy="linea.linCorte">
+					<p:outputLabel value="${item.linea.linCorte}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Convenio"
+					styleClass="styleColumn" sortBy="linea.empresaidEmpresa.empNombre">
+					<p:outputLabel value="${item.linea.empresaidEmpresa}" />
+				</p:column>
+
+
+				<p:column headerText="Fecha" styleClass="styleColumn">
+					<p:outputLabel value="${item.fecha}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Minutos Claro" styleClass="styleColumn"
+					sortBy="claro" >
+					<p:outputLabel value="${item.claro}" />
+				</p:column>
+
+				<p:column 	sortBy="fijo"  headerText="Minutos Fijo" styleClass="styleColumn">
+					<p:outputLabel value="${item.fijo}" />
+				</p:column>
+
+
+				<p:column 	sortBy="otros"  headerText="Minutos Otros" styleClass="styleColumn">
+					<p:outputLabel value="${item.otros}" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
