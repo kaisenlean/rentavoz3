@@ -26,6 +26,7 @@ import co.innovate.rentavoz.model.Cuentas;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
+import co.innovate.rentavoz.model.facturacion.Talonario;
 
 /**
  * 
@@ -188,6 +189,10 @@ public class VentaItem implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="responsable_anulacion")
 	private Tercero responsableAnulacion;
+	
+	@ManyToOne
+	@JoinColumn(name="numero_factura")
+	private Talonario numeroFactura;
 	
 	
 	
@@ -544,6 +549,24 @@ public Tercero getResponsableAnulacion() {
  */
 public void setResponsableAnulacion(Tercero responsableAnulacion) {
 	this.responsableAnulacion = responsableAnulacion;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 21/04/2014
+ * @return the numeroFactura
+ */
+public Talonario getNumeroFactura() {
+	return numeroFactura;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 21/04/2014
+ * @param numeroFactura the numeroFactura to set
+ */
+public void setNumeroFactura(Talonario numeroFactura) {
+	this.numeroFactura = numeroFactura;
 }
 
 }

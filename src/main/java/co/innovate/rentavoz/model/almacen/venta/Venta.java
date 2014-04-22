@@ -34,6 +34,7 @@ import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
 import co.innovate.rentavoz.model.almacen.ModalidaVentaEnum;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
+import co.innovate.rentavoz.model.facturacion.Talonario;
 import co.innovate.rentavoz.model.venta.ModoPagoEnum;
 
 /**
@@ -152,6 +153,15 @@ public class Venta implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="responsable_anulacion")
 	private Tercero responsableAnulacion;
+	
+	@ManyToOne
+	@JoinColumn(name="numero_factura")
+	private Talonario numeroFactura;
+	
+	
+	
+	
+	
 	
 	/**
 	 * 
@@ -672,5 +682,23 @@ public class Venta implements Serializable {
 	 */
 	public void setResponsableAnulacion(Tercero responsableAnulacion) {
 		this.responsableAnulacion = responsableAnulacion;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 21/04/2014
+	 * @param numeroFactura the numeroFactura to set
+	 */
+	public void setNumeroFactura(Talonario numeroFactura) {
+		this.numeroFactura = numeroFactura;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 21/04/2014
+	 * @return the numeroFactura
+	 */
+	public Talonario getNumeroFactura() {
+		return numeroFactura;
 	}
 }

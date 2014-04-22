@@ -42,7 +42,7 @@
 	<title>
 		<band height="10" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="442a5781-cb19-48af-962a-4bd5a2f2303a" mode="Opaque" x="0" y="0" width="59" height="10" backcolor="#BDBCD2"/>
+				<reportElement uuid="442a5781-cb19-48af-962a-4bd5a2f2303a" mode="Opaque" x="0" y="0" width="45" height="10" backcolor="#BDBCD2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -56,7 +56,7 @@
 				<text><![CDATA[Numero]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4269a168-46ed-4d42-a681-a71d1c98739e" mode="Opaque" x="59" y="0" width="59" height="10" backcolor="#BDBCD2"/>
+				<reportElement uuid="4269a168-46ed-4d42-a681-a71d1c98739e" mode="Opaque" x="45" y="0" width="40" height="10" backcolor="#BDBCD2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -69,12 +69,26 @@
 				</textElement>
 				<text><![CDATA[Precio]]></text>
 			</staticText>
+			<staticText>
+				<reportElement uuid="967f92d5-42fe-48db-88fc-771a7d9b1341" mode="Opaque" x="85" y="0" width="20" height="10" backcolor="#BDBCD2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="5" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Corte]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField>
-				<reportElement uuid="371f11f6-7c82-46e6-b500-869e2359076d" x="0" y="0" width="59" height="10"/>
+				<reportElement uuid="371f11f6-7c82-46e6-b500-869e2359076d" x="0" y="0" width="45" height="10"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -88,7 +102,7 @@
 				<textFieldExpression><![CDATA[$F{lineaidLinea}.getLinNumero()]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="cd3858bf-6fbe-492a-9b35-f228efeaed92" x="59" y="0" width="59" height="10"/>
+				<reportElement uuid="cd3858bf-6fbe-492a-9b35-f228efeaed92" x="45" y="0" width="40" height="10"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -100,6 +114,20 @@
 					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ventLinPrecio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="d83a11dc-187c-4448-bff2-f544a6ba7d83" x="85" y="0" width="20" height="10"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lineaidLinea}.getLinCorte()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

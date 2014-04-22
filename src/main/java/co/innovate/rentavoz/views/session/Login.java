@@ -30,6 +30,7 @@ import co.innovate.rentavoz.model.profile.Usuario;
 import co.innovate.rentavoz.services.caja.CajaService;
 import co.innovate.rentavoz.services.facturacion.NotaCreditoService;
 import co.innovate.rentavoz.services.facturacion.NotaDebitoService;
+import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.sucursaltercero.SucursalTerceroService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.usuario.UsuarioService;
@@ -68,7 +69,11 @@ public class Login extends BaseBean implements Serializable {
 	
 	@ManagedProperty(value="#{notaDebitoService}")
 	private NotaDebitoService notaDebitoService;
-
+	
+	@ManagedProperty(value="#{sucursalService}")
+	private SucursalService sucursalService;
+	
+	
 	private Usuario user;
 	private String usuario;
 	private String contrasena;
@@ -172,7 +177,14 @@ public class Login extends BaseBean implements Serializable {
 			return;
 		}
 		if (user.getAdministrador()) {
-			tercero.setSucursalTerceroList(sucursalTerceroService.findAll());
+		tercero.setSucursalTerceroList(new ArrayList<SucursalTercero>());
+			for (Sucursal s : sucursalService.findAll()) {
+				
+				SucursalTercero sucursalTercero= new SucursalTercero();
+				sucursalTercero.setSucursalidSucursal(s);
+				sucursalTercero.setTerceroidTecero(tercero);
+				tercero.getSucursalTerceroList().add(sucursalTercero);
+			}
 		} else {
 			tercero.setSucursalTerceroList(sucursalTerceroService
 					.findByTercero(tercero));
@@ -564,5 +576,14 @@ public class Login extends BaseBean implements Serializable {
 	 */
 	public void setNotaDebitoService(NotaDebitoService notaDebitoService) {
 		this.notaDebitoService = notaDebitoService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 22/04/2014
+	 * @param sucursalService the sucursalService to set
+	 */
+	public void setSucursalService(SucursalService sucursalService) {
+		this.sucursalService = sucursalService;
 	}
 }

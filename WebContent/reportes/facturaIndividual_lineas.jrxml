@@ -94,6 +94,9 @@
 	<field name="ventaLineaList" class="java.util.List">
 		<fieldDescription><![CDATA[ventaLineaList]]></fieldDescription>
 	</field>
+	<field name="numeroFactura" class="co.innovate.rentavoz.model.facturacion.Talonario">
+		<fieldDescription><![CDATA[numeroFactura]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -122,11 +125,11 @@
 				<textFieldExpression><![CDATA[$P{TELEFONO_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="367571cb-ba1a-4be1-997a-a9a572803460" x="260" y="45" width="129" height="11"/>
+				<reportElement uuid="367571cb-ba1a-4be1-997a-a9a572803460" x="260" y="45" width="78" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Documento equivalente :  01]]></text>
+				<text><![CDATA[Factura de venta]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="996871bd-515f-484b-97d1-4273cfc0faef" x="262" y="56" width="29" height="11"/>
@@ -244,11 +247,11 @@
 				<reportElement uuid="4b39863f-607a-44c4-8e05-dc1a501448f7" x="255" y="356" width="124" height="1"/>
 			</line>
 			<textField>
-				<reportElement uuid="cc291fd9-76e2-4a00-ab99-4c645fa463c5" x="261" y="380" width="125" height="20"/>
+				<reportElement uuid="cc291fd9-76e2-4a00-ab99-4c645fa463c5" x="259" y="380" width="127" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["E"+$F{idVenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{numeroFactura}.getConsecutivo()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="259" y="369" width="128" height="11"/>
@@ -280,6 +283,13 @@
 			<line>
 				<reportElement uuid="b78979e3-24dc-46a0-a82f-05204fc6f806" x="262" y="313" width="118" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="6eb8de6c-882f-4e49-b963-7315eb8a3464" x="338" y="45" width="95" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroFactura}.getConsecutivo()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 </jasperReport>

@@ -21,7 +21,7 @@
 	<title>
 		<band height="10" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="442a5781-cb19-48af-962a-4bd5a2f2303a" mode="Opaque" x="0" y="0" width="59" height="10" backcolor="#BDBCD2"/>
+				<reportElement uuid="442a5781-cb19-48af-962a-4bd5a2f2303a" mode="Opaque" x="0" y="0" width="75" height="10" backcolor="#BDBCD2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -35,7 +35,7 @@
 				<text><![CDATA[Serial]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4269a168-46ed-4d42-a681-a71d1c98739e" mode="Opaque" x="59" y="0" width="59" height="10" backcolor="#BDBCD2"/>
+				<reportElement uuid="4269a168-46ed-4d42-a681-a71d1c98739e" mode="Opaque" x="75" y="0" width="43" height="10" backcolor="#BDBCD2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -53,7 +53,7 @@
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField>
-				<reportElement uuid="371f11f6-7c82-46e6-b500-869e2359076d" x="0" y="0" width="59" height="10"/>
+				<reportElement uuid="371f11f6-7c82-46e6-b500-869e2359076d" x="0" y="0" width="75" height="10"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -64,10 +64,10 @@
 				<textElement>
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{existencia}.getBarCode()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{existencia}.getBodegaItemBean().getNombre()+"-"+$F{existencia}.getBarCode()]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00">
-				<reportElement uuid="cd3858bf-6fbe-492a-9b35-f228efeaed92" x="59" y="0" width="59" height="10"/>
+				<reportElement uuid="cd3858bf-6fbe-492a-9b35-f228efeaed92" x="75" y="0" width="43" height="10"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

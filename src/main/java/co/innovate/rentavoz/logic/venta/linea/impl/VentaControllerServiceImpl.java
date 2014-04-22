@@ -18,10 +18,12 @@ import co.innovate.rentavoz.model.almacen.Cuota;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.Talonario;
 import co.innovate.rentavoz.services.almacen.CuotaService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaService;
 import co.innovate.rentavoz.services.estadolinea.EstadoLineaService;
+import co.innovate.rentavoz.services.facturacion.TalonarioService;
 import co.innovate.rentavoz.services.linea.LineaService;
 
 /**
@@ -40,6 +42,9 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 
 	@Autowired
 	private VentaLineaService ventaLineaService;
+	
+	@Autowired
+	private TalonarioService talonarioService;
 	
 	@Autowired
 	private CuotaService cuotaService;
@@ -67,7 +72,10 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 		List<Cuota> cuotas= new ArrayList<Cuota>();
 		cuotas=venta.getCuotas();
 		lineas = venta.getVentaLineaList();
-
+		Talonario talonario= talonarioService.cargarConsecutivoFactura(venta.getSucursal());
+		talonario.setUsado(Boolean.TRUE);
+		talonario=talonarioService.save(talonario);
+		venta.setNumeroFactura(talonario);
 		venta = ventaService.save(venta);
 		int i = 0;
 		for (VentaLinea linea : lineas) {

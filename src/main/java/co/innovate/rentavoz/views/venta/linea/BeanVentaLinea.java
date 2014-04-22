@@ -142,6 +142,8 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 
 	@ManagedProperty(value="#{sucursalService}")
 	private SucursalService sucursalService;
+	
+
 
 	@PostConstruct
 	public void init() {
@@ -201,6 +203,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		inicializarValoresVenta();
 		login.updateValorCaja();
 	}
+	
 	
 	
 	public void cargarPlanPago(){
@@ -860,4 +863,6 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public void setPlanPagoService(PlanPagoService planPagoService) {
 		this.planPagoService = planPagoService;
 	}
+	
+
 }

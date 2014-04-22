@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+
+			<h:outputLabel value="Consecutivos de Facturas" class="h1" />
+
+			<h:panelGrid columns="2" rendered="#{!consecutivoFacturaBean.form}">
+				<p:commandButton value="Nuevo consecutivo de facturación" process="@this"
+					update="@all"
+					actionListener="#{consecutivoFacturaBean.verFormNuevo(true)}"></p:commandButton>
+			</h:panelGrid>
+
+			<p:panel header="Información del consecutivos de factura"
+				rendered="#{consecutivoFacturaBean.form}">
+
+				<h:panelGrid columns="3">
+					<h:outputText value="Literal" />
+					<p:inputText id="codLiteral"
+						value="#{consecutivoFacturaBean.objeto.letra}" required="true"
+						requiredMessage="Por favor digita un literal"></p:inputText>
+					<p:message for="codLiteral"></p:message>
+
+
+					<h:outputText value="Consecutivo Inicial" />
+					<p:inputText id="codLiteral2"
+						value="#{consecutivoFacturaBean.objeto.consecutivo}"
+						required="true"
+						requiredMessage="Por favor digita un consecutivo de inicio"></p:inputText>
+					<p:message for="codLiteral2"></p:message>
+
+					<h:outputText value="Consecutivo Final" />
+					<p:inputText id="codLiteral3"
+						value="#{consecutivoFacturaBean.objeto.consecutivoFinal}"
+						required="true"
+						requiredMessage="Por favor digita un consecutivo limite"></p:inputText>
+					<p:message for="codLiteral3"></p:message>
+
+					<h:outputText value="Sucursal" />
+					<p:selectOneMenu id="codLiteral4" value="#{consecutivoFacturaBean.codSucursal}">
+						<f:selectItems value="#{selectorSucursal.items}"></f:selectItems>
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="codLiteral4"></p:message>
+					
+					<h:outputText value="Activo" />
+					<p:selectBooleanCheckbox value="#{consecutivoFacturaBean.objeto.activo}">
+					<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectBooleanCheckbox>
+					<p:message for="codLiteral4"></p:message>
+					
+					
+					<p:commandButton value="Guardar" action="#{consecutivoFacturaBean.aceptar()}" process="@all" update="@all"></p:commandButton>
+					<p:commandButton action="#{consecutivoFacturaBean.reglaNavegacion()}" value="Cancelar" immediate="true" process="@this" update="@all"></p:commandButton>
+				</h:panelGrid>
+
+			</p:panel>
+
+			<p:dataTable paginator="true" rows="#{opcionLoader.numRows}"
+				lazy="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!consecutivoFacturaBean.form}" style="width: 100%"
+				value="#{consecutivoFacturaBean.model}" var="item"
+				emptyMessage="No hay registros" id="tablaNotasCredito"
+				widgetVar="tablaNotasCredito">
+
+
+				<f:facet name="header">
+				Cantidad de registros #{consecutivoFacturaBean.model.numeroRegistros}
+				</f:facet>
+
+				<p:column style="width: 7%" headerText="Codigo" sortBy="id">
+					<p:outputLabel value="${item.id}" />
+				</p:column>
+				<p:column headerText="Literal" styleClass="styleColumn">
+					<p:outputLabel value="${item.letra}" />
+				</p:column>
+				<p:column headerText="Consecutivo" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.consecutivo}" />
+				</p:column>
+
+				<p:column headerText="Fecha de registro" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.fechaCreacion}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Ultima modificacion" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.fechaModificacion}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Creador" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.usuarioCrea}" />
+				</p:column>
+
+				<p:column headerText="Ultimo en modificar" style="width : 20%"
+					styleClass="styleColumn">
+					<p:outputLabel value="${item.usuarioModifica}" />
+				</p:column>
+
+
+
+
+				<p:column width="7%">
+					<h:commandButton image="/imagenes/edit.png"
+						actionListener="${consecutivoFacturaBean.renderizarItem(item, true)}" />
+					<h:commandLink onclick="pnl${item.id}.show();">
+						<h:graphicImage url="/imagenes/delete.png" />
+
+					</h:commandLink>
+					<p:dialog widgetVar="pnl${item.id}" closable="false"
+						header="Desea eliminar este Item ?" visible="false"
+						resizable="false">
+
+						<h:panelGrid columns="2">
+							<p:commandButton value="Eliminar" partialSubmit="true"
+								actionListener="${consecutivoFacturaBean.eliminarItem(item)}" />
+							<p:commandButton value="Cancelar" onclick="pnl${item.id}.hide();" />
+						</h:panelGrid>
+
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

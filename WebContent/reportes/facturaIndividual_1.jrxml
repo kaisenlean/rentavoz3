@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaIndividual" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9df5d9b2-2dea-44f2-a19a-30e574e85332">
 	<property name="ireport.zoom" value="2.8531167061100033"/>
 	<property name="ireport.x" value="433"/>
-	<property name="ireport.y" value="1398"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -70,6 +70,9 @@
 	<field name="vendedor" class="co.innovate.rentavoz.model.Tercero">
 		<fieldDescription><![CDATA[vendedor]]></fieldDescription>
 	</field>
+	<field name="numeroFactura" class="co.innovate.rentavoz.model.facturacion.Talonario">
+		<fieldDescription><![CDATA[numeroFactura]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -98,11 +101,11 @@
 				<textFieldExpression><![CDATA[$P{TELEFONO_EMPRESA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="367571cb-ba1a-4be1-997a-a9a572803460" x="260" y="52" width="129" height="11"/>
+				<reportElement uuid="367571cb-ba1a-4be1-997a-a9a572803460" x="260" y="52" width="78" height="11"/>
 				<textElement>
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Documento equivalente :  01]]></text>
+				<text><![CDATA[Factura de venta]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="996871bd-515f-484b-97d1-4273cfc0faef" x="261" y="63" width="29" height="11"/>
@@ -253,7 +256,7 @@
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["E"+$F{idVenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{numeroFactura}.getConsecutivo()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="262" y="497" width="128" height="11"/>
@@ -285,6 +288,13 @@
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="863397cf-b4f6-4ddc-bbf9-5d4b5f2232f2" x="338" y="51" width="64" height="10"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroFactura}.getConsecutivo()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

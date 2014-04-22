@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaIndividual" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9df5d9b2-2dea-44f2-a19a-30e574e85332">
 	<property name="ireport.zoom" value="3.4522712143931047"/>
 	<property name="ireport.x" value="605"/>
-	<property name="ireport.y" value="1238"/>
+	<property name="ireport.y" value="1237"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -72,6 +72,9 @@
 	</field>
 	<field name="valorAbono" class="java.lang.Double">
 		<fieldDescription><![CDATA[valorAbono]]></fieldDescription>
+	</field>
+	<field name="numeroFactura" class="co.innovate.rentavoz.model.facturacion.Talonario">
+		<fieldDescription><![CDATA[numeroFactura]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -249,7 +252,7 @@
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["E"+$F{idVenta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{numeroFactura}.getConsecutivo()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement uuid="2133aaa3-89f2-4a8d-b808-17d99a46eafb" x="264" y="372" width="128" height="11"/>
