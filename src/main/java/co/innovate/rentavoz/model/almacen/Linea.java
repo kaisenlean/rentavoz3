@@ -89,6 +89,9 @@ public class Linea implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="responsable",referencedColumnName="idTecero")
 	private Tercero encargado;
+	
+	@Column
+	private Boolean ajuste;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -448,5 +451,22 @@ public class Linea implements Serializable {
 		return encargado;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 23/04/2014
+	 * @return the ajuste
+	 */
+	public Boolean getAjuste() {
+		return ajuste;
+	}
 	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 23/04/2014
+	 * @param ajuste the ajuste to set
+	 */
+	public void setAjuste(Boolean ajuste) {
+		this.ajuste = ajuste;
+	}
 }

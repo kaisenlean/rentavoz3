@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>Rentavoz 3.0</display-name>
+	<display-name>Rentavoz</display-name>
 
 
 	<filter>
@@ -64,7 +64,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>bootstrap</param-value>
+		<param-value>redmond</param-value>
 		
 	</context-param>
 	<welcome-file-list>
@@ -81,14 +81,14 @@
 	</servlet-mapping>
 
 
-	<!-- <error-page> -->
-	<!-- <error-code>500</error-code> -->
-	<!-- <location>/500.jsf</location> -->
-	<!-- </error-page> -->
-	<!-- <error-page> -->
-	<!-- <error-code>404</error-code> -->
-	<!-- <location>/404.jsf</location> -->
-	<!-- </error-page> -->
+	<error-page>
+	<error-code>500</error-code>
+	<location>/500.jsf</location>
+	</error-page>
+	<error-page>
+	<error-code>404</error-code>
+	<location>/404.jsf</location>
+	</error-page>
 	<resource-ref>
 		<description>Connection Pool</description>
 		<res-ref-name>jdbc/rentavoz</res-ref-name>

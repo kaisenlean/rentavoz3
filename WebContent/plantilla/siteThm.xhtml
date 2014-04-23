@@ -15,11 +15,11 @@
 	
 	<h:outputStylesheet name="default.css" library="css" />
 	<h:outputStylesheet name="tableLayout.css" library="css" />
-	
+	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/imagenes/favicon.ico"/>
  <f:metadata>
         <f:event type="preRenderView" listener="#{login.validateSession()}"/>
     </f:metadata>
-	<title>Rentavoz 3.0</title>
+	<title>Rentavoz</title>
 
 
 	<ui:insert name="head">
@@ -60,6 +60,14 @@
 
 		<h:form>
 			<p:layoutUnit position="center">
+			
+<!-- 			  <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="#{300000}" /> -->
+<!--             <p:dialog header="Sesión caducada" widgetVar="sessionTimeOutDialog" -->
+<!--              modal="true" fixedCenter="true" closable="false" width="400" visible="false" appendTo="@(body)"> -->
+<!--                  <h:outputText value="La sesion há caducado , por favor , pulse sobre el botón para volver a acceder a la aplicación" /> -->
+<!--                  <input id="confirmBackToLogin" type="button" value="Volver a acceder a la aplicación" -->
+<!--                     onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsf';" /> -->
+<!--             </p:dialog> -->
 				<!-- 				<h:form> -->
 
 				<p:menubar style="float: right;height: 5%">

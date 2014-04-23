@@ -9,6 +9,7 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.GenericRepository;
 
 /**
@@ -51,5 +52,12 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	
 	
 	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 23/04/2014
+	* @param fechaFacturacion
+	* @return
+	*/
+	List<Venta> findVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste);
 	
 }

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:bsi="http://java.sun.com/jsf/composite/bsi">
+
+
+	<ui:define name="content">
+		<h:form>
+
+
+			<h:outputLabel value="Ajuste de Facturación" class="h1" />
+			
+			<h:panelGrid columns="4">
+			
+			<h:outputText value=" Ajustar por Porcentaje :" />
+			<p:inputText ></p:inputText>
+			
+			
+			
+			<h:outputText value=" Ajustar por valor aproximado :" />
+			<p:inputText ></p:inputText>
+			
+			</h:panelGrid>
+			
+			<p:dataTable>
+			
+			
+			</p:dataTable>
+			
+			
+
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

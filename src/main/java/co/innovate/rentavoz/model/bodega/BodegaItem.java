@@ -90,6 +90,9 @@ public class BodegaItem implements Serializable {
 	private TipoInventario tipoInventario;
 
 	
+	@Column
+	private Boolean ajuste;
+	
 	@PostLoad
 	public void init(){
 		 contadorImei=1;

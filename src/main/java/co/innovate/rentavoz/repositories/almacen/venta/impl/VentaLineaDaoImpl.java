@@ -22,6 +22,7 @@ import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.EstadoDevolucionEnum;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 
@@ -99,6 +100,19 @@ public class VentaLineaDaoImpl extends
 		query.setParameter("estadoVenta", EstadoVentaEnum.ACTIVA);
 		query.setParameter("now", Calendar.getInstance().getTime());
 		
+		return query.getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#findVentaSinAjuste(co.innovate.rentavoz.model.facturacion.FechaFacturacion)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Venta> findVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste) {
+		Query query= getEntityManager().createQuery("SELECT DISTINCT v.ventaidVenta FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
+		query.setParameter("ajuste", ajuste);
+		query.setParameter("fechaFacturacion", fechaFacturacion);
+		query.setParameter("estado", EstadoVentaEnum.ACTIVA);
 		return query.getResultList();
 	}
 
