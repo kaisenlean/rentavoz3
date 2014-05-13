@@ -116,4 +116,19 @@ public class VentaLineaDaoImpl extends
 		return query.getResultList();
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#findValorVentaAjuste(co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.lang.Boolean)
+	 */
+	@Override
+	public Double findValorVentaAjuste(FechaFacturacion fechaFacturacion,
+			Boolean ajuste) {
+		
+		Query query= getEntityManager().createQuery("SELECT DISTINCT  SUM(v.ventaidVenta.venSaldo) FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
+		query.setParameter("ajuste", ajuste);
+		query.setParameter("fechaFacturacion", fechaFacturacion);
+		query.setParameter("estado", EstadoVentaEnum.ACTIVA);
+		
+		return Double.valueOf(query.getSingleResult().toString());
+	}
+
 }

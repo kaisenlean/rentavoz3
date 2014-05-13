@@ -78,9 +78,11 @@
 						for="nroFacturaIngreso"></p:message>
 
 					<h:outputText value="Fecha de Ingreso" />
-					<p:calendar readonly="#{beanIngresoBodega.edit}"
+					<p:calendar  readonly="#{beanIngresoBodega.edit}"
 						disabled="#{beanIngresoBodega.edit}" id="fechaIngreso"
-						value="#{beanIngresoBodega.objeto.fechaIngreso}"></p:calendar>
+						value="#{beanIngresoBodega.objeto.fechaIngreso}">
+						
+						</p:calendar>
 					<p:message for="fechaIngreso"></p:message>
 					
 					

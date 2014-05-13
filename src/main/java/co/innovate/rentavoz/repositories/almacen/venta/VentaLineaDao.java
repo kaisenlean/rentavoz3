@@ -60,4 +60,14 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	*/
 	List<Venta> findVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste);
 	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 25/04/2014
+	* @param fechaFacturacion
+	* @param ajuste
+	* @return
+	*/
+	 Double findValorVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste) ;
+	
 }
