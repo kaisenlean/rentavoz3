@@ -146,4 +146,26 @@ public interface LineaDao extends GenericRepository<Linea, Integer> {
 	* @return
 	*/
 	int countByCriteria(String query,List<Sucursal> sucursales);
+	
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 13/05/2014
+	* @param firstResult
+	* @param maxResults
+	* @param corte
+	* @param order
+	* @return
+	*/
+	List<Linea> findByCorte(int firstResult,int maxResults,int corte ,Order order);
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 13/05/2014
+	* @param corte
+	* @return
+	*/
+	int countByCorte(int corte);
 }

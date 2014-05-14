@@ -50,7 +50,8 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	 * @param linNumero
 	 * @return
 	 */
-	Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales,FechaFacturacion fechaFacturacion)throws BaseException;
+	Linea findByNumeroObjeto(String linNumero, List<Sucursal> sucursales,
+			FechaFacturacion fechaFacturacion) throws BaseException;
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -115,29 +116,45 @@ public interface LineaService extends GenericService<Linea, Integer> {
 	 * @param query
 	 * @return
 	 */
-	List<Linea> findByCriteria(String query, int firstResult, int maxResults,Order order,List<Sucursal> sucursales);
-	
-	
-	
+	List<Linea> findByCriteria(String query, int firstResult, int maxResults,
+			Order order, List<Sucursal> sucursales);
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 24/01/2014
+	 * @param query
+	 * @param firstResult
+	 * @param maxResults
+	 * @return
+	 */
+	int countByCriteria(String query, List<Sucursal> sucursales);
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 4/03/2014
+	 * @param linNumero
+	 * @return
+	 */
+	Linea getByNumeroLinea(String linNumero);
+
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 24/01/2014
-	* @param query
+	* @date 13/05/2014
 	* @param firstResult
 	* @param maxResults
+	* @param corte
+	* @param order
 	* @return
 	*/
-	int countByCriteria(String query,List<Sucursal> sucursales);
-	
+	List<Linea> findByCorte(int firstResult, int maxResults, int corte,
+			Order order);
+
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 4/03/2014
-	* @param linNumero
+	* @date 13/05/2014
+	* @param corte
 	* @return
 	*/
-	Linea getByNumeroLinea(String linNumero);
-	
-
-
+	int countByCorte(int corte) ;
 }

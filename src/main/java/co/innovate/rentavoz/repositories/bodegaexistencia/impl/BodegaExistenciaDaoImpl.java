@@ -134,11 +134,11 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.bodegaexistencia.BodegaExistenciaDao#findByBarcodeActivo(java.lang.String, co.innovate.rentavoz.model.Sucursal)
 	 */
-	public BodegaExistencia findByBarcodeActivo(String productoId,Sucursal sucursal) {
+	public BodegaExistencia findByBarcodeActivo(String productoId,List<Sucursal> sucursal) {
 		Query query = getEntityManager()
 				.createQuery(
 						new StringBuilder(
-								"SELECT e FROM BodegaExistencia e WHERE  e.estado =:estado AND e.sucursal = :suc AND ( e.barCode = :proId  or e.barCode2 = :proId or e.barCode3 = :proId)")
+								"SELECT e FROM BodegaExistencia e WHERE  e.estado =:estado AND e.sucursal IN (:suc) AND ( e.barCode = :proId  or e.barCode2 = :proId or e.barCode3 = :proId)")
 								.toString());
 		query.setParameter(new StringBuilder("proId").toString(),
 				new StringBuilder(productoId).toString());

@@ -60,7 +60,7 @@ public interface BodegaExistenciaService extends GenericService<BodegaExistencia
 	* @param sucursal
 	* @return
 	*/
-	BodegaExistencia findByBarcodeActivo(String productoId,Sucursal sucursal);
+	BodegaExistencia findByBarcodeActivo(String productoId,List<Sucursal> sucursal);
 	
 	
 	

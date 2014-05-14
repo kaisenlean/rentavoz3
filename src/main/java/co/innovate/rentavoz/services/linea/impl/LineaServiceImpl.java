@@ -161,6 +161,23 @@ public class LineaServiceImpl extends GenericServiceImpl<Linea, Integer> impleme
 		return lineaDao.getByNumeroLinea(linNumero);
 	}
 
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.linea.LineaService#findByCorte(int, int, int, org.hibernate.criterion.Order)
+	 */
+	@Override
+	public List<Linea> findByCorte(int firstResult, int maxResults, int corte,
+			Order order) {
+		return lineaDao.findByCorte(firstResult, maxResults, corte, order);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.linea.LineaService#countByCorte(int)
+	 */
+	@Override
+	public int countByCorte(int corte) {
+		return lineaDao.countByCorte(corte);
+	}
+
 	
 
 

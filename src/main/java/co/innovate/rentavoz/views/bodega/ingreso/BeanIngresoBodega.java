@@ -110,9 +110,11 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	private TipoInventarioService tipoInventarioService;
 	
 	
-	private String selTipoInventario;
+	private int selTipoInventario;
 
 	private TipoInventario tipoInventario;
+
+	private String selTipoInventario2;
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	* @date 18/01/2014
@@ -357,7 +359,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	public void cambioItemTipoInventario() {
 		tipoInventario=tipoInventarioService.findById(Integer.valueOf(selTipoInventario));
 		if (tipoInventario!=null) {
-			selTipoInventario=tipoInventario.getClave();
+			selTipoInventario2=tipoInventario.getClave();
 		}
 
 	}
@@ -762,16 +764,36 @@ public void setTipoInventarioService(TipoInventarioService tipoInventarioService
  * @date 8/04/2014
  * @return the selTipoInventario
  */
-public String getSelTipoInventario() {
+public int getSelTipoInventario() {
 	return selTipoInventario;
 }
 
 /**
  * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 8/04/2014
+ * @date 13/05/2014
  * @param selTipoInventario the selTipoInventario to set
  */
-public void setSelTipoInventario(String selTipoInventario) {
+public void setSelTipoInventario(int selTipoInventario) {
 	this.selTipoInventario = selTipoInventario;
 }
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 13/05/2014
+ * @param selTipoInventario2 the selTipoInventario2 to set
+ */
+public void setSelTipoInventario2(String selTipoInventario2) {
+	this.selTipoInventario2 = selTipoInventario2;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 13/05/2014
+ * @return the selTipoInventario2
+ */
+public String getSelTipoInventario2() {
+	return selTipoInventario2;
+}
+
+
 }

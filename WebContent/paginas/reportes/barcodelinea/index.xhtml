@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Consulta de Codigos de barra por linea" class="h1" />
+
+
+		
+			<br />
+		<p:commandButton ajax="false" value="Imprimir" process="@this" actionListener="#{beanLineasBarCode.imprimir()}"></p:commandButton>
+			<p:dataTable widgetVar="tblConsumos" id="tblConsumos"
+				paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				style="width: 100%"
+				value="#{beanLineasBarCode.model}" var="item"
+				emptyMessage="No se han encontrado registros">
+				<f:facet name="header">
+			
+			<h:outputLabel value="Corte" />
+			<p:inputText id="globalFilter" placeholder="Busqueda" 
+							onkeypress="if (event.keyCode == 13) { tblConsumos.filter();  return false; }"
+							style="width:150px" />
+				</f:facet>
+				<p:column style="width: 10%" headerText="Numero Linea"
+					styleClass="styleColumn" sortBy="linNumero">
+					<p:outputLabel value="${item.linNumero}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Corte"
+					styleClass="styleColumn" sortBy="linCorte">
+					<p:outputLabel value="${item.linCorte}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Convenio"
+					styleClass="styleColumn" >
+					<p:outputLabel value="${item.empresaidEmpresa.empNombre}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Plan"
+					styleClass="styleColumn" >
+					<p:outputLabel value="${item.plan.plaNombre}" />
+				</p:column>
+				
+				<p:column>
+				<p:graphicImage style="visibility:hidden" value="#{item.cargarBarcode(beanLineasBarCode.path)}" />
+				<p:graphicImage value="/#{item.linNumero}"></p:graphicImage>
+				</p:column>
+
+
+				
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

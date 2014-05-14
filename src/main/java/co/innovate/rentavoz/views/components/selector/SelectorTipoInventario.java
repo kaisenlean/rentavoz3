@@ -28,7 +28,7 @@ public class SelectorTipoInventario implements SelectorBase<TipoInventario> {
 	public void init() {
 		List<TipoInventario> findAll = tipoInventarioService.findAll();
 		items = new ArrayList<SelectItem>();
-		items.add(new SelectItem(" ", "-- Seleccione un tipo de inventario --"));
+		items.add(new SelectItem("", "-- Seleccione un tipo de inventario --"));
 		for (TipoInventario empresa : findAll) {
 			items.add(new SelectItem(empresa.getId(), empresa
 					.getNombre()));

@@ -4,6 +4,8 @@
  */
 package co.innovate.rentavoz.model.almacen;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -22,6 +24,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import co.innovate.rentavoz.model.Empresa;
 import co.innovate.rentavoz.model.EstadoLinea;
@@ -92,6 +100,9 @@ public class Linea implements Serializable {
 	
 	@Column
 	private Boolean ajuste;
+	
+	@Transient
+	private StreamedContent barcode;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -468,5 +479,31 @@ public class Linea implements Serializable {
 	 */
 	public void setAjuste(Boolean ajuste) {
 		this.ajuste = ajuste;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 13/05/2014
+	 * @return the barcode
+	 */
+	public StreamedContent cargarBarcode(String path) {
+	try {
+		
+		File barcodeFile = new File(path+"/"+linNumero);
+        BarcodeImageHandler.saveJPEG(BarcodeFactory.createCode128(linNumero), barcodeFile);
+        
+        barcode = new DefaultStreamedContent(new FileInputStream(barcodeFile), "image/jpeg");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		return barcode;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 13/05/2014
+	 * @param barcode the barcode to set
+	 */
+	public void setBarcode(StreamedContent barcode) {
+		this.barcode = barcode;
 	}
 }

@@ -61,7 +61,7 @@ public interface BodegaExistenciaDao extends GenericRepository<BodegaExistencia,
 	* @param sucursal
 	* @return
 	*/
-	BodegaExistencia findByBarcodeActivo(String productoId,Sucursal sucursal);
+	BodegaExistencia findByBarcodeActivo(String productoId,List<Sucursal> sucursal);
 	
 	
 	

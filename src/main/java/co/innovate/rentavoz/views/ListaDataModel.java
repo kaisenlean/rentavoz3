@@ -50,6 +50,7 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 	public abstract void customLoad(int startingAt, int maxPerPage,
 			String globalFilter, String sortField, SortOrder sortOrder);
 
+	
 	@Override
 	public List<T> load(int startingAt, int maxPerPage, String sortField,
 			SortOrder sortOrder, Map<String, String> filters) {
@@ -63,7 +64,7 @@ public abstract class ListaDataModel<T, PK extends Serializable> extends
 			try {
 
 				lista = null;
-				globalFilter = filters.get("globalFilter");
+				globalFilter = (String) filters.get("globalFilter");
 				if (globalFilter == null) {
 					globalFilter = String.valueOf("");
 				}

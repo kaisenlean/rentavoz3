@@ -66,7 +66,7 @@ public class BodegaExistenciaServiceImpl extends GenericServiceImpl<BodegaExiste
 	 */
 	@Override
 	public BodegaExistencia findByBarcodeActivo(String productoId,
-			Sucursal sucursal) {
+			List<Sucursal> sucursal) {
 		return bodegaExistenciaDao.findByBarcodeActivo(productoId, sucursal);
 	}
 

@@ -35,8 +35,8 @@ import co.innovate.rentavoz.views.session.Login;
  */
 @ManagedBean
 @ViewScoped
-public class BeanSalidaItem extends StandardAbm<BodegaSalida,Integer> implements
-		Serializable {
+public class BeanSalidaItem extends StandardAbm<BodegaSalida, Integer>
+		implements Serializable {
 
 	/**
 	 * 6/10/2013
@@ -54,34 +54,29 @@ public class BeanSalidaItem extends StandardAbm<BodegaSalida,Integer> implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty(value="#{bodegaSalidaService}")
+	@ManagedProperty(value = "#{bodegaSalidaService}")
 	private BodegaSalidaService bodegaSalidaService;
-	
-	
-	@ManagedProperty(value="#{bodegaExistenciaService}")
+
+	@ManagedProperty(value = "#{bodegaExistenciaService}")
 	private BodegaExistenciaService bodegaExistenciaService;
 
-	@ManagedProperty(value="#{printerBean}")
+	@ManagedProperty(value = "#{printerBean}")
 	private PrinterBean printerBean;
-	
-	
-	@ManagedProperty(value="#{sucursalService}")
+
+	@ManagedProperty(value = "#{sucursalService}")
 	private SucursalService sucursalService;
-	
-	
-	@ManagedProperty(value="#{bodegaSalidaReferenciaService}")
+
+	@ManagedProperty(value = "#{bodegaSalidaReferenciaService}")
 	private BodegaSalidaReferenciaService bodegaSalidaReferenciaService;
-	
-	
-	private List<BodegaSalidaReferencia> salidaReferencias= new ArrayList<BodegaSalidaReferencia>();
-	
-	
+
+	private List<BodegaSalidaReferencia> salidaReferencias = new ArrayList<BodegaSalidaReferencia>();
+
 	private int sucursalOrigen = 0;
 	private int sucursalDestino = 0;
 
 	private String productoId;
-	
-	@ManagedProperty(value="#{login}")
+
+	@ManagedProperty(value = "#{login}")
 	private Login login;
 
 	/*
@@ -90,7 +85,7 @@ public class BeanSalidaItem extends StandardAbm<BodegaSalida,Integer> implements
 	 * @see com.invte.rentavoz.vista.StandardAbm#getFacade()
 	 */
 	@Override
-	public GenericService<BodegaSalida,Integer> getFacade() {
+	public GenericService<BodegaSalida, Integer> getFacade() {
 		return bodegaSalidaService;
 	}
 
@@ -141,42 +136,54 @@ public class BeanSalidaItem extends StandardAbm<BodegaSalida,Integer> implements
 	 */
 	@Override
 	public void initialize() {
-		sucursalOrigen=login.getSucursal()==null?0:login.getSucursal().getIdSucursal();
+		sucursalOrigen = login.getSucursal() == null ? 0 : login.getSucursal()
+				.getIdSucursal();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.invte.rentavoz.vista.StandardAbm#postFormNuevo()
 	 */
 	@Override
 	public void postFormNuevo() {
-getObjeto().setFechaSalida(new Date());
+		getObjeto().setFechaSalida(new Date());
 	}
 
 	public void addExistencia() {
-		boolean existe=false;
-		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,login.getSucursales());
-		if (be!=null) {
-			existe=true;
+		boolean existe = false;
+		BodegaExistencia be = bodegaExistenciaService.findByBarcode(productoId,
+				login.getSucursales());
+		if (be != null) {
+			existe = true;
 		}
-		 be = bodegaExistenciaService.findByBarcodeActivo(productoId,login.getTercero().getSucursalTerceroList().get(0).getSucursalidSucursal());
+		be = bodegaExistenciaService.findByBarcodeActivo(productoId,
+				login.getSucursales());
 		if (be != null) {
 			BodegaSalidaReferencia bodegaSalidaReferencia = new BodegaSalidaReferencia();
 			bodegaSalidaReferencia.setBodegaExistencia(be);
 			bodegaSalidaReferencia.setBodegaSalida(getObjeto());
-			if (getObjeto().getBodegaSalidaReferencias().contains(bodegaSalidaReferencia)) {
-				mensajeError(new StringBuilder("Este PID ya está en la lista").toString());
+			if (getObjeto().getBodegaSalidaReferencias().contains(
+					bodegaSalidaReferencia)) {
+				mensajeError(new StringBuilder("Este PID ya está en la lista")
+						.toString());
 				return;
 			}
-			getObjeto().getBodegaSalidaReferencias().add(bodegaSalidaReferencia);
+			getObjeto().getBodegaSalidaReferencias()
+					.add(bodegaSalidaReferencia);
 
 			productoId = "";
 		} else {
 			if (existe) {
-				
-				mensajeError(new StringBuilder("Ya se ha realizado una salida de inventario con este PID a otro bodega o punto de venta").toString());
-			}else{
-				
-				mensajeError(new StringBuilder("Este PID no esta registrado en el inventario").toString());
+
+				mensajeError(new StringBuilder(
+						"Ya se ha realizado una salida de inventario con este PID a otro bodega o punto de venta")
+						.toString());
+			} else {
+
+				mensajeError(new StringBuilder(
+						"Este PID no esta registrado en el inventario")
+						.toString());
 			}
 		}
 	}
@@ -189,21 +196,22 @@ getObjeto().setFechaSalida(new Date());
 	@Override
 	public boolean preAction() {
 
-		salidaReferencias=getObjeto().getBodegaSalidaReferencias();
-		
+		salidaReferencias = getObjeto().getBodegaSalidaReferencias();
+
 		if (sucursalOrigen == 0) {
 			mensajeError("Selecciona una sucursal de origen");
 			return false;
 		}
 
 		getObjeto().setSucursalOrigen(sucursalService.findById(sucursalOrigen));
-		
+
 		if (sucursalDestino == 0) {
 			mensajeError("Selecciona una sucursal de destino");
 			return false;
 		}
-		getObjeto().setSucursalDestino(sucursalService.findById(sucursalDestino));
-		
+		getObjeto().setSucursalDestino(
+				sucursalService.findById(sucursalDestino));
+
 		if (sucursalOrigen == sucursalDestino) {
 			mensajeError("La sucursal de destino no puede ser la misma de origen");
 
@@ -213,41 +221,42 @@ getObjeto().setFechaSalida(new Date());
 		return true;
 
 	}
-	
-	
-	
+
 	/**
 	 * @see com.invte.rentavoz.vista.StandardAbm#postAction()
 	 */
 	@Override
 	public void postAction() {
-		
+
 		if (!isEdit()) {
 			generarNumeroFactura();
 			for (BodegaSalidaReferencia sr : salidaReferencias) {
-				BodegaExistencia be=sr.getBodegaExistencia();
+				BodegaExistencia be = sr.getBodegaExistencia();
 				be.setEstado(EstadoExistenciaEnum.DISPONIBLE);
 				be.setSucursal(getObjeto().getSucursalDestino());
 				bodegaExistenciaService.save(be);
-				
+
 			}
-			
+
 			for (BodegaSalidaReferencia referencia : salidaReferencias) {
 				referencia.setBodegaSalida(getObjeto());
 				bodegaSalidaReferenciaService.save(referencia);
 			}
 		}
-		
+
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#preRenderizarItem()
 	 */
 	@Override
 	public void preRenderizarItem() {
 
-		getObjeto().setBodegaSalidaReferencias(bodegaSalidaReferenciaService.findByBodegaSalida(getObjeto()));
-		sucursalDestino=getObjeto().getSucursalDestino().getIdSucursal();
+		getObjeto().setBodegaSalidaReferencias(
+				bodegaSalidaReferenciaService.findByBodegaSalida(getObjeto()));
+		sucursalDestino = getObjeto().getSucursalDestino().getIdSucursal();
 	}
 
 	/**
@@ -307,55 +316,60 @@ getObjeto().setFechaSalida(new Date());
 		this.productoId = productoId;
 	}
 
-
 	/**
 	 * Método que genera el numero de la factura de compra
-	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 6/10/2013
-	*/
+	 * 
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/10/2013
+	 */
 	private void generarNumeroFactura() {
-		Date now=new Date();
-		
-		StringBuilder builder= new StringBuilder();
+		Date now = new Date();
+
+		StringBuilder builder = new StringBuilder();
 		builder.append(new SimpleDateFormat("yyyy").format(now));
 		builder.append(new SimpleDateFormat("MM").format(now));
 		builder.append(new SimpleDateFormat("dd").format(now));
-	
+
 		builder.append("-");
 		builder.append(getObjeto().getId());
 		getObjeto().setNroFactura(builder.toString());
 		getFacade().save(getObjeto());
-		
+
 	}
-	
-	public void imprimir(){
+
+	public void imprimir() {
 		ArrayList<BodegaSalida> salidas = new ArrayList<BodegaSalida>();
 		salidas.add(getObjeto());
-		printerBean.exportPdf("reporteSalidas", "reporte_salida_existencias",new HashMap<String, Object>(),salidas);
-		
+		printerBean.exportPdf("reporteSalidas", "reporte_salida_existencias",
+				new HashMap<String, Object>(), salidas);
+
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#postEliminar()
 	 */
 	@Override
 	public void postEliminar() {
-		
+
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/10/2013
-	 * @param login the login to set
+	 * @param login
+	 *            the login to set
 	 */
 	public void setLogin(Login login) {
 		this.login = login;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 22/10/2013
-	 * @param printerBean the printerBean to set
+	 * @param printerBean
+	 *            the printerBean to set
 	 */
 	public void setPrinterBean(PrinterBean printerBean) {
 		this.printerBean = printerBean;
@@ -373,7 +387,8 @@ getObjeto().setFechaSalida(new Date());
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/01/2014
-	 * @param bodegaSalidaService the bodegaSalidaService to set
+	 * @param bodegaSalidaService
+	 *            the bodegaSalidaService to set
 	 */
 	public void setBodegaSalidaService(BodegaSalidaService bodegaSalidaService) {
 		this.bodegaSalidaService = bodegaSalidaService;
@@ -391,7 +406,8 @@ getObjeto().setFechaSalida(new Date());
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/01/2014
-	 * @param bodegaExistenciaService the bodegaExistenciaService to set
+	 * @param bodegaExistenciaService
+	 *            the bodegaExistenciaService to set
 	 */
 	public void setBodegaExistenciaService(
 			BodegaExistenciaService bodegaExistenciaService) {
@@ -410,7 +426,8 @@ getObjeto().setFechaSalida(new Date());
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/01/2014
-	 * @param sucursalService the sucursalService to set
+	 * @param sucursalService
+	 *            the sucursalService to set
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
@@ -433,34 +450,40 @@ getObjeto().setFechaSalida(new Date());
 	public Login getLogin() {
 		return login;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 15/01/2014
-	 * @param bodegaSalidaReferenciaService the bodegaSalidaReferenciaService to set
+	 * @param bodegaSalidaReferenciaService
+	 *            the bodegaSalidaReferenciaService to set
 	 */
 	public void setBodegaSalidaReferenciaService(
 			BodegaSalidaReferenciaService bodegaSalidaReferenciaService) {
 		this.bodegaSalidaReferenciaService = bodegaSalidaReferenciaService;
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String
+	 * )
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int,
+	 * java.lang.String)
 	 */
 	@Override
 	public List<BodegaSalida> customSearch(int startingAt, int maxPerPage,
-			String globalFilter, String sortField,
-			SortOrder sortOrder) {
+			String globalFilter, String sortField, SortOrder sortOrder) {
 		return null;
 	}
-	
-	
+
 }

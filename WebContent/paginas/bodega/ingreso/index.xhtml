@@ -79,7 +79,7 @@
 
 					<h:outputText value="Fecha de Ingreso" />
 					<p:calendar  readonly="#{beanIngresoBodega.edit}"
-						disabled="#{beanIngresoBodega.edit}" id="fechaIngreso"
+						disabled="#{beanIngresoBodega.edit}" id="fechaIngreso" 
 						value="#{beanIngresoBodega.objeto.fechaIngreso}">
 						
 						</p:calendar>
@@ -89,14 +89,14 @@
 					<h:outputLabel value="Tipo de Inventario" />
 					<p:selectOneMenu id="tipInventario" value="#{beanIngresoBodega.selTipoInventario}">
 					<f:selectItems value="#{selectorTipoInventario.items}"></f:selectItems>
-					<p:ajax event="change" process="@this" update="@all" listener="#{beanIngresoBodega.cambioItemTipoInventario}"></p:ajax>
+					<p:ajax event="change" process="@this,fechaIngreso" update="@all" listener="#{beanIngresoBodega.cambioItemTipoInventario}"></p:ajax>
 					</p:selectOneMenu>
 					<p:message for="tipInventario"></p:message>
 					
 					<h:outputLabel value="Item a registrar :" />
 					<p:selectOneMenu disabled="#{beanIngresoBodega.edit}"
 						id="selItemReg" value="#{beanIngresoBodega.selItem}">
-						<p:ajax event="change" process="@this"
+						<p:ajax event="change" process="@this,fechaIngreso"
 							listener="#{beanIngresoBodega.cambioItem}" update="@all"></p:ajax>
 						<f:selectItems value="#{selectorItem.items}"></f:selectItems>
 					</p:selectOneMenu>
@@ -152,14 +152,14 @@
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}"
 						value="Precio de compra" />
-					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}"
+					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario2 eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}"
 						id="precioCompra" value="#{beanIngresoBodega.objeto.precioCompra}"></h:inputText>
 					<p:message rendered="#{!beanIngresoBodega.edit}" for="precioCompra"></p:message>
 
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}"
 						value="Precio de Venta" />
-					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}" readonly="true"
+					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario2 eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}" readonly="true"
 						id="precioVenta" value="#{beanIngresoBodega.objeto.precioVenta}"></h:inputText>
 					<p:message rendered="#{!beanIngresoBodega.edit}" for="precioVenta"></p:message>
 
@@ -167,7 +167,7 @@
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}"
 						value="Precio de Venta Mayoristas" />
-					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}" readonly="true"
+					<h:inputText disabled="#{beanIngresoBodega.selTipoInventario2 eq 'ACTIVO_FIJO'}" rendered="#{!beanIngresoBodega.edit}" readonly="true"
 						id="precioVentaMayoristas"
 						value="#{beanIngresoBodega.objeto.precioVentaMayoristas}"></h:inputText>
 					<p:message rendered="#{!beanIngresoBodega.edit}"

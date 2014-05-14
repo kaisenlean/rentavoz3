@@ -11,6 +11,8 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang.text.StrBuilder;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -366,5 +368,31 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 		} else {
 			return null;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#findByCorte(int, int, int, org.hibernate.criterion.Order)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Linea> findByCorte(int firstResult, int maxResults, int corte,
+			Order order) {
+		Session session = getEntityManager().unwrap(Session.class);
+		Criteria crit = session.createCriteria(Linea.class);
+		if (corte>0) {
+			crit.add(Restrictions.eq("linCorte", corte));
+		}
+		crit.setFirstResult(firstResult);
+		crit.setMaxResults(maxResults);
+		crit.addOrder(order);
+		return crit.list();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#countByCorte(int)
+	 */
+	@Override
+	public int countByCorte(int corte) {
+		return countByCriteria(corte>0?Restrictions.eq("linCorte", corte):Restrictions.ne("linCorte", BigInteger.ZERO.intValue()));
 	}
 }
