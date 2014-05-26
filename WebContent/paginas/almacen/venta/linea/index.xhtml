@@ -90,6 +90,15 @@ function runApplet(){
 						<f:selectItems value="#{beanVentaLinea.itemsSucursales}" />
 						<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
+					
+					<h:outputText style="font-weight: bolder" value="Fecha de venta" id="fechaVenta" />
+					<p:calendar widgetVar="selFechaVent" value="#{beanVentaLinea.venta.venFecha}" >
+					  <p:ajax event="dateSelect" process="@this" partialSubmit="true" />
+					</p:calendar>
+					
+					
+					
+					
 				</h:panelGrid>
 				<p:spacer height="20px"></p:spacer>
 
@@ -219,6 +228,19 @@ function runApplet(){
 							</h:outputText>
 
 						</p:column>
+						
+						<p:column headerText="Corte">
+							<h:outputText value="#{detalle.lineaidLinea.linCorte}">
+							</h:outputText>
+
+						</p:column>
+
+						<p:column headerText="Plan">
+							<h:outputText value="#{detalle.lineaidLinea.plan.plaNombre}">
+							</h:outputText>
+
+						</p:column>
+
 
 						<p:column headerText="Valor Depósito">
 							<h:outputText value="#{detalle.ventLinDeposito}">

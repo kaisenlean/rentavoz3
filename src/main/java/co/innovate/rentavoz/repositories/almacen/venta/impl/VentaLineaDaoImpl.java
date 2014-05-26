@@ -4,7 +4,9 @@
 package co.innovate.rentavoz.repositories.almacen.venta.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -12,7 +14,10 @@ import javax.persistence.Query;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -95,40 +100,127 @@ public class VentaLineaDaoImpl extends
 		Query query = getEntityManager()
 				.createQuery(
 						"SELECT v FROM VentaLinea v WHERE v.estadoDevolucion = :estadoDevolucion AND  v.ventaidVenta.estadoVenta = :estadoVenta  AND :now BETWEEN v.ventaidVenta.fechaFacturacion.fechaInicio AND v.ventaidVenta.fechaFacturacion.fechaFin");
-		
+
 		query.setParameter("estadoDevolucion", EstadoDevolucionEnum.PENDIENTE);
 		query.setParameter("estadoVenta", EstadoVentaEnum.ACTIVA);
 		query.setParameter("now", Calendar.getInstance().getTime());
-		
+
 		return query.getResultList();
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#findVentaSinAjuste(co.innovate.rentavoz.model.facturacion.FechaFacturacion)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#
+	 * findVentaSinAjuste
+	 * (co.innovate.rentavoz.model.facturacion.FechaFacturacion)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Venta> findVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste) {
-		Query query= getEntityManager().createQuery("SELECT DISTINCT v.ventaidVenta FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
+	public List<Venta> findVentaAjuste(FechaFacturacion fechaFacturacion,
+			Boolean ajuste) {
+		Query query = getEntityManager()
+				.createQuery(
+						"SELECT DISTINCT v.ventaidVenta FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
 		query.setParameter("ajuste", ajuste);
 		query.setParameter("fechaFacturacion", fechaFacturacion);
 		query.setParameter("estado", EstadoVentaEnum.ACTIVA);
 		return query.getResultList();
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#findValorVentaAjuste(co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.lang.Boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#
+	 * findValorVentaAjuste
+	 * (co.innovate.rentavoz.model.facturacion.FechaFacturacion,
+	 * java.lang.Boolean)
 	 */
 	@Override
 	public Double findValorVentaAjuste(FechaFacturacion fechaFacturacion,
 			Boolean ajuste) {
-		
-		Query query= getEntityManager().createQuery("SELECT DISTINCT  SUM(v.ventaidVenta.venSaldo) FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
+
+		Query query = getEntityManager()
+				.createQuery(
+						"SELECT DISTINCT  SUM(v.ventaidVenta.venSaldo) FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
 		query.setParameter("ajuste", ajuste);
 		query.setParameter("fechaFacturacion", fechaFacturacion);
 		query.setParameter("estado", EstadoVentaEnum.ACTIVA);
-		
+
 		return Double.valueOf(query.getSingleResult().toString());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#findByCriterio
+	 * (int, int, org.hibernate.criterion.Order, java.lang.String,
+	 * java.lang.String, int)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
+			Order order, String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha) {
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria crit = session.createCriteria(VentaLinea.class);
+		crit.createAlias("lineaidLinea", "lineaidLinea");
+		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
+		crit.createAlias("ventaidVenta.tercero", "cliente");
+
+		Criterion criterion = Restrictions
+				.conjunction()
+				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
+				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
+						BigInteger.ZERO.intValue()) : Restrictions.eq(
+						"lineaidLinea.linCorte", corte))
+				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
+				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+
+		crit.add(criterion);
+		
+		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		crit.setMaxResults(maxResults);
+		crit.setFirstResult(firstResul);
+
+		crit.addOrder(order);
+		return crit.list();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#countdByCriterio(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
+	 */
+	@Override
+	public int countdByCriterio(String numeroLinea, String cliente, int corte,
+			FechaFacturacion fechaFacturacion, Date fecha) {
+		
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria crit = session.createCriteria(VentaLinea.class);
+		crit.createAlias("lineaidLinea", "lineaidLinea");
+		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
+		crit.createAlias("ventaidVenta.tercero", "cliente");
+
+		Criterion criterion = Restrictions
+				.conjunction()
+				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
+				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
+						BigInteger.ZERO.intValue()) : Restrictions.eq(
+						"lineaidLinea.linCorte", corte))
+				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
+				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+
+		crit.add(criterion);
+		
+		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		
+		crit.setProjection(Projections.rowCount());
+		return  Long.valueOf( crit.list().get(0).toString()).intValue();
 	}
 
 }

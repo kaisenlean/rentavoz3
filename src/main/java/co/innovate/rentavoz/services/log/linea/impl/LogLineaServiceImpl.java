@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.model.log.linea.AccionLineaEnum;
 import co.innovate.rentavoz.model.log.linea.LogLinea;
 import co.innovate.rentavoz.repositories.GenericRepository;
@@ -152,6 +153,14 @@ public class LogLineaServiceImpl extends GenericServiceImpl<LogLinea, Integer>im
 	  
 		
 		return consumos;
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.log.linea.LogLineaService#findByFecha(co.innovate.rentavoz.model.facturacion.FechaFacturacion)
+	 */
+	@Override
+	public Linea findByFecha(FechaFacturacion fechaFacturacion) {
+		return logLineaDao.findByFecha(fechaFacturacion);
 	}
 	
 		

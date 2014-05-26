@@ -4,8 +4,10 @@
 package co.innovate.rentavoz.services.almacen.venta.linea.impl;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.GenericRepository;
 import co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
@@ -67,5 +70,25 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	@Override
 	public List<VentaLinea> findLineasConDevolucionByCliente(Tercero tercero) {
 		return ventaLineaDao.findLineasConDevolucionByCliente(tercero);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#findByCriterio(int, int, org.hibernate.criterion.Order, java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion)
+	 */
+	@Override
+	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
+			Order order, String numeroLinea, String cliente, int corte,
+			FechaFacturacion fechaFacturacion,Date fecha) {
+		return ventaLineaDao.findByCriterio(firstResul, maxResults, order, numeroLinea, cliente, corte, fechaFacturacion,fecha);
+				
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#countdByCriterio(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
+	 */
+	@Override
+	public int countdByCriterio(String numeroLinea, String cliente, int corte,
+			FechaFacturacion fechaFacturacion, Date fecha) {
+		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha);
 	}
 }

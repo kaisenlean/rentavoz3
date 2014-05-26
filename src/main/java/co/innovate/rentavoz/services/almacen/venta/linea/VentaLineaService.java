@@ -3,12 +3,16 @@
  */
 package co.innovate.rentavoz.services.almacen.venta.linea;
 
+import java.util.Date;
 import java.util.List;
+
+import org.hibernate.criterion.Order;
 
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.services.GenericService;
 
 /**
@@ -47,4 +51,32 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @return
 	*/
 	List<VentaLinea> findLineasConDevolucionByCliente(Tercero tercero);
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param firstResul
+	* @param maxResults
+	* @param order
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @return
+	*/
+	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, String cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	int countdByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	
 }

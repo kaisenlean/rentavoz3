@@ -9,8 +9,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.apache.commons.lang.text.StrBuilder;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -21,13 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import co.innovate.rentavoz.exception.BaseException;
-import co.innovate.rentavoz.model.EstadoLinea;
 import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.repositories.estadolinea.EstadoLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 import co.innovate.rentavoz.repositories.linea.LineaDao;
+import co.innovate.rentavoz.repositories.log.linea.LogLineaDao;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -65,12 +63,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * LIN_NUMERO
 	 */
 	private static final String LIN_NUMERO = "linNumero";
-	/**
-	 * 2/02/2014
-	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * NO_ENCONTRADO_MSG
-	 */
-	private static final String NO_ENCONTRADO_MSG = "No se ha encontrado el estado de la linea con codigo : ";
+	
 	/**
 	 * 2/02/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -99,10 +92,13 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	public static final Integer ESTADO_LINEA_VENDIDA = 3;
 	
 	
-	private Logger logger= Logger.getLogger(LineaDaoImpl.class);
+//	private Logger logger= Logger.getLogger(LineaDaoImpl.class);
 	
 	@Autowired
 	private EstadoLineaDao estadoLineaDao;
+	
+	@Autowired
+	private LogLineaDao logLineaDao;
 	
 	/* (non-Javadoc)
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#nextCodigo()
@@ -145,9 +141,8 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 */
 	public Linea findBNumeroObjeto(String linNumero) {
 		Query q = getEntityManager().createQuery(
-				"SELECT l FROM Linea l WHERE l.linNumero = :numero AND  l.estadoLineaidEstadoLinea.idEstadoLinea = :estado");
+				"SELECT l FROM Linea l WHERE l.linNumero = :numero ");
 		q.setParameter("numero", linNumero);
-		q.setParameter("estado", ESTADO_LINEA_REPO);
 		q.setMaxResults(1);
 		if (q.getResultList().isEmpty()) {
 			return null;
@@ -164,7 +159,6 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 * @see co.innovate.rentavoz.repositories.linea.LineaDao#findByNumeroObjeto(java.lang.String)
 	 */
 	public Linea findByNumeroObjeto(String linNumero,List<Sucursal> sucursales,FechaFacturacion fechaFacturacion)throws BaseException{
-		
 		
 		
 		Query q = getEntityManager().createQuery(
@@ -187,11 +181,18 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 			}
 			
 			if (linea.getEstadoLineaidEstadoLinea().getIdEstadoLinea()==ESTADO_LINEA_SUSPENDIDA) {
-				throw new BaseException("Esta linea actualmente esta suspendida");
+				Linea linea2=logLineaDao.findByFecha(fechaFacturacion);
+				if (linea2==null) {
+					throw new BaseException("Esta linea actualmente esta suspendida , por favor realizar la correspondiente reposicion en el sistema");
+				}else{
+					return linea;
+				}
 			}
 			if (linea.getEstadoLineaidEstadoLinea().getIdEstadoLinea()==ESTADO_LINEA_INACTIVA) {
 				throw new BaseException("Esta linea actualmente esta Inactiva en el sistema");
 			}
+			
+			
 			Query query= getEntityManager().createQuery("SELECT l FROM VentaLinea l WHERE l.ventaidVenta.fechaFacturacion = :periodo AND l.lineaidLinea = :linea");
 			query.setParameter("periodo", fechaFacturacion);
 			query.setParameter("linea", (Linea)q.getSingleResult());
@@ -326,10 +327,7 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	@Override
 	public List<Linea> findByCriteria(String query, int firstResult,
 			int maxResults,Order order,List<Sucursal> sucursales) {
-		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
-		if (estadoLinea==null) {
-			logger.error(new StrBuilder(NO_ENCONTRADO_MSG).append(ESTADO_LINEA_REPO).toString());
-		}
+		
 		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE));
 		
 		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
@@ -343,11 +341,8 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 	 */
 	@Override
 	public int countByCriteria(String query,List<Sucursal> sucursales) {
-		EstadoLinea estadoLinea = estadoLineaDao.findById(ESTADO_LINEA_REPO);
-		if (estadoLinea==null) {
-			logger.error(new StrBuilder(NO_ENCONTRADO_MSG).append(ESTADO_LINEA_REPO).toString());
-		}
-		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE)).add(Restrictions.eq("estadoLineaidEstadoLinea", estadoLinea));
+		
+		Criterion criterion = Restrictions.conjunction().add(Restrictions.like(LIN_NUMERO, query,MatchMode.ANYWHERE));
 		Criterion criterion2= Restrictions.in(SUCURSAL, sucursales);
 		return countByCriteria(criterion,criterion2);
 	}

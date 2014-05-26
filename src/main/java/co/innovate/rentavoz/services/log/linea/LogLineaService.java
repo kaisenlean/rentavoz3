@@ -9,6 +9,8 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.model.log.linea.AccionLineaEnum;
 import co.innovate.rentavoz.model.log.linea.LogLinea;
 import co.innovate.rentavoz.services.GenericService;
@@ -54,4 +56,13 @@ public interface LogLineaService extends GenericService<LogLinea, Integer> {
 	* @date 31/03/2014
 	*/
 	List<LogLinea>  cargarLineaScid(String pathFile,Tercero tercero);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 25/05/2014
+	* @param fechaFacturacion
+	* @return
+	*/
+	Linea findByFecha(FechaFacturacion fechaFacturacion);
 }

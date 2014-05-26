@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/plantilla/siteThm.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+		<h:form>
+			<h:outputLabel value="Facturación de Lineas" class="h1" />
+
+
+			<p:panel style="width:100%" header="Cobertura de corte del dia">
+			<h:panelGrid columns="2">
+				<p:pieChart title="Lineas" 
+					value="#{beanLineaFacturacion.modelChart}" legendPosition="w"
+					id="salesChart" style="width:400px;height:200px"
+					showDataLabels="true"  />
+					
+					<p:barChart id="basic" value="#{beanLineaFacturacion.categoryModel}" legendPosition="ne"  
+                title="Lineas" min="0"  style="width:400px;height:200px" animate="true"/> 
+			</h:panelGrid>
+
+			</p:panel>
+			<p:panel style="width:100%" header="Filtro" toggleable="true"
+				toggleTitle="Filtro de Busqueda" collapsed="true">
+
+				<h:panelGrid columns="4">
+					<h:outputText value="Corte" />
+					<p:inputText value="#{beanLineaFacturacion.corte}"></p:inputText>
+
+
+					<h:outputText value="Linea" />
+					<p:inputText value="#{beanLineaFacturacion.linea}"></p:inputText>
+
+					<h:outputText value="Cliente" />
+					<p:inputText value="#{beanLineaFacturacion.cliente}"></p:inputText>
+
+					<h:outputText value="Periodo" />
+					<p:selectOneMenu
+						value="#{beanLineaFacturacion.selFechaFacturacion}">
+						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
+
+					<h:outputText value="Fecha" />
+					<p:calendar value="#{beanLineaFacturacion.fecha}"></p:calendar>
+
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Buscar" process="@all" update="@all"
+						onclick="tblFacturacion.filter();"></p:commandButton>
+					<p:commandButton value="Limpiar"></p:commandButton>
+				</h:panelGrid>
+
+
+			</p:panel>
+
+			<br />
+
+			<p:dataTable widgetVar="tblFacturacion" id="tblFacturacion"
+				paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!beanLineaFacturacion.form}" style="width: 100%"
+				value="#{beanLineaFacturacion.model}" var="item"
+				emptyMessage="No se han encontrado registros">
+				<f:facet name="header">
+			Numero de Registros #{beanLineaFacturacion.model.numeroRegistros}
+				</f:facet>
+				<p:column style="width: 10%" headerText="Numero Factura"
+					styleClass="styleColumn"
+					sortBy="ventaidVenta.numeroFactura.consecutivo">
+					<p:outputLabel
+						value="${item.ventaidVenta.numeroFactura.consecutivo}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Numero Linea"
+					styleClass="styleColumn" sortBy="lineaidLinea.linNumero">
+					<p:outputLabel value="${item.lineaidLinea.linNumero}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Corte"
+					styleClass="styleColumn" sortBy="lineaidLinea.linCorte">
+					<p:outputLabel value="${item.lineaidLinea.linCorte}" />
+				</p:column>
+				<p:column headerText="Valor Venta">
+					<p:outputLabel value="#{item.ventLinPrecio}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Valor compra">
+					<p:outputLabel value="#{item.lineaidLinea.plan.valorPlan}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</p:outputLabel>
+				</p:column>
+				<p:column
+					style="background-color:${((item.ventLinPrecio + item.ventLinDeposito) - item.lineaidLinea.plan.valorPlan)>=0?'green':'red'}"
+					headerText="Utilidad">
+					<p:outputLabel
+						value="${((item.ventLinPrecio + item.ventLinDeposito) - item.lineaidLinea.plan.valorPlan)}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</p:outputLabel>
+
+
+				</p:column>
+
+				<p:column headerText="Modalidad Pago">
+					<h:outputLabel value="#{item.ventaidVenta.modoPago}" />
+				</p:column>
+				<p:column headerText="Vendedor">
+					<p:outputLabel value="#{item.ventaidVenta.vendedor}"></p:outputLabel>
+
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Nombre Cliente"
+					styleClass="styleColumn" sortBy="ventaidVenta.tercero.terNombre">
+					<p:outputLabel value="${item.ventaidVenta.tercero.terNombre}" />
+				</p:column>
+
+				<p:column style="width: 10%" headerText="Apellidos Cliente"
+					styleClass="styleColumn" sortBy="ventaidVenta.tercero.terApellidos">
+					<p:outputLabel value="${item.ventaidVenta.tercero.terApellidos}" />
+				</p:column>
+
+
+				<p:column headerText="Periodo" styleClass="styleColumn">
+					<p:outputLabel value="${item.ventaidVenta.fechaFacturacion}">
+					</p:outputLabel>
+				</p:column>
+
+
+				<p:column headerText="Fecha de venta" styleClass="styleColumn"
+					sortBy="ventaidVenta.venFecha">
+					<p:outputLabel value="${item.ventaidVenta.venFecha}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

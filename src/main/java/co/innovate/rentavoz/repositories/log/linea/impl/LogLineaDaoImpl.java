@@ -4,6 +4,8 @@
 package co.innovate.rentavoz.repositories.log.linea.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,8 @@ import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
 import co.innovate.rentavoz.model.Tercero;
+import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.model.log.linea.AccionLineaEnum;
 import co.innovate.rentavoz.model.log.linea.LogLinea;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
@@ -161,6 +165,28 @@ public class LogLineaDaoImpl extends GenericJpaRepository<LogLinea, Integer>
 		}
 		
 		return Integer.valueOf(query.getSingleResult().toString());
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.log.linea.LogLineaDao#findByFecha(java.util.Date)
+	 */
+	@Override
+	public Linea findByFecha(FechaFacturacion fechaFacturacion) {
+		
+		Query  query = getEntityManager().createQuery("SELECT l.linea FROM LogLinea l WHERE (l.fecha BETWEEN :inicio  AND :fin ) AND l.accion IN (:accion)");
+		query.setParameter("inicio", fechaFacturacion.getFechaInicio());
+		query.setParameter("fin", fechaFacturacion.getFechaFin());
+		ArrayList<AccionLineaEnum> acciones = new ArrayList<AccionLineaEnum>();
+		acciones.add(AccionLineaEnum.REPO);
+		acciones.add(AccionLineaEnum.SUSPENDER);
+		query.setParameter("accion", acciones);
+		query.setMaxResults(BigInteger.ONE.intValue());
+		Object object = query.getSingleResult();
+		
+		if (object==null) {
+			return null;
+		}
+		return (Linea) object;
 	}
 
 }

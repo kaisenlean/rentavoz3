@@ -278,6 +278,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			mensajeError("Selecciona una cuenta");
 			return;
 		}
+		venta.setModoPago(ModoPagoEnum.valueOf(modoPago));
 		switch (ModoPagoEnum.valueOf(modoPago)) {
 		case CONTADO:
 			Cuota cuota=new Cuota();

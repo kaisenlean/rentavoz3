@@ -3,7 +3,10 @@
  */
 package co.innovate.rentavoz.repositories.almacen.venta;
 
+import java.util.Date;
 import java.util.List;
+
+import org.hibernate.criterion.Order;
 
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
@@ -69,5 +72,31 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	* @return
 	*/
 	 Double findValorVentaAjuste(FechaFacturacion fechaFacturacion,Boolean ajuste) ;
+	 
+	 
+	 /**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param firstResul
+	* @param maxResults
+	* @param order
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @return
+	*/
+	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, String cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha);
 	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	int countdByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	 
 }
