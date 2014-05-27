@@ -26,6 +26,24 @@
 			<p:inputText value="#{registrarLogLinea.numeroLinea}" onkeypress="if (event.keyCode == 13) { btnAgregar.jq.click();  return false; }" ></p:inputText>
 			<p:commandButton value="Agregar" widgetVar="btnAgregar" id="btnAgregar" process="@all" update="@all" actionListener="#{registrarLogLinea.addLinea()}"></p:commandButton>
 			</h:panelGrid>
+			
+			
+			<h:outputText value="Cliente" />
+			<p:autoComplete disabled="#{registrarLogLinea.tarea ne 'REPO'}" size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{registrarLogLinea.autocompleteTercero.conversorClientes}"
+						value="#{registrarLogLinea.autocompleteTercero.seleccionado}"
+						completeMethod="#{registrarLogLinea.autocompleteTercero.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{registrarLogLinea.autocompleteTercero.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+			
+			<h:outputText  value="Valor reposición" />
+			<p:inputText disabled="#{registrarLogLinea.tarea ne 'REPO'}" value="#{registrarLogLinea.valorRepo}"></p:inputText>
+			
+			
 			<h:panelGrid>
 			
 			
