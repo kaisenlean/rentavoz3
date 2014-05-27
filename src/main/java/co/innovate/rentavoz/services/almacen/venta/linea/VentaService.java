@@ -15,4 +15,12 @@ import co.innovate.rentavoz.services.GenericService;
  */
 public interface VentaService extends GenericService<Venta, Integer> {
 
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param consecutivo
+	* @return
+	*/
+	Venta findByConsecutivo(String consecutivo);
 }

@@ -57,6 +57,7 @@
 				<div style="float: right;">
 
 					<p:menuButton value="Sesión activa ( #{login.user.usuario} )">
+					<p:menuitem value="Cambiar clave" action="/changePassword.jsf"></p:menuitem>
 						<p:menuitem value="Salir" actionListener="#{login.logOut}" />
 					</p:menuButton>
 					<br />

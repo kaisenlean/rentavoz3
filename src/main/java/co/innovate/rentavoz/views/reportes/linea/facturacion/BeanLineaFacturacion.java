@@ -18,11 +18,13 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
+import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
+import co.innovate.rentavoz.services.venta.FacturaControllerService;
 import co.innovate.rentavoz.views.StandardAbm;
 
 /**
@@ -54,15 +56,23 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	@ManagedProperty(value="#{lineaService}")
 	private LineaService lineaService;
 	
+	
 	private int corte=0;
 	private String linea="";
 	private String cliente="";
 	private int selFechaFacturacion;
 	private Date fecha;
+	
+	private double  totalPrecioCompra;
+	private double  totalPrecioVenta;
+	
+	private Venta venta;
 
 
 	private PieChartModel modelChart=new PieChartModel();
 
+	@ManagedProperty(value="#{facturaControllerService}")
+	private FacturaControllerService facturaControllerService;
 
 	private CartesianChartModel categoryModel;
 	
@@ -93,6 +103,16 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	  
 	        categoryModel.addSeries(inventariada);  
 	        categoryModel.addSeries(vendidas); 
+	        
+
+			totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
+			totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
+			
+	}
+	
+	public void loadFactura(Venta venta){
+		venta=facturaControllerService.cargarFactura(venta);
+		this.venta=venta;
 	}
 
 	/* (non-Javadoc)
@@ -124,6 +144,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
+		
 		return ventaLineaService.countdByCriterio(linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
 	}
 
@@ -149,6 +170,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		default:
 			break;
 		}
+		
+		totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
+		totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
 		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order, linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
 //		return null;
 	}
@@ -339,6 +363,71 @@ public CartesianChartModel getCategoryModel() {
  */
 public void setCategoryModel(CartesianChartModel categoryModel) {
 	this.categoryModel = categoryModel;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @return the totalPrecioCompra
+ */
+public double getTotalPrecioCompra() {
+	return totalPrecioCompra;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @param totalPrecioCompra the totalPrecioCompra to set
+ */
+public void setTotalPrecioCompra(double totalPrecioCompra) {
+	this.totalPrecioCompra = totalPrecioCompra;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @return the totalPrecioVenta
+ */
+public double getTotalPrecioVenta() {
+	return totalPrecioVenta;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @param totalPrecioVenta the totalPrecioVenta to set
+ */
+public void setTotalPrecioVenta(double totalPrecioVenta) {
+	this.totalPrecioVenta = totalPrecioVenta;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @param facturaControllerService the facturaControllerService to set
+ */
+public void setFacturaControllerService(
+		FacturaControllerService facturaControllerService) {
+	this.facturaControllerService = facturaControllerService;
+}
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @param venta the venta to set
+ */
+public void setVenta(Venta venta) {
+	this.venta = venta;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @return the venta
+ */
+public Venta getVenta() {
+	return venta;
 }
 
 }

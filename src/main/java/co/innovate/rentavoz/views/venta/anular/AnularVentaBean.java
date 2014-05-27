@@ -45,7 +45,7 @@ public class AnularVentaBean extends BaseBean implements Serializable {
 
 	private Venta venta;
 
-	private int idVenta;
+	private String idVenta;
 
 	@ManagedProperty(value = "#{login}")
 	private Login login;
@@ -69,7 +69,7 @@ public class AnularVentaBean extends BaseBean implements Serializable {
 			if (tarea != null) {
 				venta = ventaService.findById(Integer.valueOf(tarea
 						.getCodTarea().toString()));
-				idVenta=venta.getIdVenta();
+				idVenta=venta.getIdVenta().toString();
 			}
 			verAprobarAnulacion = true;
 		}
@@ -81,7 +81,7 @@ public class AnularVentaBean extends BaseBean implements Serializable {
 	 * @date 15/03/2014
 	 */
 	public void loadVenta() {
-		venta = ventaService.findById(idVenta);
+		venta = ventaService.findByConsecutivo((idVenta));
 
 		if (venta == null) {
 			mensajeError("No se ha enconttrado esta factura de venta ");
@@ -145,7 +145,7 @@ public class AnularVentaBean extends BaseBean implements Serializable {
 	 * @date 15/03/2014
 	 * @return the idVenta
 	 */
-	public int getIdVenta() {
+	public String getIdVenta() {
 		return idVenta;
 	}
 
@@ -155,7 +155,7 @@ public class AnularVentaBean extends BaseBean implements Serializable {
 	 * @param idVenta
 	 *            the idVenta to set
 	 */
-	public void setIdVenta(int idVenta) {
+	public void setIdVenta(String idVenta) {
 		this.idVenta = idVenta;
 	}
 

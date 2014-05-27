@@ -15,4 +15,12 @@ import co.innovate.rentavoz.repositories.GenericRepository;
  */
 public interface VentaDao extends GenericRepository<Venta, Integer>  {
 
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param consecutivo
+	* @return
+	*/
+	Venta findByConsecutivo(String consecutivo);
 }

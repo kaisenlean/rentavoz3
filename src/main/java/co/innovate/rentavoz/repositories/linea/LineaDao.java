@@ -168,4 +168,9 @@ public interface LineaDao extends GenericRepository<Linea, Integer> {
 	* @return
 	*/
 	int countByCorte(int corte);
+	
+	
+
+	
+	
 }

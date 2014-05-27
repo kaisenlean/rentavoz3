@@ -79,4 +79,32 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	*/
 	int countdByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
 	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	double sumByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	double sumByCriterioCompra(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	 
 }

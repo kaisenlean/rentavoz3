@@ -40,5 +40,12 @@ public class VentaServiceImpl extends GenericServiceImpl<Venta, Integer> impleme
 	public GenericRepository<Venta, Integer> getDao() {
 		return ventaDao;
 	}
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaService#findByConsecutivo(java.lang.String)
+	 */
+	@Override
+	public Venta findByConsecutivo(String consecutivo) {
+		return ventaDao.findByConsecutivo(consecutivo);
+	}
 
 }

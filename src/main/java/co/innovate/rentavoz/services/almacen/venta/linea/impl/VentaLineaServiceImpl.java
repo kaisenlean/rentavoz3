@@ -91,4 +91,22 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 			FechaFacturacion fechaFacturacion, Date fecha) {
 		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha);
 	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#sumByCriterio(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
+	 */
+	@Override
+	public double sumByCriterio(String numeroLinea, String cliente, int corte,
+			FechaFacturacion fechaFacturacion, Date fecha) {
+		return ventaLineaDao.sumByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#sumByCriterioCompra(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
+	 */
+	@Override
+	public double sumByCriterioCompra(String numeroLinea, String cliente,
+			int corte, FechaFacturacion fechaFacturacion, Date fecha) {
+		return ventaLineaDao.sumByCriterioCompra(numeroLinea, cliente, corte, fechaFacturacion, fecha);
+	}
 }

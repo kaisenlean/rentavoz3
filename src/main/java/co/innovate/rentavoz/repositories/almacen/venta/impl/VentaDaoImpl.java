@@ -4,6 +4,9 @@
 package co.innovate.rentavoz.repositories.almacen.venta.impl;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +30,22 @@ public class VentaDaoImpl extends GenericJpaRepository<Venta, Integer> implement
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaDao#findByConsecutivo(java.lang.String)
+	 */
+	@Override
+	public Venta findByConsecutivo(String consecutivo) {
+	 
+		Query query = getEntityManager().createQuery("SELECT v FROM Venta v WHERE v.numeroFactura.consecutivo = :consecutivo");
+		query.setMaxResults(BigInteger.ONE.intValue());
+		query.setParameter("consecutivo", consecutivo);
+		Object object = query.getSingleResult();
+		
+		if (object==null) {
+			return null;
+		}
+		return (Venta) object;
+	}
 
 }
