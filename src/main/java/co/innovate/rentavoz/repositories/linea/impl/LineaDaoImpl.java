@@ -197,12 +197,17 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 			query.setParameter("periodo", fechaFacturacion);
 			query.setParameter("linea", (Linea)q.getSingleResult());
 			
+			
 			if (query.getResultList().isEmpty()) {
 				
 				return (Linea) q.getSingleResult();
 			}else{
-				
-				throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
+				Linea linea2=logLineaDao.findByFecha(fechaFacturacion);
+				if (linea2==null) {
+					return linea;
+				}else{
+					throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
+				}
 			}
 		} else {
 			return null;

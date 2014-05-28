@@ -36,7 +36,16 @@
 					<p:inputText value="#{beanLineaFacturacion.linea}"></p:inputText>
 
 					<h:outputText value="Cliente" />
-					<p:inputText value="#{beanLineaFacturacion.cliente}"></p:inputText>
+					<p:autoComplete size="30" style="width:100px" id="buscadorVendedor"
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{beanLineaFacturacion.autocompleteTercero.conversorClientes}"
+						value="#{beanLineaFacturacion.autocompleteTercero.seleccionado}"
+						completeMethod="#{beanLineaFacturacion.autocompleteTercero.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{beanLineaFacturacion.autocompleteTercero.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
 
 					<h:outputText value="Periodo" />
 					<p:selectOneMenu
@@ -47,13 +56,17 @@
 
 					<h:outputText value="Fecha" />
 					<p:calendar value="#{beanLineaFacturacion.fecha}"></p:calendar>
+					
+					
+					<h:outputText value="Fecha Fin" />
+					<p:calendar value="#{beanLineaFacturacion.fechaLim}"></p:calendar>
 
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:commandButton value="Buscar" process="@all" update="@all"
 						onclick="tblFacturacion.filter();"></p:commandButton>
-					<p:commandButton value="Limpiar"></p:commandButton>
+					<p:commandButton value="Limpiar" process="@this" update="@all" actionListener="#{beanLineaFacturacion.init()}"></p:commandButton>
 				</h:panelGrid>
 
 
@@ -113,14 +126,17 @@
 					</p:outputLabel>
 				</p:column>
 				<p:column
-					style="background-color:${(item.lineaidLinea.plan.valorPlan - item.ventLinPrecio)>=0?'green':'red'}"
+					style="background-color:${( item.ventLinPrecio -item.lineaidLinea.plan.valorPlan)>=0?'green':'red'}"
 					headerText="Utilidad">
 					<p:outputLabel
-						value="${((item.ventLinPrecio + item.ventLinDeposito) - item.lineaidLinea.plan.valorPlan)}">
+						value="${((item.ventLinPrecio) - item.lineaidLinea.plan.valorPlan)}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</p:outputLabel>
 
 
+				</p:column>
+				<p:column headerText="Observación">
+				<p:outputLabel value="#{item.ventaidVenta.observacion}"></p:outputLabel>
 				</p:column>
 
 				<p:column headerText="Modalidad Pago">
@@ -132,14 +148,11 @@
 				</p:column>
 
 				<p:column style="width: 10%" headerText="Nombre Cliente"
-					styleClass="styleColumn" sortBy="ventaidVenta.tercero.terNombre">
-					<p:outputLabel value="${item.ventaidVenta.tercero.terNombre}" />
+					styleClass="styleColumn" sortBy="ventaidVenta.tercero">
+					<p:outputLabel value="${item.ventaidVenta.tercero}" />
 				</p:column>
 
-				<p:column style="width: 10%" headerText="Apellidos Cliente"
-					styleClass="styleColumn" sortBy="ventaidVenta.tercero.terApellidos">
-					<p:outputLabel value="${item.ventaidVenta.tercero.terApellidos}" />
-				</p:column>
+				
 
 
 				<p:column headerText="Periodo" styleClass="styleColumn">
@@ -176,6 +189,11 @@
 				
 				<p:outputLabel value="Sucursal Venta" />
 				<p:outputLabel value="#{beanLineaFacturacion.venta.sucursal}"></p:outputLabel>
+				
+					<p:outputLabel value="Valor Total " />
+				<p:outputLabel value="#{beanLineaFacturacion.venta.venSaldo}">
+				<f:convertNumber  type="currency" currencySymbol="$"/>
+				</p:outputLabel>
 				
 				
 				

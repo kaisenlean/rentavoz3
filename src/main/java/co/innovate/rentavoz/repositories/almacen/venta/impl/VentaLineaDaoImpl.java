@@ -160,28 +160,29 @@ public class VentaLineaDaoImpl extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
-			Order order, String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha) {
+			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim) {
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
-		crit.createAlias("ventaidVenta.tercero", "cliente");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
 		Criterion criterion = Restrictions
 				.conjunction()
 				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
 				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
 						BigInteger.ZERO.intValue()) : Restrictions.eq(
-						"lineaidLinea.linCorte", corte))
-				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
-				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+						"lineaidLinea.linCorte", corte));
 
 		crit.add(criterion);
-		
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
-		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		crit.setMaxResults(maxResults);
 		crit.setFirstResult(firstResul);
@@ -194,8 +195,8 @@ public class VentaLineaDaoImpl extends
 	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#countdByCriterio(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
 	 */
 	@Override
-	public int countdByCriterio(String numeroLinea, String cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha) {
+	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
 		
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -203,21 +204,23 @@ public class VentaLineaDaoImpl extends
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
-		crit.createAlias("ventaidVenta.tercero", "cliente");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
 		Criterion criterion = Restrictions
 				.conjunction()
 				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
 				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
 						BigInteger.ZERO.intValue()) : Restrictions.eq(
-						"lineaidLinea.linCorte", corte))
-				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
-				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+						"lineaidLinea.linCorte", corte));
 
 		crit.add(criterion);
 		
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
-		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		
 		crit.setProjection(Projections.rowCount());
@@ -228,8 +231,8 @@ public class VentaLineaDaoImpl extends
 	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#sumByCriterio(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
 	 */
 	@Override
-	public double sumByCriterio(String numeroLinea, String cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha) {
+	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -237,21 +240,23 @@ public class VentaLineaDaoImpl extends
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
-		crit.createAlias("ventaidVenta.tercero", "cliente");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
 		Criterion criterion = Restrictions
 				.conjunction()
 				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
 				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
 						BigInteger.ZERO.intValue()) : Restrictions.eq(
-						"lineaidLinea.linCorte", corte))
-				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
-				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+						"lineaidLinea.linCorte", corte));
 
 		crit.add(criterion);
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
 		
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
-		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));		
 		crit.setProjection(Projections.sum("ventLinPrecio"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
@@ -262,8 +267,8 @@ public class VentaLineaDaoImpl extends
 	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#sumByCriterioCompra(java.lang.String, java.lang.String, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date)
 	 */
 	@Override
-	public double sumByCriterioCompra(String numeroLinea, String cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha) {
+	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -272,21 +277,24 @@ public class VentaLineaDaoImpl extends
 		crit.createAlias("lineaidLinea.plan", "plan");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
-		crit.createAlias("ventaidVenta.tercero", "cliente");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
 		Criterion criterion = Restrictions
 				.conjunction()
 				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
 				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
 						BigInteger.ZERO.intValue()) : Restrictions.eq(
-						"lineaidLinea.linCorte", corte))
-				.add(Restrictions.like("cliente.terNombre", cliente,MatchMode.ANYWHERE))
-				.add(Restrictions.like("cliente.terApellidos", cliente,MatchMode.ANYWHERE));
+						"lineaidLinea.linCorte", corte));
+						
 
 		crit.add(criterion);
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
 		
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
-		crit.add(Restrictions.eq("ventaidVenta.venFecha", fecha));
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		crit.setProjection(Projections.sum("plan.valorPlan"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();

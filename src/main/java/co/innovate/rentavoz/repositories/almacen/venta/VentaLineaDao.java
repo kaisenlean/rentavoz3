@@ -85,7 +85,7 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	* @param corte
 	* @return
 	*/
-	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, String cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -97,7 +97,7 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	* @param fecha
 	* @return
 	*/
-	int countdByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
 	
 	
 	/**
@@ -110,7 +110,7 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	* @param fecha
 	* @return
 	*/
-	double sumByCriterio(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
 	
 	
 	
@@ -125,6 +125,6 @@ public interface VentaLineaDao extends GenericRepository<VentaLinea, Integer>{
 	* @param fecha
 	* @return
 	*/
-	double sumByCriterioCompra(String numeroLinea, String cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha);
+	double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
 	 
 }

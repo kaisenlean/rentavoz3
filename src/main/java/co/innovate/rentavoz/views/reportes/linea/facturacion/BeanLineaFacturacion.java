@@ -18,14 +18,17 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
+import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
+import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.venta.FacturaControllerService;
 import co.innovate.rentavoz.views.StandardAbm;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -57,11 +60,18 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	private LineaService lineaService;
 	
 	
+	private AutocompleteTercero autocompleteTercero;
+	
+	private Tercero cliente;
+
+	@ManagedProperty(value="#{terceroService}")
+	private TerceroService terceroService;
+	
 	private int corte=0;
 	private String linea="";
-	private String cliente="";
 	private int selFechaFacturacion;
 	private Date fecha;
+	private Date fechaLim;
 	
 	private double  totalPrecioCompra;
 	private double  totalPrecioVenta;
@@ -81,8 +91,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	public void init2(){
 		selFechaFacturacion=fechaFacturacionService.findByFecha(Calendar.getInstance().getTime()).getId();
 		fecha=Calendar.getInstance().getTime();
+		fechaLim=Calendar.getInstance().getTime();
 		
-		int lineasVendidas = ventaLineaService.countdByCriterio("", "", corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
+		int lineasVendidas = ventaLineaService.countdByCriterio("", null, corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
 		int lineasReales=lineaService.countByCorte( corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte);
 		
 		  modelChart = new PieChartModel();
@@ -105,8 +116,21 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	        categoryModel.addSeries(vendidas); 
 	        
 
-			totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
-			totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
+			totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
+			totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
+			
+			autocompleteTercero=new AutocompleteTercero() {
+				
+				@Override
+				public void postSelect() {
+				cliente=seleccionado;	
+				}
+				
+				@Override
+				public TerceroService getService() {
+					return terceroService;
+				}
+			};
 			
 	}
 	
@@ -145,7 +169,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
 		
-		return ventaLineaService.countdByCriterio(linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
+		return ventaLineaService.countdByCriterio(linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
 	}
 
 	/* (non-Javadoc)
@@ -171,9 +195,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 			break;
 		}
 		
-		totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
-		totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha);
-		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order, linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
+		totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
+		totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
+		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order, linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
 //		return null;
 	}
 
@@ -243,7 +267,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	 * @date 26/05/2014
 	 * @return the cliente
 	 */
-	public String getCliente() {
+	public Tercero getCliente() {
 		return cliente;
 	}
 
@@ -252,7 +276,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	 * @date 26/05/2014
 	 * @param cliente the cliente to set
 	 */
-	public void setCliente(String cliente) {
+	public void setCliente(Tercero cliente) {
 		this.cliente = cliente;
 	}
 
@@ -325,7 +349,7 @@ public void setLineaService(LineaService lineaService) {
  */
 public PieChartModel getModelChart() {
 
-	int lineasVendidas = ventaLineaService.countdByCriterio("", "", corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha);
+	int lineasVendidas = ventaLineaService.countdByCriterio("", null, corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
 	int lineasReales=lineaService.countByCorte( corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte);
 	
 	  modelChart = new PieChartModel();
@@ -415,6 +439,24 @@ public void setFacturaControllerService(
 /**
  * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
  * @date 27/05/2014
+ * @return the fechaLim
+ */
+public Date getFechaLim() {
+	return fechaLim;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
+ * @param fechaLim the fechaLim to set
+ */
+public void setFechaLim(Date fechaLim) {
+	this.fechaLim = fechaLim;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 27/05/2014
  * @param venta the venta to set
  */
 public void setVenta(Venta venta) {
@@ -429,5 +471,36 @@ public void setVenta(Venta venta) {
 public Venta getVenta() {
 	return venta;
 }
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 28/05/2014
+ * @param terceroService the terceroService to set
+ */
+public void setTerceroService(TerceroService terceroService) {
+	this.terceroService = terceroService;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 28/05/2014
+ * @return the autocompleteTercero
+ */
+public AutocompleteTercero getAutocompleteTercero() {
+	return autocompleteTercero;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 28/05/2014
+ * @param autocompleteTercero the autocompleteTercero to set
+ */
+public void setAutocompleteTercero(AutocompleteTercero autocompleteTercero) {
+	this.autocompleteTercero = autocompleteTercero;
+}
+
+
+
+
 
 }
