@@ -102,7 +102,7 @@ public class Tercero implements Serializable {
 	private String email;
 	
 	@Transient
-	private Boolean mayorista;
+	private boolean mayorista=false;
 	
 	@Transient
 	private List<Cuota> cuotasMora;
@@ -554,7 +554,7 @@ public class Tercero implements Serializable {
 	 * @date 2/02/2014
 	 * @param mayorista the mayorista to set
 	 */
-	public void setMayorista(Boolean mayorista) {
+	public void setMayorista(boolean mayorista) {
 		this.mayorista = mayorista;
 	}
 	
@@ -563,7 +563,7 @@ public class Tercero implements Serializable {
 	 * @date 2/02/2014
 	 * @return the mayorista
 	 */
-	public Boolean getMayorista() {
+	public boolean isMayorista() {
 		return mayorista;
 	}
 	

@@ -223,6 +223,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		inicializarVenta();
 
 		tercero = new Tercero();
+		tercero.setMayorista(Boolean.FALSE);
 		cuota = new VentaItemCuota();
 
 		autocompleteTercero = new AutocompleteTercero() {
@@ -294,7 +295,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	 */
 	public void crearNuevoTercero() {
 
-		if (tercero.getMayorista()) {
+		if (tercero.isMayorista()) {
 			tercero.setTipo(TipoTerceroEnum.CLIENTE_MAYORISTA);
 		} else {
 

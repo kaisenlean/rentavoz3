@@ -318,7 +318,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	 */
 	public void crearNuevoTercero() {
 
-		if (tercero.getMayorista()) {
+		if (tercero.isMayorista()) {
 			tercero.setTipo(TipoTerceroEnum.CLIENTE_MAYORISTA);
 		} else {
 
