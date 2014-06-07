@@ -63,7 +63,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 		* @param corte
 		* @return
 		*/
-		List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
+		List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
 		
 		/**
 		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -75,7 +75,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 		* @param fecha
 		* @return
 		*/
-		int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
+		int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
 		
 		
 		/**
@@ -88,7 +88,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 		* @param fecha
 		* @return
 		*/
-		double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
+		double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
 		
 		
 		
@@ -103,6 +103,6 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 		* @param fecha
 		* @return
 		*/
-		double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim);
+		double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
 		 
 }

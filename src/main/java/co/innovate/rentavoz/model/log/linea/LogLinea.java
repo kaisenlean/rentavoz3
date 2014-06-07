@@ -23,6 +23,8 @@ import javax.persistence.Transient;
 
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
+import co.innovate.rentavoz.services.tercero.TerceroService;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -71,7 +73,26 @@ public class LogLinea implements Serializable{
 	
 	@Transient
 	private String nuevoIcc;
+	
+	@Transient
+	private AutocompleteTercero autocompleteTercero=new AutocompleteTercero() {
+		
+		@Override
+		public void postSelect() {
+			
+		}
+		
+		@Override
+		public TerceroService getService() {
+			return null;
+		}
+	};
 
+	@Transient
+	private Tercero tercero;
+	
+	@Transient
+	private double valorRepo;
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 16/03/2014
@@ -200,6 +221,58 @@ public class LogLinea implements Serializable{
 		this.nuevoIcc = nuevoIcc;
 	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param autocompleteTercero the autocompleteTercero to set
+	 */
+	public void setAutocompleteTercero(AutocompleteTercero autocompleteTercero) {
+		this.autocompleteTercero = autocompleteTercero;
+	}
 	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @return the autocompleteTercero
+	 */
+	public AutocompleteTercero getAutocompleteTercero() {
+		return autocompleteTercero;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @return the tercero
+	 */
+	public Tercero getTercero() {
+		return tercero;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param tercero the tercero to set
+	 */
+	public void setTercero(Tercero tercero) {
+		this.tercero = tercero;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @return the valorRepo
+	 */
+	public double getValorRepo() {
+		return valorRepo;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param valorRepo the valorRepo to set
+	 */
+	public void setValorRepo(double valorRepo) {
+		this.valorRepo = valorRepo;
+	}
 	
 }

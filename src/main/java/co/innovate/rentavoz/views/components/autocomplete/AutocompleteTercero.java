@@ -1,5 +1,6 @@
 package co.innovate.rentavoz.views.components.autocomplete;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -38,7 +39,13 @@ public abstract class AutocompleteTercero extends Autocompletar<Tercero> {
 	public List<Tercero> completarBusqueda(String query) {
 		
 		
+		
 		List<Tercero> lista;
+		lista=null;
+		
+			if (getService()!=null) {
+			lista=new ArrayList<Tercero>();
+		}
 			lista=
 			 getService().findByCriterio(query);
 		

@@ -15,6 +15,7 @@ import org.primefaces.model.SortOrder;
 
 import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.services.GenericService;
+import co.innovate.rentavoz.services.venta.FacturaControllerService;
 import co.innovate.rentavoz.services.venta.item.VentaItemService;
 import co.innovate.rentavoz.views.ListaDataModel;
 
@@ -39,10 +40,13 @@ public class ReporteVenta implements Serializable {
 	@ManagedProperty(value="#{ventaItemService}")
 	private VentaItemService ventaItemService;
 
-	
+	@ManagedProperty(value="#{facturaControllerService}")
+	private FacturaControllerService facturaControllerService;
 	private Date start=new Date();
 	
 	private Date end= new Date();
+	
+	private VentaItem venta=new VentaItem();
 	
 	
 	
@@ -108,6 +112,12 @@ public class ReporteVenta implements Serializable {
 //		
 //		
 //		};
+		
+	}
+	
+	
+	public void loadFactura(VentaItem ventaItem){
+		venta=facturaControllerService.cargarFacturaItem(ventaItem);
 		
 	}
 	private ListaDataModel<VentaItem, Integer> model;
@@ -184,6 +194,33 @@ public class ReporteVenta implements Serializable {
 	 */
 	public void setModel(ListaDataModel<VentaItem, Integer> model) {
 		this.model = model;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param facturaControllerService the facturaControllerService to set
+	 */
+	public void setFacturaControllerService(
+			FacturaControllerService facturaControllerService) {
+		this.facturaControllerService = facturaControllerService;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @return the venta
+	 */
+	public VentaItem getVenta() {
+		return venta;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param venta the venta to set
+	 */
+	public void setVenta(VentaItem venta) {
+		this.venta = venta;
 	}
 }
 	

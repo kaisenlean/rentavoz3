@@ -11,6 +11,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import co.innovate.rentavoz.model.venta.EstadoVentaItemEnum;
 import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 import co.innovate.rentavoz.repositories.venta.item.VentaItemDao;
@@ -39,7 +40,8 @@ public class VentaItemDaoImpl extends GenericJpaRepository<VentaItem, Integer> i
 	@Override
 	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults) {
 		Criterion criterion = Restrictions.between("fecha", start, end);
-		return findByCriteria(firstResult,maxResults,criterion);
+		Criterion criterion2= Restrictions.eq("estado", EstadoVentaItemEnum.ACTIVO);
+		return findByCriteria(firstResult,maxResults,criterion,criterion2);
 	}
 
 	/* (non-Javadoc)
@@ -48,7 +50,8 @@ public class VentaItemDaoImpl extends GenericJpaRepository<VentaItem, Integer> i
 	@Override
 	public int countFindVentaByFechas(Date start, Date end) {
 		Criterion criterion = Restrictions.between("fecha", start, end);
-		return countByCriteria(criterion);
+		Criterion criterion2= Restrictions.eq("estado", EstadoVentaItemEnum.ACTIVO);
+		return countByCriteria(criterion,criterion2);
 	}
 
 }

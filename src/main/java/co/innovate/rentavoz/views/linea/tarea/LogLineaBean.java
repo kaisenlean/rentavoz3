@@ -99,7 +99,8 @@ public class LogLineaBean extends StandardAbm<LogLinea, Integer> implements Seri
 		AccionLineaEnum accionLineaEnum=null;
 		if (accion!=null) {
 			if (!accion.equals(StringUtils.EMPTY)) {
-				accionLineaEnum=AccionLineaEnum.valueOf(accion);
+				
+				accionLineaEnum=AccionLineaEnum.valueOf(accion.equals("ACTIVAR")?"RENOVAR":accion);
 			}
 		}
 		return logLineaService.countByCriterio(start, end, numeroLinea, creador, accionLineaEnum);
@@ -114,7 +115,7 @@ public class LogLineaBean extends StandardAbm<LogLinea, Integer> implements Seri
 		AccionLineaEnum accionLineaEnum=null;
 		if (accion!=null) {
 			if (!accion.equals(StringUtils.EMPTY)) {
-				accionLineaEnum=AccionLineaEnum.valueOf(accion);
+				accionLineaEnum=AccionLineaEnum.valueOf(accion.equals("ACTIVAR")?"RENOVAR":accion);
 			}
 		}
 		return logLineaService.findByCriterio(start, end, numeroLinea, creador, accionLineaEnum,maxPerPage,startingAt,null);

@@ -78,8 +78,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
 			Order order, String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim) {
-		return ventaLineaDao.findByCriterio(firstResul, maxResults, order, numeroLinea, cliente, corte, fechaFacturacion,fecha,fechaLim);
+			FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago) {
+		return ventaLineaDao.findByCriterio(firstResul, maxResults, order, numeroLinea, cliente, corte, fechaFacturacion,fecha,fechaLim,modoPago);
 				
 	}
 
@@ -88,8 +88,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
-		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim);
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago);
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +97,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
-		return ventaLineaDao.sumByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim);
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+		return ventaLineaDao.sumByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago);
 	}
 
 	/* (non-Javadoc)
@@ -106,7 +106,7 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
-		return ventaLineaDao.sumByCriterioCompra(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim);
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+		return ventaLineaDao.sumByCriterioCompra(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago);
 	}
 }

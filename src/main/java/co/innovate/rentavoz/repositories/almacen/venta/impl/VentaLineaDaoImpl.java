@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -27,6 +28,7 @@ import co.innovate.rentavoz.model.almacen.venta.EstadoDevolucionEnum;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
+import co.innovate.rentavoz.model.venta.ModoPagoEnum;
 import co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao;
 import co.innovate.rentavoz.repositories.impl.GenericJpaRepository;
 
@@ -160,7 +162,7 @@ public class VentaLineaDaoImpl extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
-			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim) {
+			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago) {
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
@@ -184,6 +186,11 @@ public class VentaLineaDaoImpl extends
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
 		crit.setMaxResults(maxResults);
 		crit.setFirstResult(firstResul);
 
@@ -196,7 +203,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
 		
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -222,7 +229,11 @@ public class VentaLineaDaoImpl extends
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
-		
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
 		crit.setProjection(Projections.rowCount());
 		return  Long.valueOf( crit.list().get(0).toString()).intValue();
 	}
@@ -232,7 +243,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -258,6 +269,11 @@ public class VentaLineaDaoImpl extends
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));		
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
 		crit.setProjection(Projections.sum("ventLinPrecio"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
 		
@@ -268,7 +284,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim) {
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -296,6 +312,11 @@ public class VentaLineaDaoImpl extends
 		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
 		crit.setProjection(Projections.sum("plan.valorPlan"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
 	}

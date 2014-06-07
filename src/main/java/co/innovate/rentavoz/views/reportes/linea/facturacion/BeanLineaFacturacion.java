@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -35,111 +36,132 @@ import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
  * @project rentavoz3
  * @class BeanLineaFacturacion
  * @date 26/05/2014
- *
+ * 
  */
 @ManagedBean
 @ViewScoped
-public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
+public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 	/**
 	 * 26/05/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * serialVersionUID
+	 *         serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-	@ManagedProperty(value="#{ventaLineaService}")
+
+	@ManagedProperty(value = "#{ventaLineaService}")
 	private VentaLineaService ventaLineaService;
-	
-	@ManagedProperty(value="#{fechaFacturacionService}")
-	private FechaFacturacionService fechaFacturacionService; 
-	
-	
-	@ManagedProperty(value="#{lineaService}")
+
+	@ManagedProperty(value = "#{fechaFacturacionService}")
+	private FechaFacturacionService fechaFacturacionService;
+
+	@ManagedProperty(value = "#{lineaService}")
 	private LineaService lineaService;
-	
-	
+
 	private AutocompleteTercero autocompleteTercero;
-	
+
 	private Tercero cliente;
 
-	@ManagedProperty(value="#{terceroService}")
+	@ManagedProperty(value = "#{terceroService}")
 	private TerceroService terceroService;
-	
-	private int corte=0;
-	private String linea="";
+
+	private int corte = 0;
+	private String linea = "";
 	private int selFechaFacturacion;
 	private Date fecha;
 	private Date fechaLim;
-	
-	private double  totalPrecioCompra;
-	private double  totalPrecioVenta;
-	
+	private String modoPago;
+
+	private double totalPrecioCompra;
+	private double totalPrecioVenta;
+
 	private Venta venta;
 
+	private PieChartModel modelChart = new PieChartModel();
 
-	private PieChartModel modelChart=new PieChartModel();
-
-	@ManagedProperty(value="#{facturaControllerService}")
+	@ManagedProperty(value = "#{facturaControllerService}")
 	private FacturaControllerService facturaControllerService;
 
 	private CartesianChartModel categoryModel;
-	
-	
-	
-	public void init2(){
-		selFechaFacturacion=fechaFacturacionService.findByFecha(Calendar.getInstance().getTime()).getId();
-		fecha=Calendar.getInstance().getTime();
-		fechaLim=Calendar.getInstance().getTime();
-		
-		int lineasVendidas = ventaLineaService.countdByCriterio("", null, corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-		int lineasReales=lineaService.countByCorte( corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte);
-		
-		  modelChart = new PieChartModel();
-		  modelChart.set("Lineas en inventario", lineasReales);
-		  modelChart.set("Lineas Vendidas", lineasVendidas);
-		  
-		    categoryModel = new CartesianChartModel();  
-		    
-	        ChartSeries inventariada = new ChartSeries();  
-	        inventariada.setLabel("Inventario");  
-	  
-	        inventariada.set("Lineas en inventario", lineasReales);
-	  
-	        ChartSeries vendidas = new ChartSeries();  
-	        vendidas.setLabel("Vendidas");  
-	  
-	        vendidas.set("Lineas Vendidas", lineasVendidas);  
-	  
-	        categoryModel.addSeries(inventariada);  
-	        categoryModel.addSeries(vendidas); 
-	        
 
-			totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-			totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-			
-			autocompleteTercero=new AutocompleteTercero() {
-				
-				@Override
-				public void postSelect() {
-				cliente=seleccionado;	
-				}
-				
-				@Override
-				public TerceroService getService() {
-					return terceroService;
-				}
-			};
-			
-	}
-	
-	public void loadFactura(Venta venta){
-		venta=facturaControllerService.cargarFactura(venta);
-		this.venta=venta;
+	public void init2() {
+		selFechaFacturacion = fechaFacturacionService.findByFecha(
+				Calendar.getInstance().getTime()).getId();
+		fecha = Calendar.getInstance().getTime();
+		fechaLim = Calendar.getInstance().getTime();
+
+		int lineasVendidas = ventaLineaService.countdByCriterio(
+				"",
+				null,
+				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
+						.format(Calendar.getInstance().getTime())) : corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
+		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
+				.valueOf(new SimpleDateFormat("dd").format(Calendar
+						.getInstance().getTime())) : corte);
+
+		modelChart = new PieChartModel();
+		modelChart.set("Lineas en inventario", lineasReales);
+		modelChart.set("Lineas Vendidas", lineasVendidas);
+
+		categoryModel = new CartesianChartModel();
+
+		ChartSeries inventariada = new ChartSeries();
+		inventariada.setLabel("Inventario");
+
+		inventariada.set("Lineas en inventario", lineasReales);
+
+		ChartSeries vendidas = new ChartSeries();
+		vendidas.setLabel("Vendidas");
+
+		vendidas.set("Lineas Vendidas", lineasVendidas);
+
+		categoryModel.addSeries(inventariada);
+		categoryModel.addSeries(vendidas);
+
+		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
+				corte, fechaFacturacionService.findById(selFechaFacturacion),
+				fecha, fechaLim, modoPago);
+		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
+				cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
+
+		autocompleteTercero = new AutocompleteTercero() {
+
+			@Override
+			public void postSelect() {
+				cliente = seleccionado;
+			}
+
+			@Override
+			public TerceroService getService() {
+				return terceroService;
+			}
+		};
+
 	}
 
-	/* (non-Javadoc)
+	public void onDateSelect(SelectEvent event) {
+		try {
+
+			selFechaFacturacion = fechaFacturacionService.findByFecha(
+					(Date) event.getObject()).getId();
+		} catch (Exception e) {
+			mensajeError(e.toString());
+		}
+	}
+
+	public void loadFactura(Venta venta) {
+		venta = facturaControllerService.cargarFactura(venta);
+		this.venta = venta;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#getFacade()
 	 */
 	@Override
@@ -147,7 +169,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		return ventaLineaService;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#getInstancia()
 	 */
 	@Override
@@ -155,7 +179,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		return new VentaLinea();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#reglaNavegacion()
 	 */
 	@Override
@@ -163,45 +189,64 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		return "/paginas/reportes/linea/facturacion/index.jsf";
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * co.innovate.rentavoz.views.StandardAbm#custoCountBySearch(java.lang.String
+	 * )
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
-		
-		return ventaLineaService.countdByCriterio(linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
+
+		return ventaLineaService.countdByCriterio(linea, cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
 	}
 
-	/* (non-Javadoc)
-	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int, java.lang.String, java.lang.String, org.primefaces.model.SortOrder)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see co.innovate.rentavoz.views.StandardAbm#customSearch(int, int,
+	 * java.lang.String, java.lang.String, org.primefaces.model.SortOrder)
 	 */
 	@Override
 	public List<VentaLinea> customSearch(int startingAt, int maxPerPage,
 			String globalFilter, String sortField, SortOrder sortOrder) {
-		
+
 		Order order = null;
 		switch (sortOrder) {
 		case UNSORTED:
-			order=Order.asc(sortField==null?"id":sortField);
+			order = Order.asc(sortField == null ? "id" : sortField);
 			break;
 		case ASCENDING:
-			order=Order.asc(sortField==null?"id":sortField);
+			order = Order.asc(sortField == null ? "id" : sortField);
 			break;
 		case DESCENDING:
-			order=Order.desc(sortField==null?"id":sortField);
+			order = Order.desc(sortField == null ? "id" : sortField);
 			break;
 
 		default:
 			break;
 		}
-		
-		totalPrecioVenta=ventaLineaService.sumByCriterio( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-		totalPrecioCompra=ventaLineaService.sumByCriterioCompra( linea, cliente, corte,  fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order, linea, cliente, corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-//		return null;
+
+		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
+				corte, fechaFacturacionService.findById(selFechaFacturacion),
+				fecha, fechaLim, modoPago);
+		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
+				cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
+		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order,
+				linea, cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
+		// return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#getObjeto()
 	 */
 	@Override
@@ -209,7 +254,9 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		return obtenerObjeto();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#getListado()
 	 */
 	@Override
@@ -217,13 +264,15 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 		return obtenerListado();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see co.innovate.rentavoz.views.StandardAbm#initialize()
 	 */
 	@Override
 	public void initialize() {
 		init2();
-	
+
 	}
 
 	/**
@@ -238,7 +287,8 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param corte the corte to set
+	 * @param corte
+	 *            the corte to set
 	 */
 	public void setCorte(int corte) {
 		this.corte = corte;
@@ -256,7 +306,8 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param linea the linea to set
+	 * @param linea
+	 *            the linea to set
 	 */
 	public void setLinea(String linea) {
 		this.linea = linea;
@@ -274,7 +325,8 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param cliente the cliente to set
+	 * @param cliente
+	 *            the cliente to set
 	 */
 	public void setCliente(Tercero cliente) {
 		this.cliente = cliente;
@@ -292,7 +344,8 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param selFechaFacturacion the selFechaFacturacion to set
+	 * @param selFechaFacturacion
+	 *            the selFechaFacturacion to set
 	 */
 	public void setSelFechaFacturacion(int selFechaFacturacion) {
 		this.selFechaFacturacion = selFechaFacturacion;
@@ -310,197 +363,232 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer>  {
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param fecha the fecha to set
+	 * @param fecha
+	 *            the fecha to set
 	 */
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 26/05/2014
-	 * @param fechaFacturacionService the fechaFacturacionService to set
+	 * @param fechaFacturacionService
+	 *            the fechaFacturacionService to set
 	 */
 	public void setFechaFacturacionService(
 			FechaFacturacionService fechaFacturacionService) {
 		this.fechaFacturacionService = fechaFacturacionService;
 	}
-	
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @param ventaLineaService the ventaLineaService to set
- */
-public void setVentaLineaService(VentaLineaService ventaLineaService) {
-	this.ventaLineaService = ventaLineaService;
-}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @param lineaService the lineaService to set
- */
-public void setLineaService(LineaService lineaService) {
-	this.lineaService = lineaService;
-}
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @return the modelChart
- */
-public PieChartModel getModelChart() {
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @param ventaLineaService
+	 *            the ventaLineaService to set
+	 */
+	public void setVentaLineaService(VentaLineaService ventaLineaService) {
+		this.ventaLineaService = ventaLineaService;
+	}
 
-	int lineasVendidas = ventaLineaService.countdByCriterio("", null, corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte, fechaFacturacionService.findById(selFechaFacturacion), fecha,fechaLim);
-	int lineasReales=lineaService.countByCorte( corte==0?Integer.valueOf(new SimpleDateFormat("dd").format(Calendar.getInstance().getTime())):corte);
-	
-	  modelChart = new PieChartModel();
-     
-	  modelChart.set("Lineas en inventario", lineasReales);
-	  modelChart.set("Lineas Vendidas", lineasVendidas);
-       
-      
-	return modelChart;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @param lineaService
+	 *            the lineaService to set
+	 */
+	public void setLineaService(LineaService lineaService) {
+		this.lineaService = lineaService;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @return the modelChart
+	 */
+	public PieChartModel getModelChart() {
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @param modelChart the modelChart to set
- */
-public void setModelChart(PieChartModel modelChart) {
-	this.modelChart = modelChart;
-}
+		int lineasVendidas = ventaLineaService.countdByCriterio(
+				"",
+				null,
+				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
+						.format(Calendar.getInstance().getTime())) : corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago);
+		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
+				.valueOf(new SimpleDateFormat("dd").format(Calendar
+						.getInstance().getTime())) : corte);
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @return the categoryModel
- */
-public CartesianChartModel getCategoryModel() {
-	return categoryModel;
-}
+		modelChart = new PieChartModel();
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 26/05/2014
- * @param categoryModel the categoryModel to set
- */
-public void setCategoryModel(CartesianChartModel categoryModel) {
-	this.categoryModel = categoryModel;
-}
+		modelChart.set("Lineas en inventario", lineasReales);
+		modelChart.set("Lineas Vendidas", lineasVendidas);
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @return the totalPrecioCompra
- */
-public double getTotalPrecioCompra() {
-	return totalPrecioCompra;
-}
+		return modelChart;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @param totalPrecioCompra the totalPrecioCompra to set
- */
-public void setTotalPrecioCompra(double totalPrecioCompra) {
-	this.totalPrecioCompra = totalPrecioCompra;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @param modelChart
+	 *            the modelChart to set
+	 */
+	public void setModelChart(PieChartModel modelChart) {
+		this.modelChart = modelChart;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @return the totalPrecioVenta
- */
-public double getTotalPrecioVenta() {
-	return totalPrecioVenta;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @return the categoryModel
+	 */
+	public CartesianChartModel getCategoryModel() {
+		return categoryModel;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @param totalPrecioVenta the totalPrecioVenta to set
- */
-public void setTotalPrecioVenta(double totalPrecioVenta) {
-	this.totalPrecioVenta = totalPrecioVenta;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 26/05/2014
+	 * @param categoryModel
+	 *            the categoryModel to set
+	 */
+	public void setCategoryModel(CartesianChartModel categoryModel) {
+		this.categoryModel = categoryModel;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @param facturaControllerService the facturaControllerService to set
- */
-public void setFacturaControllerService(
-		FacturaControllerService facturaControllerService) {
-	this.facturaControllerService = facturaControllerService;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @return the totalPrecioCompra
+	 */
+	public double getTotalPrecioCompra() {
+		return totalPrecioCompra;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @param totalPrecioCompra
+	 *            the totalPrecioCompra to set
+	 */
+	public void setTotalPrecioCompra(double totalPrecioCompra) {
+		this.totalPrecioCompra = totalPrecioCompra;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @return the fechaLim
- */
-public Date getFechaLim() {
-	return fechaLim;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @return the totalPrecioVenta
+	 */
+	public double getTotalPrecioVenta() {
+		return totalPrecioVenta;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @param fechaLim the fechaLim to set
- */
-public void setFechaLim(Date fechaLim) {
-	this.fechaLim = fechaLim;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @param totalPrecioVenta
+	 *            the totalPrecioVenta to set
+	 */
+	public void setTotalPrecioVenta(double totalPrecioVenta) {
+		this.totalPrecioVenta = totalPrecioVenta;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @param venta the venta to set
- */
-public void setVenta(Venta venta) {
-	this.venta = venta;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @param facturaControllerService
+	 *            the facturaControllerService to set
+	 */
+	public void setFacturaControllerService(
+			FacturaControllerService facturaControllerService) {
+		this.facturaControllerService = facturaControllerService;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 27/05/2014
- * @return the venta
- */
-public Venta getVenta() {
-	return venta;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @return the fechaLim
+	 */
+	public Date getFechaLim() {
+		return fechaLim;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 28/05/2014
- * @param terceroService the terceroService to set
- */
-public void setTerceroService(TerceroService terceroService) {
-	this.terceroService = terceroService;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @param fechaLim
+	 *            the fechaLim to set
+	 */
+	public void setFechaLim(Date fechaLim) {
+		this.fechaLim = fechaLim;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 28/05/2014
- * @return the autocompleteTercero
- */
-public AutocompleteTercero getAutocompleteTercero() {
-	return autocompleteTercero;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @param venta
+	 *            the venta to set
+	 */
+	public void setVenta(Venta venta) {
+		this.venta = venta;
+	}
 
-/**
- * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
- * @date 28/05/2014
- * @param autocompleteTercero the autocompleteTercero to set
- */
-public void setAutocompleteTercero(AutocompleteTercero autocompleteTercero) {
-	this.autocompleteTercero = autocompleteTercero;
-}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 27/05/2014
+	 * @return the venta
+	 */
+	public Venta getVenta() {
+		return venta;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 28/05/2014
+	 * @param terceroService
+	 *            the terceroService to set
+	 */
+	public void setTerceroService(TerceroService terceroService) {
+		this.terceroService = terceroService;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 28/05/2014
+	 * @return the autocompleteTercero
+	 */
+	public AutocompleteTercero getAutocompleteTercero() {
+		return autocompleteTercero;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 28/05/2014
+	 * @param autocompleteTercero
+	 *            the autocompleteTercero to set
+	 */
+	public void setAutocompleteTercero(AutocompleteTercero autocompleteTercero) {
+		this.autocompleteTercero = autocompleteTercero;
+	}
 
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @return the modoPago
+	 */
+	public String getModoPago() {
+		return modoPago;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 6/06/2014
+	 * @param modoPago
+	 *            the modoPago to set
+	 */
+	public void setModoPago(String modoPago) {
+		this.modoPago = modoPago;
+	}
 
 }

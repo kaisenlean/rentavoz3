@@ -12,5 +12,5 @@ package co.innovate.rentavoz.model.log.linea;
  */
 public enum AccionLineaEnum {
 
-	SUSPENDER,ACTIVAR,LOCAL,REPO
+	SUSPENDER,RENOVAR,LOCAL,REPO
 }

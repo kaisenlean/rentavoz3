@@ -701,4 +701,8 @@ public class Venta implements Serializable {
 	public Talonario getNumeroFactura() {
 		return numeroFactura;
 	}
+public String getModoPagoAsString(){
+		
+		return modoPago.name();
+	}
 }

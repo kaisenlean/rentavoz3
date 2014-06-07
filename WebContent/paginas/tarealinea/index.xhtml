@@ -24,12 +24,12 @@
 			
 			<h:outputText value="Numero de linea :" />
 			<p:inputText value="#{registrarLogLinea.numeroLinea}" onkeypress="if (event.keyCode == 13) { btnAgregar.jq.click();  return false; }" ></p:inputText>
-			<p:commandButton value="Agregar" widgetVar="btnAgregar" id="btnAgregar" process="@all" update="@all" actionListener="#{registrarLogLinea.addLinea()}"></p:commandButton>
+			
 			</h:panelGrid>
 			
 			
 			<h:outputText value="Cliente" />
-			<p:autoComplete disabled="#{registrarLogLinea.tarea ne 'REPO'}" size="30" style="width:100px" id="buscadorVendedor"
+			<p:autoComplete disabled="#{registrarLogLinea.tarea ne 'REPO' and registrarLogLinea.tarea ne 'RENOVAR' }" size="30" style="width:100px" id="buscadorVendedor"
 						var="it" itemLabel="#{it}" itemValue="#{it}"
 						converter="#{registrarLogLinea.autocompleteTercero.conversorClientes}"
 						value="#{registrarLogLinea.autocompleteTercero.seleccionado}"
@@ -40,20 +40,23 @@
 						</p:ajax>
 					</p:autoComplete>
 			
-			<h:outputText  value="Valor reposición" />
-			<p:inputText disabled="#{registrarLogLinea.tarea ne 'REPO'}" value="#{registrarLogLinea.valorRepo}"></p:inputText>
+			<h:outputText  value="Valor reposición/renovación" />
+			<p:inputText disabled="#{registrarLogLinea.tarea ne 'REPO' and registrarLogLinea.tarea ne 'RENOVAR'}" value="#{registrarLogLinea.valorRepo}"></p:inputText>
+			<p:commandButton value="Agregar" widgetVar="btnAgregar" id="btnAgregar" process="@all" update="@all" actionListener="#{registrarLogLinea.addLinea()}"></p:commandButton>
 			
-			
-			<h:panelGrid>
+	
+					<h:panelGrid>
 			
 			
 			<p:fileUpload  update="@all" process="@this" uploadLabel="Cargar Archivo" label="Cargar"
 				fileUploadListener="#{registrarLogLinea.cargarRepos}"></p:fileUpload>
+			<h:panelGrid>
+			<p:commandButton value="Guardar" process="@all" update="@all" actionListener="#{registrarLogLinea.guardar()}" ></p:commandButton>
+			</h:panelGrid>
+			
 			
 			
 			</h:panelGrid>
-			
-			<p:commandButton value="Guardar" process="@all" update="@all" actionListener="#{registrarLogLinea.guardar()}" ></p:commandButton>
 			<p:dataTable value="#{registrarLogLinea.lineas}" var="linea">
 			<p:column headerText="Numero de linea">
 			<h:outputText value="#{linea.linea.linNumero}" />
@@ -61,9 +64,27 @@
 			<p:column headerText="Tarea">
 			<h:outputText value="#{linea.accion}" />
 			</p:column>
+			<p:column headerText="Cliente">
+				<p:autoComplete rendered="#{linea!=null}" disabled="#{registrarLogLinea.tarea ne 'REPO' and registrarLogLinea.tarea ne 'RENOVAR' }" size="30" style="width:100px" 
+						var="it" itemLabel="#{it}" itemValue="#{it}"
+						converter="#{linea.autocompleteTercero.conversorClientes}"
+						value="#{linea.autocompleteTercero.seleccionado}"
+						completeMethod="#{linea.autocompleteTercero.completarBusqueda}">
+						<p:ajax event="itemSelect" update="@this" process="@this"
+							listener="#{linea.autocompleteTercero.seleccionar}">
+
+						</p:ajax>
+					</p:autoComplete>
+			</p:column>
+			<p:column headerText="Valor Repo/Renovación">
+			<p:inputText rendered="#{!registrarLogLinea.tarea ne 'REPO' and !registrarLogLinea.tarea ne 'RENOVAR'}" value="#{linea.valorRepo}"></p:inputText>
+			</p:column>
 			
 			<p:column headerText="Observacion">
 			<p:inputTextarea value="#{linea.observacion}" />
+			</p:column>
+			<p:column>
+			<p:commandButton icon="ui-icon-trash" process="@this" update="@all" actionListener="#{registrarLogLinea.deleteLogLinea(linea)}"></p:commandButton>
 			</p:column>
 			
 			</p:dataTable>

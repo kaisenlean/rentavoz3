@@ -219,5 +219,10 @@ public class VentaItemCuota implements Serializable {
 	public void setPagada(boolean pagada) {
 		this.pagada = pagada;
 	}
+	
+	public String getEstadoCuotaAsString(){
+		return estado.name();
+		
+	}
 
 }

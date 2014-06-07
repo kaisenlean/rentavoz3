@@ -48,19 +48,30 @@
 					</p:autoComplete>
 
 					<h:outputText value="Periodo" />
-					<p:selectOneMenu
+					<p:selectOneMenu id="selPerFact"
 						value="#{beanLineaFacturacion.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
 
 					<h:outputText value="Fecha" />
-					<p:calendar value="#{beanLineaFacturacion.fecha}"></p:calendar>
+					<p:calendar value="#{beanLineaFacturacion.fecha}">
+					<p:ajax event="dateSelect" listener="#{beanLineaFacturacion.onDateSelect}" update="selPerFact" />
+					</p:calendar>
 					
 					
 					<h:outputText value="Fecha Fin" />
 					<p:calendar value="#{beanLineaFacturacion.fechaLim}"></p:calendar>
 
+
+					<h:outputText value="Modo Pago" />
+					<p:selectOneMenu
+						value="#{beanLineaFacturacion.modoPago}">
+						<f:selectItem itemLabel=" - - Todos - -" itemValue=""></f:selectItem>
+						<f:selectItem itemLabel="CONTADO" itemValue="CONTADO"></f:selectItem>
+						<f:selectItem itemLabel="CREDITO" itemValue="CUOTA"></f:selectItem>
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">
@@ -104,6 +115,10 @@
 					styleClass="styleColumn" sortBy="lineaidLinea.linCorte">
 					<p:outputLabel value="${item.lineaidLinea.linCorte}" />
 				</p:column>
+					<p:column style="width: 10%" headerText="Cant. Minutos"
+					styleClass="styleColumn" >
+					<p:outputLabel value="${item.lineaidLinea.plan.plaCantidadMinutos}" />
+				</p:column>
 				<p:column headerText="Valor Venta">
 				<f:facet name="footer">
 				<h:outputText value="#{beanLineaFacturacion.totalPrecioVenta}" >
@@ -140,7 +155,7 @@
 				</p:column>
 
 				<p:column headerText="Modalidad Pago">
-					<h:outputLabel value="#{item.ventaidVenta.modoPago}" />
+					<h:outputLabel value="#{item.ventaidVenta.modoPago eq 'CUOTA' ? 'CREDITO' :item.ventaidVenta.modoPago }" />
 				</p:column>
 				<p:column headerText="Vendedor">
 					<p:outputLabel value="#{item.ventaidVenta.vendedor}"></p:outputLabel>

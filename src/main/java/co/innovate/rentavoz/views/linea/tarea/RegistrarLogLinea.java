@@ -68,7 +68,7 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 
 	private String tarea;
 
-	private double valorRepo;
+	private double valorRepo=0.0;
 	
 	
 	private AutocompleteTercero autocompleteTercero;
@@ -121,13 +121,37 @@ public class RegistrarLogLinea extends BaseBean implements Serializable {
 
 		logLinea = new LogLinea();
 		logLinea.setAccion(AccionLineaEnum.valueOf(tarea));
-
+		logLinea.setValorRepo(valorRepo);
+		logLinea.setAutocompleteTercero(new AutocompleteTercero() {
+			
+			@Override
+			public void postSelect() {
+				logLinea.setTercero(seleccionado);
+			}
+			
+			@Override
+			public TerceroService getService() {
+				return terceroService;
+			}
+		});
+		if (autocompleteTercero.getSeleccionado()!=null) {
+			
+			logLinea.getAutocompleteTercero().setQuery(autocompleteTercero.getSeleccionado().toString());
+			logLinea.getAutocompleteTercero().setSeleccionado(autocompleteTercero.getSeleccionado());
+		}
+		
 		logLinea.setLinea(linea);
 		logLinea.setFecha(Calendar.getInstance().getTime());
 		logLinea.setUsuarioCrea(login.getTercero());
 
 		lineas.add(logLinea);
 
+	}
+	
+	
+	public void deleteLogLinea(LogLinea logLinea){
+		
+		lineas.remove(logLinea);
 	}
 
 	public void guardar() {

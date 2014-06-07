@@ -380,4 +380,5 @@ public class VentaLinea implements Serializable {
 		this.seleccionado = seleccionado;
 	}
 
+	
 }

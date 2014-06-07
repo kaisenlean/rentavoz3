@@ -206,7 +206,11 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 				if (linea2==null) {
 					return linea;
 				}else{
-					throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
+					return linea;
+					/**
+					 * temporal mientras cuadramos otros cambios
+					 */
+//					throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
 				}
 			}
 		} else {

@@ -17,48 +17,132 @@
 			<h:panelGrid columns="5">
 
 				<h:outputText value="Fecha de Inicio" />
-				<p:calendar  value="#{reporteVenta.start}"></p:calendar>
+				<p:calendar value="#{reporteVenta.start}"></p:calendar>
 
 				<h:outputText value="Fecha de Fin" />
 				<p:calendar value="#{reporteVenta.end}"></p:calendar>
 
-				<p:commandButton process="@all" update="tablaVenta" value="Consultar" actionListener="#{reporteVenta.buscar()}"></p:commandButton>
+				<p:commandButton process="@all" update="tablaVenta"
+					value="Consultar" actionListener="#{reporteVenta.buscar()}"></p:commandButton>
 
-		</h:panelGrid>
-				<p:dataTable id="tablaVenta" widgetVar="tablaVenta" paginator="true" lazy="true"
-					rows="#{opcionLoader.numRows}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
-					style="width: 100%" value="#{reporteVenta.model}" var="item"
-					emptyMessage="No hay registros">
+			</h:panelGrid>
+			<p:dataTable id="tablaVenta" widgetVar="tablaVenta" paginator="true"
+				lazy="true" rows="#{opcionLoader.numRows}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				style="width: 100%" value="#{reporteVenta.model}" var="item"
+				emptyMessage="No hay registros">
+				<p:column headerText="Consecutivo">
+					<p:commandButton value="#{item.numeroFactura.consecutivo}"
+						actionListener="#{reporteVenta.loadFactura(item)}" process="@this"
+						update="@this" oncomplete="endButton.jq.click();">
 
-					<p:column headerText="Código">
-						<h:outputText value="#{item.idVenta}" />
-					</p:column>
+					</p:commandButton>
 
-					<p:column headerText="Periodo">
-						<h:outputText value="#{item.fechaFacturacion.label}">
-						</h:outputText>
-					</p:column>
-					<p:column headerText="Valor a pagar">
-						<h:outputText value="#{item.valorPagar}">
-							<f:convertNumber type="currency" currencySymbol="$" />
-						</h:outputText>
-					</p:column>
+				</p:column>
 
-					<p:column headerText="Comprador">
-						<h:outputText value="#{item.cliente}">
-						</h:outputText>
-					</p:column>
-
-					<p:column headerText="Fecha de venta">
-						<p:calendar disabled="true" value="#{item.fecha}" />
-					</p:column>
+				<p:column headerText="Código Interno">
+					<h:outputText value="#{item.idVenta}" />
+				</p:column>
 
 
-				</p:dataTable>
+				<p:column headerText="Vendedor">
+					<p:outputLabel value="#{item.vendedor}"></p:outputLabel>
+				</p:column>
+				<p:column headerText="Periodo">
+					<h:outputText value="#{item.fechaFacturacion.label}">
+					</h:outputText>
+				</p:column>
 
-	
+
+				<p:column headerText="Valor a pagar">
+					<h:outputText value="#{item.valorPagar}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column headerText="Comprador">
+					<h:outputText value="#{item.cliente}">
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Modo de pago">
+					<h:outputText value="#{item.modoPago}">
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Fecha de venta">
+					<p:calendar disabled="true" value="#{item.fecha}" />
+				</p:column>
+
+
+			</p:dataTable>
+			<p:commandButton style="visibility:hidden;" id="endButton"
+				widgetVar="endButton" process="@this" update="@this,dlgFactura"
+				oncomplete="dlgFactura.show();"></p:commandButton>
+			<p:dialog appendTo="@(body)" widgetVar="dlgFactura" id="dlgFactura"
+				modal="true" visible="false">
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Observación" />
+					<p:outputLabel value="#{reporteVenta.venta.observacion}"></p:outputLabel>
+
+
+					<p:outputLabel value="Valor Total " />
+					<p:outputLabel value="#{reporteVenta.venta.valorPagar}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</p:outputLabel>
+
+
+
+
+				</h:panelGrid>
+				<div align="center" style="width: 100%">
+					<h3>Equipos</h3>
+					<p:dataTable value="#{reporteVenta.venta.existencias}" var="linea">
+						<p:column headerText="Referencia">
+							<p:outputLabel value="#{linea.existencia.bodegaItemBean}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Imei">
+							<p:outputLabel value="#{linea.existencia.barCode}"></p:outputLabel>
+						</p:column>
+
+
+						<p:column headerText="Precio">
+							<p:outputLabel value="#{linea.existencia.precioVenta}">
+								<f:convertNumber type="currency" currencySymbol="$" />
+							</p:outputLabel>
+						</p:column>
+
+
+
+					</p:dataTable>
+					<h3>Cuotas</h3>
+					<p:dataTable value="#{reporteVenta.venta.cuotas}" var="cuota">
+						<p:column headerText="Cuota">
+							<p:outputLabel value="#{cuota.valor}">
+								<f:convertNumber type="currency" currencySymbol="$" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Estado">
+							<p:outputLabel value="#{cuota.estado}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Fecha de Cierre"
+							>
+							<p:outputLabel value="#{cuota.fechaCierre}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+
+
+					</p:dataTable>
+				</div>
+			</p:dialog>
+
 
 		</h:form>
 
