@@ -35,14 +35,19 @@
 			<p:dataTable style="width:50%" paginator="true" rows="30"
 				value="#{beanReporteExistencias.existencias}" var="existencia">
 				<f:facet name="header">
-				<h:outputText value="Cantidad de existencias #{beanReporteExistencias.existencias.size()}" />
+					<h:outputText
+						value="Cantidad de existencias #{beanReporteExistencias.existencias.size()}" />
 				</f:facet>
 				<p:column headerText="Referencia">
 					<h:outputText value="#{existencia.barCode}" />
 				</p:column>
-	<p:column headerText="Sucursal">
+				<p:column headerText="Sucursal">
 					<h:outputText value="#{existencia.sucursal}" />
-				</p:column>				
+				</p:column>
+
+				<p:column headerText="Observación">
+					<h:outputText value="#{existencia.observacion}" />
+				</p:column>
 				<p:column headerText="Estado">
 					<h:outputText value="#{existencia.estadoAsString}" />
 				</p:column>

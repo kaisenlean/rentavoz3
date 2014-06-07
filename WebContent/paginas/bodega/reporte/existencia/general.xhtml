@@ -60,12 +60,14 @@
 					<f:facet name="footer">
 						<h:outputText value="#{beanReporteExistencias.granTotal}"
 							style="color:red">
-							<f:convertNumber  currencySymbol="$"  currencyCode="COP" type="currency" />
+							<f:convertNumber currencySymbol="$" currencyCode="COP"
+								type="currency" />
 						</h:outputText>
 					</f:facet>
 
 					<h:outputText value="#{bi.valorTotalEstimado}">
-						<f:convertNumber  currencySymbol="$"  type="currency" currencyCode="COP" />
+						<f:convertNumber currencySymbol="$" type="currency"
+							currencyCode="COP" />
 					</h:outputText>
 				</p:column>
 
@@ -78,6 +80,12 @@
 						style="width:30%;">
 						<p:column headerText="PID" style="background-color: white;">
 							<h:outputLabel value="#{eps.barCode}" />
+						</p:column>
+						<p:column headerText="Sucursal" style="background-color: white;">
+							<h:outputLabel value="#{eps.sucursal}" />
+						</p:column>
+						<p:column headerText="Observación">
+							<h:outputText value="#{eps.observacion}" />
 						</p:column>
 					</p:dataTable>
 
