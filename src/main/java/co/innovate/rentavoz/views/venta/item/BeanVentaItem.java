@@ -20,6 +20,7 @@ import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.TipoTerceroEnum;
 import co.innovate.rentavoz.model.almacen.EstadoCuotaEnum;
 import co.innovate.rentavoz.model.bodega.BodegaExistencia;
+import co.innovate.rentavoz.model.bodega.BodegaItem;
 import co.innovate.rentavoz.model.facturacion.FechaFacturacion;
 import co.innovate.rentavoz.model.planpago.PlanPago;
 import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
@@ -29,6 +30,7 @@ import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.model.venta.VentaItemDetalleItem;
 import co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService;
+import co.innovate.rentavoz.services.bodegaitem.BodegaItemService;
 import co.innovate.rentavoz.services.ciudad.CiudadService;
 import co.innovate.rentavoz.services.cuenta.CuentasService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
@@ -40,6 +42,7 @@ import co.innovate.rentavoz.views.BaseBean;
 import co.innovate.rentavoz.views.SessionParams;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteCiudad;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteColaboradores;
+import co.innovate.rentavoz.views.components.autocomplete.AutocompleteItem;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 import co.innovate.rentavoz.views.reports.PrinterBean;
 import co.innovate.rentavoz.views.session.Login;
@@ -57,8 +60,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 	/**
 	 * 14/04/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * CUOTA2
+	 *         CUOTA2
 	 */
 	private static final String CUOTA2 = "CUOTA";
 	/**
@@ -125,7 +129,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{fechaFacturacionService}")
 	private FechaFacturacionService fechaFacturacionService;
-	
+
 	private int planPago;
 
 	/**
@@ -154,8 +158,9 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 	/**
 	 * 2/02/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * selFechaFacturacion
+	 *         selFechaFacturacion
 	 */
 	private Integer selFechaFacturacion;
 	/**
@@ -199,19 +204,28 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	private AutocompleteColaboradores autocompleteColaboradores2;
 	private VentaItemDetalleItem item;
 
-	@ManagedProperty(value="#{sucursalTerceroService}")
-	private SucursalTerceroService sucursalTerceroService;
-	
-	@ManagedProperty(value="#{sucursalService}")
-	private SucursalService sucursalService;
-	
-	@ManagedProperty(value="#{planPagoService}")
-	private PlanPagoService planPagoService;
-	
-	private int idSucursal;
-	
+	private AutocompleteItem autocompleteItem;
 
-	
+	@ManagedProperty(value = "#{bodegaItemService}")
+	private BodegaItemService bodegaItemService;
+
+	@ManagedProperty(value = "#{sucursalTerceroService}")
+	private SucursalTerceroService sucursalTerceroService;
+
+	@ManagedProperty(value = "#{sucursalService}")
+	private SucursalService sucursalService;
+
+	@ManagedProperty(value = "#{planPagoService}")
+	private PlanPagoService planPagoService;
+
+	private int idSucursal;
+
+	private boolean ventaSinSerial = false;
+
+	private BodegaItem bodegaItem;
+
+	private int cantidad;
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -281,11 +295,26 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 				return terceroService;
 			}
 		};
+
+		autocompleteItem = new AutocompleteItem() {
+
+			@Override
+			public void postSelect() {
+				bodegaItem = seleccionado;
+			}
+
+			@Override
+			public BodegaItemService getFacade() {
+				return bodegaItemService;
+			}
+		};
 		autocompleteColaboradores2.setQuery(login.getTercero() == null ? null
 				: login.getTercero().toString());
 		autocompleteColaboradores2.setSeleccionado(login.getTercero());
-		FechaFacturacion fechaFacturacion= fechaFacturacionService.findByFecha(new Date());
-		selFechaFacturacion=fechaFacturacion==null?0:fechaFacturacion.getId();
+		FechaFacturacion fechaFacturacion = fechaFacturacionService
+				.findByFecha(new Date());
+		selFechaFacturacion = fechaFacturacion == null ? 0 : fechaFacturacion
+				.getId();
 	}
 
 	/**
@@ -327,35 +356,32 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		cuota = new VentaItemCuota();
 
 	}
-	
-	public void cargarPlanPago(){
+
+	public void cargarPlanPago() {
 		PlanPago plan = planPagoService.findById(planPago);
-		if (plan==null) {
+		if (plan == null) {
 			mensajeError("No se pudo cargar el plan de pago seleccionado");
 			return;
 		}
-		modoPago=CUOTA2;
+		modoPago = CUOTA2;
 		venta.getCuotas().clear();
-		
-		double valorCuota = venta.getValorPagar()/plan.getNumeroCuotas();
-		
-		Calendar cal= Calendar.getInstance();
+
+		double valorCuota = venta.getValorPagar() / plan.getNumeroCuotas();
+
+		Calendar cal = Calendar.getInstance();
 		for (int i = 0; i < plan.getNumeroCuotas(); i++) {
-			VentaItemCuota c= new VentaItemCuota();
+			VentaItemCuota c = new VentaItemCuota();
 			c.setEstado(EstadoVentaItemCuotaEnum.PENDIENTE);
 			c.setValor(BigDecimal.valueOf(valorCuota).doubleValue());
 			cal.add(Calendar.DAY_OF_YEAR, plan.getDiasDiferencia());
-			if (cal.get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY) {
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				cal.add(Calendar.DAY_OF_YEAR, BigInteger.ONE.intValue());
 			}
 			c.setFechaCierre(cal.getTime());
 			venta.getCuotas().add(c);
-			
+
 		}
-		
-		
-		
-		
+
 	}
 
 	/**
@@ -370,12 +396,13 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 
 	}
 
-	public void loadItem(VentaItemDetalleItem item){
-		
-		this.item=item;
+	public void loadItem(VentaItemDetalleItem item) {
+
+		this.item = item;
 		runJavascript("dialogo.show();");
-		
+
 	}
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -386,7 +413,8 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		venta.setCuenta(cuentasService.findById(idCuenta));
 		venta.setCliente(autocompleteTercero.getSeleccionado());
 		venta.setModoPago(ModoPagoEnum.valueOf(modoPago));
-		venta.setFechaFacturacion(fechaFacturacionService.findById(selFechaFacturacion));
+		venta.setFechaFacturacion(fechaFacturacionService
+				.findById(selFechaFacturacion));
 		venta.setSucursal(sucursalService.findById(idSucursal));
 
 		if (venta.getModoPago().equals(ModoPagoEnum.CONTADO)) {
@@ -423,55 +451,60 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 				"factura_" + vt.getIdVenta(), null, ventas);
 	}
 
-	
-	public void saveEditRow(){
-		boolean continua=true;
+	public void saveEditRow() {
+		boolean continua = true;
 		if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
-			if (item.getValorItem()<item.getExistencia().getBodegaItemBean().getPrecioVentaMayoristasMinimo()) {
+			if (item.getValorItem() < item.getExistencia().getBodegaItemBean()
+					.getPrecioVentaMayoristasMinimo()) {
 				mensajeError("Este valor es inferior al precio minimo de venta establecido");
-				continua=false;;
+				continua = false;
+				;
 			}
-			
-		}else{
-			if (item.getValorItem()<item.getExistencia().getBodegaItemBean().getPrecioVentaMinimo()) {
+
+		} else {
+			if (item.getValorItem() < item.getExistencia().getBodegaItemBean()
+					.getPrecioVentaMinimo()) {
 				mensajeError("Este valor es inferior al precio minimo de venta establecido");
-				continua=false;;
+				continua = false;
+				;
 			}
-			
+
 		}
-		
+
 		venta.setValorPagar(BigInteger.ZERO.doubleValue());
 		if (continua) {
-			
-		for (VentaItemDetalleItem it : venta.getExistencias()) {
-			if (it.equals(item)) {
-				it=item;
+
+			for (VentaItemDetalleItem it : venta.getExistencias()) {
+				if (it.equals(item)) {
+					it = item;
+				}
 			}
-		}
 		}
 		for (VentaItemDetalleItem detalle : venta.getExistencias()) {
 			if (!continua) {
-				
-			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
-				
-				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
-			}else{
-				
-				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+
+				if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+
+					detalle.setValorItem(detalle.getExistencia()
+							.getBodegaItemBean().getPrecioVentaMayoristas());
+				} else {
+
+					detalle.setValorItem(detalle.getExistencia()
+							.getBodegaItemBean().getPrecioVenta());
+				}
 			}
-			}
 			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
-				
-				
+
 				venta.setValorPagar(venta.getValorPagar()
 						+ detalle.getValorItem());
 			} else {
-				
+
 				venta.setValorPagar(venta.getValorPagar()
 						+ detalle.getValorItem());
 			}
 		}
 	}
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -501,14 +534,18 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 			venta.getExistencias().add(detalle);
 			/* adicionamos su precio al valor a pagar de la venta */
 			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
-				
-				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
+
+				detalle.setValorItem(detalle.getExistencia()
+						.getBodegaItemBean().getPrecioVentaMayoristas());
 				venta.setValorPagar(venta.getValorPagar()
-						+ detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
+						+ detalle.getExistencia().getBodegaItemBean()
+								.getPrecioVentaMayoristas());
 			} else {
-				detalle.setValorItem(detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+				detalle.setValorItem(detalle.getExistencia()
+						.getBodegaItemBean().getPrecioVenta());
 				venta.setValorPagar(venta.getValorPagar()
-						+ detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
+						+ detalle.getExistencia().getBodegaItemBean()
+								.getPrecioVenta());
 			}
 			productoId = "";
 		} else {
@@ -526,13 +563,65 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		}
 	}
 
+	public void addExistencia1() {
+
+		if (tercero.getIdTecero() == null) {
+			mensajeError("Por favor selecciona primero un cliente");
+			return;
+		}
+		List<BodegaExistencia> existencias = new ArrayList<BodegaExistencia>();
+		if (bodegaItem == null) {
+			mensajeError("Selecciona un producto para continuar");
+			return;
+		}
+		if (cantidad == BigInteger.ZERO.intValue()) {
+			mensajeError("Digita una cantidad válida");
+			return;
+		}
+		existencias = bodegaExistenciaService.findByDemandaPorCantidad(
+				cantidad, bodegaItem);
+		for (BodegaExistencia be : existencias) {
+			VentaItemDetalleItem detalle = new VentaItemDetalleItem();
+			detalle.setExistencia(be);
+		
+			detalle.setIdVenta(venta);
+			if (venta.getExistencias().contains(detalle)) {
+				mensajeError(new StringBuilder(
+						"Este Producto ya está en la lista").toString());
+				return;
+			}
+			
+			/* adicionamos su precio al valor a pagar de la venta */
+			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
+
+				detalle.setValorItem(detalle.getExistencia()
+						.getBodegaItemBean().getPrecioVentaMayoristas());
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getExistencia().getBodegaItemBean()
+								.getPrecioVentaMayoristas());
+			} else {
+				detalle.setValorItem(detalle.getExistencia()
+						.getBodegaItemBean().getPrecioVenta());
+				venta.setValorPagar(venta.getValorPagar()
+						+ detalle.getExistencia().getBodegaItemBean()
+								.getPrecioVenta());
+			}
+			venta.getExistencias().add(detalle);
+		}
+
+	}
+
 	public void eliminarExistencia(VentaItemDetalleItem detalle) {
 		venta.getExistencias().remove(detalle);
 		if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
-			venta.setValorPagar(venta.getValorPagar()-detalle.getExistencia().getBodegaItemBean().getPrecioVentaMayoristas());
-		}else{
-			venta.setValorPagar(venta.getValorPagar()-detalle.getExistencia().getBodegaItemBean().getPrecioVenta());
-			
+			venta.setValorPagar(venta.getValorPagar()
+					- detalle.getExistencia().getBodegaItemBean()
+							.getPrecioVentaMayoristas());
+		} else {
+			venta.setValorPagar(venta.getValorPagar()
+					- detalle.getExistencia().getBodegaItemBean()
+							.getPrecioVenta());
+
 		}
 
 	}
@@ -871,16 +960,17 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	public Integer getSelFechaFacturacion() {
 		return selFechaFacturacion;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param selFechaFacturacion the selFechaFacturacion to set
+	 * @param selFechaFacturacion
+	 *            the selFechaFacturacion to set
 	 */
 	public void setSelFechaFacturacion(Integer selFechaFacturacion) {
 		this.selFechaFacturacion = selFechaFacturacion;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
@@ -889,33 +979,39 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	public VentaItemDetalleItem getItem() {
 		return item;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 2/02/2014
-	 * @param item the item to set
+	 * @param item
+	 *            the item to set
 	 */
 	public void setItem(VentaItemDetalleItem item) {
 		this.item = item;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 * @param sucursalTerceroService
+	 *            the sucursalTerceroService to set
 	 */
 	public void setSucursalTerceroService(
 			SucursalTerceroService sucursalTerceroService) {
 		this.sucursalTerceroService = sucursalTerceroService;
 	}
-	
-	public List<SelectItem> getItemsSucursales(){
-		List<SelectItem> lista=new ArrayList<SelectItem>();
-		for (SucursalTercero st : sucursalTerceroService.findByTercero(login.getTercero())) {
-			lista.add(new SelectItem(st.getSucursalidSucursal().getIdSucursal(),st.getSucursalidSucursal().getSucNombre()));
+
+	public List<SelectItem> getItemsSucursales() {
+		List<SelectItem> lista = new ArrayList<SelectItem>();
+		for (SucursalTercero st : sucursalTerceroService.findByTercero(login
+				.getTercero())) {
+			lista.add(new SelectItem(
+					st.getSucursalidSucursal().getIdSucursal(), st
+							.getSucursalidSucursal().getSucNombre()));
 		}
 		return lista;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
@@ -924,25 +1020,27 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	public int getIdSucursal() {
 		return idSucursal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param idSucursal the idSucursal to set
+	 * @param idSucursal
+	 *            the idSucursal to set
 	 */
 	public void setIdSucursal(int idSucursal) {
 		this.idSucursal = idSucursal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param sucursalService the sucursalService to set
+	 * @param sucursalService
+	 *            the sucursalService to set
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/04/2014
@@ -951,22 +1049,110 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	public int getPlanPago() {
 		return planPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/04/2014
-	 * @param planPago the planPago to set
+	 * @param planPago
+	 *            the planPago to set
 	 */
 	public void setPlanPago(int planPago) {
 		this.planPago = planPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 14/04/2014
-	 * @param planPagoService the planPagoService to set
+	 * @param planPagoService
+	 *            the planPagoService to set
 	 */
 	public void setPlanPagoService(PlanPagoService planPagoService) {
 		this.planPagoService = planPagoService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @return the ventaSinSerial
+	 */
+	public boolean isVentaSinSerial() {
+		return ventaSinSerial;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param ventaSinSerial
+	 *            the ventaSinSerial to set
+	 */
+	public void setVentaSinSerial(boolean ventaSinSerial) {
+		this.ventaSinSerial = ventaSinSerial;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param bodegaItemService
+	 *            the bodegaItemService to set
+	 */
+	public void setBodegaItemService(BodegaItemService bodegaItemService) {
+		this.bodegaItemService = bodegaItemService;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @return the autocompleteItem
+	 */
+	public AutocompleteItem getAutocompleteItem() {
+		return autocompleteItem;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param autocompleteItem
+	 *            the autocompleteItem to set
+	 */
+	public void setAutocompleteItem(AutocompleteItem autocompleteItem) {
+		this.autocompleteItem = autocompleteItem;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @return the bodegaItem
+	 */
+	public BodegaItem getBodegaItem() {
+		return bodegaItem;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param bodegaItem
+	 *            the bodegaItem to set
+	 */
+	public void setBodegaItem(BodegaItem bodegaItem) {
+		this.bodegaItem = bodegaItem;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @return the cantidad
+	 */
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param cantidad
+	 *            the cantidad to set
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
 	}
 }

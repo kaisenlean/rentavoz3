@@ -177,7 +177,35 @@
 
 				<p:panel header="Existencias">
 
-					<h:panelGrid columns="4">
+<h:panelGrid columns="2">
+<p:selectBooleanCheckbox value="#{beanVentaItem.ventaSinSerial}">
+<p:ajax event="change" process="@this" update="@all"></p:ajax>
+</p:selectBooleanCheckbox>
+<h:outputLabel value="Venta de items sin seriales" />
+</h:panelGrid>
+					<h:panelGrid columns="6" rendered="#{beanVentaItem.ventaSinSerial}">
+					<p:outputLabel value="Producto"></p:outputLabel>
+					<p:autoComplete size="50" style="width:200px"
+					id="buscadorItemExistencia" var="it" itemLabel="#{it}"
+					itemValue="#{it}"
+					converter="#{beanVentaItem.autocompleteItem.conversorClientes}"
+					value="#{beanVentaItem.autocompleteItem.seleccionado}"
+					completeMethod="#{beanVentaItem.autocompleteItem.completarBusqueda}">
+					<p:ajax event="itemSelect" update="@all" process="@this"
+						listener="#{beanVentaItem.autocompleteItem.seleccionar}"></p:ajax></p:autoComplete>
+					
+					
+						<h:outputText style="font-weight: bolder" value="Cantidad :" />
+						<p:inputText id="txtpid1" value="#{beanVentaItem.cantidad}"
+							onkeypress="if (event.keyCode == 13) { aceptBtn1.jq.click();  return false; }"></p:inputText>
+						<p:commandButton id="aceptBtn1" widgetVar="aceptBtn1" value="Añadir"
+							actionListener="#{beanVentaItem.addExistencia1()}" process="@all"
+							update="@all"></p:commandButton>
+						<p:focus for="txtpid1"></p:focus>
+					</h:panelGrid>
+					
+					
+					<h:panelGrid columns="4" rendered="#{!beanVentaItem.ventaSinSerial}">
 						<h:outputText style="font-weight: bolder" value="Producto ID :" />
 						<p:inputText id="txtpid" value="#{beanVentaItem.productoId}"
 							onkeypress="if (event.keyCode == 13) { aceptBtn.jq.click();  return false; }"></p:inputText>

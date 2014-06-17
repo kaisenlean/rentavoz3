@@ -102,4 +102,13 @@ public class BodegaExistenciaServiceImpl extends GenericServiceImpl<BodegaExiste
 	public void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso) {
 		bodegaExistenciaDao.deleteFromBodegaIngreso(bodegaIngreso);
 	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.bodegaexistencia.BodegaExistenciaService#findByDemandaPorCantidad(int, co.innovate.rentavoz.model.bodega.BodegaItem)
+	 */
+	@Override
+	public List<BodegaExistencia> findByDemandaPorCantidad(int cantidad,
+			BodegaItem item) {
+		return bodegaExistenciaDao.findByDemandaPorCantidad(cantidad, item);
+	}
 }

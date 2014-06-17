@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -191,6 +193,21 @@ public class BodegaExistenciaDaoImpl extends GenericJpaRepository<BodegaExistenc
 		Query query = getEntityManager().createQuery(new StringBuilder("DELETE FROM BodegaExistencia b WHERE b.bodegaIngreso = :ingreso").toString());
 		query.setParameter("ingreso", bodegaIngreso);
 		query.executeUpdate();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.bodegaexistencia.BodegaExistenciaDao#findByDemandaPorCantidad(int)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BodegaExistencia> findByDemandaPorCantidad(int cantidad,BodegaItem item) {
+		Session session = getEntityManager().unwrap(Session.class);
+		Criteria crit = session.createCriteria(getEntityClass());
+		
+		crit.add(Restrictions.conjunction().add(Restrictions.eq("bodegaItemBean", item)).add(Restrictions.eq("estado", EstadoExistenciaEnum.DISPONIBLE)));
+		crit.setFirstResult(BigInteger.ZERO.intValue());
+		crit.setMaxResults(cantidad);
+		return crit.list();
 	}
 
 	

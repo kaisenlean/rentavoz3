@@ -92,4 +92,14 @@ public interface BodegaExistenciaService extends GenericService<BodegaExistencia
 	* @param bodegaIngreso
 	*/
 	void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso);
+	
+	/**
+	 * 
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 17/06/2014
+	* @param cantidad
+	* @param item
+	* @return
+	 */
+	 List<BodegaExistencia> findByDemandaPorCantidad(int cantidad,BodegaItem item);
 }

@@ -95,4 +95,15 @@ public interface BodegaExistenciaDao extends GenericRepository<BodegaExistencia,
 	* @param bodegaIngreso
 	*/
 	void deleteFromBodegaIngreso(BodegaIngreso bodegaIngreso);
+	
+	
+	
+	/**
+	 * Método que carga existencias por cantidad
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 17/06/2014
+	* @param cantidad
+	* @return
+	*/
+	List<BodegaExistencia> findByDemandaPorCantidad(int cantidad,BodegaItem item);
 }
