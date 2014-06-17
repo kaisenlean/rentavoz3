@@ -3,6 +3,7 @@ package co.innovate.rentavoz.views.bodega.ingreso;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -212,6 +213,8 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 	 */
 	@Override
 	public void initialize() {
+		
+		tipoInventario=new TipoInventario();
 		autocompleteProveedor = new AutocompleteTerceroProveedor() {
 
 			@Override
@@ -306,13 +309,19 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		if (suc != null) {
 			getObjeto().setSucursal(suc);
 		}
+		if (getTipoInventario().isIncluyeSerial()) {
+			
 		if (idColor == 0) {
 			mensajeError("Por favor selecciona un color  válida");
 			return false;
 		}
 		getObjeto().setColor(bodegaExistenciaColorService.findById(idColor));
+		}
 
 		if (!isEdit()) {
+			if (getTipoInventario().isIncluyeSerial()) {
+				
+			
 			existencias = getObjeto().getBodegaExistencias();
 			for (BodegaExistencia ext : getObjeto().getBodegaExistencias()) {
 				ext.setEstado(EstadoExistenciaEnum.DISPONIBLE);
@@ -327,6 +336,22 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 					return false;
 				}
 
+			}
+			}else{
+				existencias=new ArrayList<BodegaExistencia>();
+				/*contamos los items y simulamos los seriales de las existencias*/
+				for (int i = 0; i < getObjeto().getCantidadItems(); i++) {
+					BodegaExistencia bodegaExistencia = new BodegaExistencia();
+					bodegaExistencia.setBarCode(item.getId()+i+new SimpleDateFormat("dd.mm.yyyy").format(Calendar.getInstance().getTime()));
+					bodegaExistencia.setBodegaItemBean(item);
+					bodegaExistencia.setEstado(EstadoExistenciaEnum.DISPONIBLE);
+					bodegaExistencia.setPrecioVenta(item.getPrecioVenta());
+					bodegaExistencia.setPrecioVentaMayoristas(item.getPrecioVentaMayoristas());
+					bodegaExistencia.setSucursal(sucursalService.findById(selSucursal));
+					existencias.add(bodegaExistencia);
+					
+				}
+				
 			}
 		}
 
@@ -361,6 +386,7 @@ public class BeanIngresoBodega extends StandardAbm<BodegaIngreso, Integer>
 		if (tipoInventario!=null) {
 			selTipoInventario2=tipoInventario.getClave();
 		}
+		
 
 	}
 
@@ -793,6 +819,24 @@ public void setSelTipoInventario2(String selTipoInventario2) {
  */
 public String getSelTipoInventario2() {
 	return selTipoInventario2;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 8/06/2014
+ * @return the tipoInventario
+ */
+public TipoInventario getTipoInventario() {
+	return tipoInventario;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 8/06/2014
+ * @param tipoInventario the tipoInventario to set
+ */
+public void setTipoInventario(TipoInventario tipoInventario) {
+	this.tipoInventario = tipoInventario;
 }
 
 

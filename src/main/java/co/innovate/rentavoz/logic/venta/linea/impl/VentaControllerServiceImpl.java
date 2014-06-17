@@ -76,10 +76,12 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 		talonario.setUsado(Boolean.TRUE);
 		talonario=talonarioService.save(talonario);
 		venta.setNumeroFactura(talonario);
+		venta.setFecha(venta.getVenFecha());
 		venta = ventaService.save(venta);
 		int i = 0;
 		for (VentaLinea linea : lineas) {
 			linea.setVentaidVenta(venta);
+			
 			linea.setFechaRenovacion(calcularRenovacion(
 					linea.getLineaidLinea(), venta));
 			

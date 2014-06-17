@@ -38,4 +38,12 @@ public interface VentaItemService  extends GenericService<VentaItem, Integer> {
 	* @return
 	*/
 	public int countFindVentaByFechas(Date start, Date end);
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 8/06/2014
+	* @param consecutivo
+	* @return
+	*/
+	VentaItem findByNumeroFactura(String consecutivo);
 }

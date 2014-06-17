@@ -28,7 +28,7 @@ public interface VentaItemDao extends GenericRepository<VentaItem, Integer> {
 	* @param end
 	* @return
 	*/
-	public List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults);
+	 List<VentaItem> findVentaByFechas(Date start, Date end,int firstResult,int maxResults);
 	
 	
 	/**
@@ -38,7 +38,16 @@ public interface VentaItemDao extends GenericRepository<VentaItem, Integer> {
 	* @param end
 	* @return
 	*/
-	public int countFindVentaByFechas(Date start, Date end);
+	 int countFindVentaByFechas(Date start, Date end);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 8/06/2014
+	* @param consecutivo
+	* @return
+	*/
+	VentaItem findByNumeroFactura(String consecutivo);
 	
 	
 	

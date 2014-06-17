@@ -41,6 +41,9 @@ public class TipoInventario implements Serializable{
 	
 	@Column(name="clave")
 	private String clave;
+	
+	@Column(name="incluye_serial")
+	private boolean incluyeSerial;
 
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -110,6 +113,27 @@ public class TipoInventario implements Serializable{
 	 */
 	public Integer getId() {
 		return id;
+	}
+	
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/06/2014
+	 * @return the incluyeSerial
+	 */
+	public boolean isIncluyeSerial() {
+		return incluyeSerial;
+	}
+
+
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 8/06/2014
+	 * @param incluyeSerial the incluyeSerial to set
+	 */
+	public void setIncluyeSerial(boolean incluyeSerial) {
+		this.incluyeSerial = incluyeSerial;
 	}
 
 

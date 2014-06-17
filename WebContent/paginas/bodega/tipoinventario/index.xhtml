@@ -36,15 +36,17 @@
 					<p:message for="refItem" />
 					
 					<h:outputLabel value="Clave :" />
-					<h:selectOneMenu value="#{tipoInventarioBean.selClave}" id="selClave" required="true"
-						
-						 >
+					<h:selectOneMenu value="#{tipoInventarioBean.selClave}" id="selClave" required="true">
 						 <f:selectItems value="#{selectorClaveTipoInventario.items}"></f:selectItems>
-						 <p:ajax event="change" partialSubmit="true"></p:ajax>
+						 <p:ajax event="change" partialSubmit="true" process="@all" update="@all"></p:ajax>
 						</h:selectOneMenu>
 						<p:message for="selClave" />
 						
-				
+				<h:outputLabel value="Incluye Seriales :"  rendered="#{tipoInventarioBean.selClave eq 'ACCESORIO'}"/>
+					<p:selectBooleanCheckbox value="#{tipoInventarioBean.objeto.incluyeSerial}" rendered="#{tipoInventarioBean.selClave eq 'ACCESORIO'}" id="selSerial" >
+						 <p:ajax event="change" partialSubmit="true"></p:ajax>
+						</p:selectBooleanCheckbox>
+						<p:message rendered="#{tipoInventarioBean.selClave eq 'ACCESORIO'}" for="selSerial" />
 
 					
 					<h:commandButton value="Aceptar"

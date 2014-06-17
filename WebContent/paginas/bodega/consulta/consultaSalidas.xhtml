@@ -69,6 +69,14 @@
 					</h:outputText>
 
 				</p:column>
+				
+				<p:column headerText="Observación"
+					>
+					<h:outputText value="#{existencia.bodegaExistencia.observacion}">
+					</h:outputText>
+
+				</p:column>
+				
 				<p:column headerText="Sucursal"
 					filterBy="#{existencia.bodegaExistencia.sucursal}"
 					filterMatchMode="contains">

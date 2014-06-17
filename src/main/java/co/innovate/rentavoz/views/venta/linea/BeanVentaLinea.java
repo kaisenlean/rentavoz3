@@ -283,7 +283,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		case CONTADO:
 			Cuota cuota=new Cuota();
 			cuota.setEstadoCuota(EstadoCuotaEnum.PAGADA);
-			cuota.setFechaPago(new Date());
+			cuota.setFechaPago(venta.getVenFecha());
 			cuota.setValorCuota(venta.getVenSaldo());
 			venta.getCuotas().add(cuota);
 			break;

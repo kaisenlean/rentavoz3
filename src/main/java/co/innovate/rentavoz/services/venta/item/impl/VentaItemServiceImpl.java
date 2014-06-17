@@ -55,5 +55,12 @@ public class VentaItemServiceImpl extends GenericServiceImpl<VentaItem, Integer>
 	public int countFindVentaByFechas(Date start, Date end) {
 		return ventaItemDao.countFindVentaByFechas(start, end);
 	}
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.venta.item.VentaItemService#findByNumeroFactura(java.lang.String)
+	 */
+	@Override
+	public VentaItem findByNumeroFactura(String consecutivo) {
+		return ventaItemDao.findByNumeroFactura(consecutivo);
+	}
 
 }

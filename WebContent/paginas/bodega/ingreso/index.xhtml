@@ -94,7 +94,7 @@
 					<p:message for="tipInventario"></p:message>
 					
 					<h:outputLabel value="Item a registrar :" />
-					<p:selectOneMenu disabled="#{beanIngresoBodega.edit}"
+					<p:selectOneMenu filter="true"  disabled="#{beanIngresoBodega.edit}"
 						id="selItemReg" value="#{beanIngresoBodega.selItem}">
 						<p:ajax event="change" process="@this,fechaIngreso"
 							listener="#{beanIngresoBodega.cambioItem}" update="@all"></p:ajax>
@@ -140,14 +140,14 @@
 						value="#{beanIngresoBodega.objeto.personaCompra}"></h:inputText>
 					<p:message for="compradorIngreso"></p:message>
 
-					<h:outputText rendered="#{!beanIngresoBodega.edit}" value="Color" />
-					<p:selectOneMenu rendered="#{!beanIngresoBodega.edit}" id="color"
+					<h:outputText rendered="#{!beanIngresoBodega.edit}" style="visibility:${beanIngresoBodega.tipoInventario.incluyeSerial?'visible':'hidden'}" value="Color" />
+					<p:selectOneMenu  style="visibility:${beanIngresoBodega.tipoInventario.incluyeSerial?'visible':'hidden'}"  id="color"
 						value="#{beanIngresoBodega.idColor}">
 						<p:ajax event="change" partialSubmit="true"
 							listener="#{beanIngresoBodega.listenerColor()}"></p:ajax>
 						<f:selectItems value="#{selectorColor.items}"></f:selectItems>
 					</p:selectOneMenu>
-					<p:message rendered="#{!beanIngresoBodega.edit}" for="color"></p:message>
+					<p:message  style="visibility:${beanIngresoBodega.tipoInventario.incluyeSerial?'visible':'hidden'}" rendered="#{!beanIngresoBodega.edit}" for="color"></p:message>
 
 
 					<h:outputText rendered="#{!beanIngresoBodega.edit}"
@@ -195,11 +195,20 @@
 						id="precioVentaMayoristas3"
 						value="#{beanIngresoBodega.objeto.recibe}"></h:inputText>
 					<p:message for="precioVentaMayoristas3"></p:message>
+					
+					
+					<h:outputText rendered="${!beanIngresoBodega.tipoInventario.incluyeSerial}" value="Cantidad de Existencias " />
+					<h:inputText rendered="${!beanIngresoBodega.tipoInventario.incluyeSerial}" size="40" required="${beanIngresoBodega.tipoInventario.incluyeSerial}" requiredMessage="Digita la cantidad de existencias" readonly="#{beanIngresoBodega.edit}"
+						id="cantidadExistencias"
+						value="#{beanIngresoBodega.objeto.cantidadItems}"></h:inputText>
+					<p:message rendered="${!beanIngresoBodega.tipoInventario.incluyeSerial}" for="cantidadExistencias"></p:message>
+					
+					
 
 
 
 				</h:panelGrid>
-				<h:panelGrid columns="1">
+				<h:panelGrid columns="1"  rendered="${beanIngresoBodega.tipoInventario.incluyeSerial}" >
 					<h:panelGrid columns="4" id="pnl1">
 
 						<h:outputText value="Producto ID :" />
@@ -249,6 +258,9 @@
 								actionListener="#{beanIngresoBodega.objeto.removeBodegaExistencia(existencia)}"></p:commandButton>
 						</p:column>
 					</p:dataTable>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+				<h:outputText  />
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:commandButton disabled="#{beanIngresoBodega.edit}"

@@ -70,6 +70,9 @@ public class BodegaIngreso implements Serializable {
 	@JoinColumn(name="sucursal")
 	private Sucursal sucursal;
 	
+	@Column(name="cantidad_items")
+	private int cantidadItems;
+	
 	/**
 	 * 30/01/2014
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -338,4 +341,24 @@ public class BodegaIngreso implements Serializable {
 	public void setSubBodega(String subBodega) {
 		this.subBodega = subBodega;
 	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @return the cantidadItems
+	 */
+	public int getCantidadItems() {
+		return cantidadItems;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 17/06/2014
+	 * @param cantidadItems the cantidadItems to set
+	 */
+	public void setCantidadItems(int cantidadItems) {
+		this.cantidadItems = cantidadItems;
+	}
+
+
 }
