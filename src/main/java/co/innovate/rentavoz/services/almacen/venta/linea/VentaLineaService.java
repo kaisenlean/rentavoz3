@@ -52,57 +52,59 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	*/
 	List<VentaLinea> findLineasConDevolucionByCliente(Tercero tercero);
 	
+	 
+	 
 	 /**
-		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-		* @date 26/05/2014
-		* @param firstResul
-		* @param maxResults
-		* @param order
-		* @param numeroLinea
-		* @param cliente
-		* @param corte
-		* @return
-		*/
-		List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
-		
-		/**
-		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-		* @date 26/05/2014
-		* @param numeroLinea
-		* @param cliente
-		* @param corte
-		* @param fechaFacturacion
-		* @param fecha
-		* @return
-		*/
-		int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
-		
-		
-		/**
-		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-		* @date 27/05/2014
-		* @param numeroLinea
-		* @param cliente
-		* @param corte
-		* @param fechaFacturacion
-		* @param fecha
-		* @return
-		*/
-		double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
-		
-		
-		
-		
-		/**
-		* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-		* @date 27/05/2014
-		* @param numeroLinea
-		* @param cliente
-		* @param corte
-		* @param fechaFacturacion
-		* @param fecha
-		* @return
-		*/
-		double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago);
-		 
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param firstResul
+	* @param maxResults
+	* @param order
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @return
+	*/
+	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 26/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	
+	
+	
+	
+	/**
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 27/05/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @return
+	*/
+	double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	 
 }

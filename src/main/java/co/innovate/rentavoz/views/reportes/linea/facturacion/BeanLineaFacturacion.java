@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.SortOrder;
@@ -72,6 +73,8 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	private Date fecha;
 	private Date fechaLim;
 	private String modoPago;
+	
+	private String numeroFactura=StringUtils.EMPTY;
 
 	private double totalPrecioCompra;
 	private double totalPrecioVenta;
@@ -97,7 +100,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
 						.format(Calendar.getInstance().getTime())) : corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
+				fechaLim, modoPago,numeroFactura);
 		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
 				.valueOf(new SimpleDateFormat("dd").format(Calendar
 						.getInstance().getTime())) : corte);
@@ -123,11 +126,11 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
 				corte, fechaFacturacionService.findById(selFechaFacturacion),
-				fecha, fechaLim, modoPago);
+				fecha, fechaLim, modoPago,numeroFactura);
 		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
 				cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
+				fechaLim, modoPago,numeroFactura);
 
 		autocompleteTercero = new AutocompleteTercero() {
 
@@ -201,7 +204,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 		return ventaLineaService.countdByCriterio(linea, cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
+				fechaLim, modoPago,numeroFactura);
 	}
 
 	/*
@@ -232,16 +235,15 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
 				corte, fechaFacturacionService.findById(selFechaFacturacion),
-				fecha, fechaLim, modoPago);
+				fecha, fechaLim, modoPago,numeroFactura);
 		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
 				cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
+				fechaLim, modoPago,numeroFactura);
 		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order,
 				linea, cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
-		// return null;
+				fechaLim, modoPago,numeroFactura);
 	}
 
 	/*
@@ -414,7 +416,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
 						.format(Calendar.getInstance().getTime())) : corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago);
+				fechaLim, modoPago,numeroFactura);
 		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
 				.valueOf(new SimpleDateFormat("dd").format(Calendar
 						.getInstance().getTime())) : corte);
@@ -589,6 +591,24 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	 */
 	public void setModoPago(String modoPago) {
 		this.modoPago = modoPago;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 18/06/2014
+	 * @return the numeroFactura
+	 */
+	public String getNumeroFactura() {
+		return numeroFactura;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 18/06/2014
+	 * @param numeroFactura the numeroFactura to set
+	 */
+	public void setNumeroFactura(String numeroFactura) {
+		this.numeroFactura = numeroFactura;
 	}
 
 }

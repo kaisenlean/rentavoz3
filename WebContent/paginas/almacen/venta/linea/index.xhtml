@@ -11,22 +11,7 @@
 	<ui:define name="content">
 		<h:form>
 			<div style="font-size: 16px;">
-<!-- 				<script src="http://www.java.com/js/deployJava.js"></script> -->
-<!-- 				<script type="text/javascript"> -->
-// function runApplet(){
-//     var attributes = {
-//     code : 'jzebra.PrintApplet.class',
-//     archive : '${pageContext.request.contextPath}/lib/jzebra.jar',
-//     width : 500,
-//     height : 300
-//     };
-//     var parameters = {
-//     printer : 'zebra'
-//     };
-//     var version = '1.6';
-//     deployJava.runApplet(attributes, parameters, version);
-// }
-<!-- </script> -->
+
 
 
 				<h:outputLabel value="Venta de Lineas" class="h1" />
@@ -44,10 +29,10 @@
 
 
 					<h:outputText style="font-weight: bolder"
-						value="Fecha de facturacion : " />
+						value="Periodo de facturacion : " />
 					<p:selectOneMenu id="selectFechaFact" value="#{beanVentaLinea.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
-						<p:ajax event="change" partialSubmit="true"></p:ajax>
+						<p:ajax event="change" partialSubmit="true" ></p:ajax>
 					</p:selectOneMenu>
 
 					<h:outputText style="font-weight: bolder" value="Cuenta" />
@@ -93,7 +78,7 @@
 					
 					<h:outputText style="font-weight: bolder" value="Fecha de venta" id="fechaVenta" />
 					<p:calendar widgetVar="selFechaVent" value="#{beanVentaLinea.venta.venFecha}" >
-					  <p:ajax event="dateSelect" process="@this" partialSubmit="true" />
+					  <p:ajax event="dateSelect" listener="#{beanVentaLinea.cambioFecha}" process="@this"  update="@all" />
 					</p:calendar>
 					
 					

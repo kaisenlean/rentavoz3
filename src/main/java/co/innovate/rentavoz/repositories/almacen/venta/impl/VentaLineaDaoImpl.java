@@ -144,6 +144,7 @@ public class VentaLineaDaoImpl extends
 		Query query = getEntityManager()
 				.createQuery(
 						"SELECT DISTINCT  SUM(v.ventaidVenta.venSaldo) FROM VentaLinea v WHERE v.lineaidLinea.ajuste = :ajuste AND v.ventaidVenta.fechaFacturacion = :fechaFacturacion AND v.ventaidVenta.estadoVenta = :estado");
+
 		query.setParameter("ajuste", ajuste);
 		query.setParameter("fechaFacturacion", fechaFacturacion);
 		query.setParameter("estado", EstadoVentaEnum.ACTIVA);
@@ -162,7 +163,7 @@ public class VentaLineaDaoImpl extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
-			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago) {
+			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
@@ -183,7 +184,12 @@ public class VentaLineaDaoImpl extends
 			
 			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
 		}
-		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		if (modoPago!=null) {
@@ -203,7 +209,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
 		
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -226,7 +232,12 @@ public class VentaLineaDaoImpl extends
 			
 			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
 		}
-		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		if (modoPago!=null) {
@@ -243,7 +254,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -266,7 +277,12 @@ public class VentaLineaDaoImpl extends
 			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
 		}
 		
-		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));		
 		if (modoPago!=null) {
@@ -284,7 +300,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago) {
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -309,7 +325,12 @@ public class VentaLineaDaoImpl extends
 			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
 		}
 		
-		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
 		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
 		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
 		if (modoPago!=null) {

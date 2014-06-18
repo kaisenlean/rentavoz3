@@ -48,7 +48,7 @@
 					</p:autoComplete>
 
 					<h:outputText value="Periodo" />
-					<p:selectOneMenu id="selPerFact"
+					<p:selectOneMenu disabled="true" id="selPerFact"
 						value="#{beanLineaFacturacion.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
@@ -72,6 +72,9 @@
 						<f:selectItem itemLabel="CREDITO" itemValue="CUOTA"></f:selectItem>
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
+					
+					<h:outputText value="Numero Factura :" />
+					<p:inputText value="#{beanLineaFacturacion.numeroFactura}"></p:inputText>
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">

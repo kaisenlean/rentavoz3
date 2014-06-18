@@ -3,6 +3,7 @@
  */
 package co.innovate.rentavoz.logic.venta.linea.impl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,7 +95,19 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 			i++;
 		}
 		venta.setVentaLineaList(lineas);
+		double totalCuotas=BigInteger.ZERO.doubleValue();
+
+		for (Cuota cuota : cuotas) {
+			totalCuotas+=cuota.getValorCuota().doubleValue();
+		}
+		if (totalCuotas!=venta.getVenSaldo().doubleValue()) {
+			throw new BaseException("El valor de las cuotas debe ser igual al valor de la venta");
+		}
+		
+		
 		i=0;
+		
+		
 		for (Cuota cuota : cuotas) {
 			cuota.setVenta(venta);
 			cuota=cuotaService.save(cuota);

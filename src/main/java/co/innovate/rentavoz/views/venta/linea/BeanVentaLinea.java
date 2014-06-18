@@ -19,6 +19,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.primefaces.event.SelectEvent;
 
 import co.innovate.rentavoz.exception.BaseException;
 import co.innovate.rentavoz.logic.venta.linea.VentaControllerService;
@@ -334,6 +335,15 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		runJavascript("dlgNewCliente.hide();");
 	}
 	
+	
+	public void cambioFecha(SelectEvent event) {
+		try {
+			
+        selFechaFacturacion=fechaFacturacionService.findByFecha((Date)event.getObject()).getId();
+		} catch (Exception e) {
+			mensajeError("No se pudo encontrar el pediodo de facturación");
+		}
+    }
 	
 
 	/**
