@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturaIndividual" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9df5d9b2-2dea-44f2-a19a-30e574e85332">
 	<property name="ireport.zoom" value="2.8531167061100033"/>
 	<property name="ireport.x" value="433"/>
-	<property name="ireport.y" value="959"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -143,7 +143,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{venFecha}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="da3e64fd-4ff0-4c10-9d4c-8bf063a15727" x="262" y="80" width="128" height="14"/>

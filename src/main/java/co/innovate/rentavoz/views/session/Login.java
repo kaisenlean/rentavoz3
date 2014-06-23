@@ -586,4 +586,11 @@ public class Login extends BaseBean implements Serializable {
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return usuario;
+	}
 }
