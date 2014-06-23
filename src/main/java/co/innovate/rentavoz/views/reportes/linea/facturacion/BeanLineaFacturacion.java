@@ -4,6 +4,7 @@
 package co.innovate.rentavoz.views.reportes.linea.facturacion;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
 import co.innovate.rentavoz.model.almacen.venta.VentaLinea;
@@ -27,10 +29,12 @@ import co.innovate.rentavoz.services.GenericService;
 import co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService;
 import co.innovate.rentavoz.services.facturacion.FechaFacturacionService;
 import co.innovate.rentavoz.services.linea.LineaService;
+import co.innovate.rentavoz.services.sucursal.SucursalService;
 import co.innovate.rentavoz.services.tercero.TerceroService;
 import co.innovate.rentavoz.services.venta.FacturaControllerService;
 import co.innovate.rentavoz.views.StandardAbm;
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
+import co.innovate.rentavoz.views.session.Login;
 
 /**
  * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -66,6 +70,12 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 	@ManagedProperty(value = "#{terceroService}")
 	private TerceroService terceroService;
+	
+	@ManagedProperty(value="#{sucursalService}")
+	private SucursalService sucursalService;
+	
+	@ManagedProperty(value="#{login}")
+	private Login login;
 
 	private int corte = 0;
 	private String linea = "";
@@ -74,10 +84,15 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	private Date fechaLim;
 	private String modoPago;
 	
+	private int selSucursal=0;
+	
 	private String numeroFactura=StringUtils.EMPTY;
 
 	private double totalPrecioCompra;
 	private double totalPrecioVenta;
+	private double totalUtilidad;
+	private List<Sucursal> sucursales=new ArrayList<Sucursal>();
+
 
 	private Venta venta;
 
@@ -93,14 +108,20 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 				Calendar.getInstance().getTime()).getId();
 		fecha = Calendar.getInstance().getTime();
 		fechaLim = Calendar.getInstance().getTime();
-
+		/* si 0 consulta todas*/
+		List<Sucursal> scles=new ArrayList<Sucursal>();
+		if (selSucursal==0) {
+			scles=login.getSucursales();
+		}else{
+				scles.add(sucursalService.findById(selSucursal));	
+		}
 		int lineasVendidas = ventaLineaService.countdByCriterio(
 				"",
 				null,
 				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
 						.format(Calendar.getInstance().getTime())) : corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
+				fechaLim, modoPago,numeroFactura,scles);
 		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
 				.valueOf(new SimpleDateFormat("dd").format(Calendar
 						.getInstance().getTime())) : corte);
@@ -126,12 +147,16 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 
 		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
 				corte, fechaFacturacionService.findById(selFechaFacturacion),
-				fecha, fechaLim, modoPago,numeroFactura);
+				fecha, fechaLim, modoPago,numeroFactura,scles);
 		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
 				cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
-
+				fechaLim, modoPago,numeroFactura,scles);
+		totalUtilidad = ventaLineaService.sumByCriterioUtilidad(linea,
+				cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago,numeroFactura,scles);
+		
 		autocompleteTercero = new AutocompleteTercero() {
 
 			@Override
@@ -201,10 +226,16 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	 */
 	@Override
 	public Integer custoCountBySearch(String globalFilter) {
-
+		/* si 0 consulta todas*/
+		List<Sucursal> scles=new ArrayList<Sucursal>();
+		if (selSucursal==0) {
+			scles=login.getSucursales();
+		}else{
+				scles.add(sucursalService.findById(selSucursal));	
+		}
 		return ventaLineaService.countdByCriterio(linea, cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
+				fechaLim, modoPago,numeroFactura,scles);
 	}
 
 	/*
@@ -232,18 +263,35 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 		default:
 			break;
 		}
-
+		List<Sucursal> scles=new ArrayList<Sucursal>();
+		
+		if (selSucursal==0) {
+			scles=login.getSucursales();
+		}else{
+			
+				scles.add(sucursalService.findById(selSucursal));	
+		}
 		totalPrecioVenta = ventaLineaService.sumByCriterio(linea, cliente,
 				corte, fechaFacturacionService.findById(selFechaFacturacion),
-				fecha, fechaLim, modoPago,numeroFactura);
+				fecha, fechaLim, modoPago,numeroFactura,scles);
 		totalPrecioCompra = ventaLineaService.sumByCriterioCompra(linea,
 				cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
+				fechaLim, modoPago,numeroFactura,scles);
+		
+		totalUtilidad = ventaLineaService.sumByCriterioUtilidad(linea,
+				cliente, corte,
+				fechaFacturacionService.findById(selFechaFacturacion), fecha,
+				fechaLim, modoPago,numeroFactura,scles);
+		
+		
+		
+		
+		
 		return ventaLineaService.findByCriterio(startingAt, maxPerPage, order,
 				linea, cliente, corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
+				fechaLim, modoPago,numeroFactura,scles);
 	}
 
 	/*
@@ -273,6 +321,7 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	 */
 	@Override
 	public void initialize() {
+		
 		init2();
 
 	}
@@ -409,14 +458,20 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	 * @return the modelChart
 	 */
 	public PieChartModel getModelChart() {
-
+		/* si 0 consulta todas*/
+		List<Sucursal> scles=new ArrayList<Sucursal>();
+		if (selSucursal==0) {
+			scles=login.getSucursales();
+		}else{
+				scles.add(sucursalService.findById(selSucursal));	
+		}
 		int lineasVendidas = ventaLineaService.countdByCriterio(
 				"",
 				null,
 				corte == 0 ? Integer.valueOf(new SimpleDateFormat("dd")
 						.format(Calendar.getInstance().getTime())) : corte,
 				fechaFacturacionService.findById(selFechaFacturacion), fecha,
-				fechaLim, modoPago,numeroFactura);
+				fechaLim, modoPago,numeroFactura,scles);
 		int lineasReales = lineaService.countByCorte(corte == 0 ? Integer
 				.valueOf(new SimpleDateFormat("dd").format(Calendar
 						.getInstance().getTime())) : corte);
@@ -610,5 +665,57 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	public void setNumeroFactura(String numeroFactura) {
 		this.numeroFactura = numeroFactura;
 	}
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @return the totalUtilidad
+ */
+public double getTotalUtilidad() {
+	return totalUtilidad;
+}
 
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @param totalUtilidad the totalUtilidad to set
+ */
+public void setTotalUtilidad(double totalUtilidad) {
+	this.totalUtilidad = totalUtilidad;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @return the selSucursal
+ */
+public int getSelSucursal() {
+	return selSucursal;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @param selSucursal the selSucursal to set
+ */
+public void setSelSucursal(int selSucursal) {
+	this.selSucursal = selSucursal;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @param sucursalService the sucursalService to set
+ */
+public void setSucursalService(SucursalService sucursalService) {
+	this.sucursalService = sucursalService;
+}
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @param login the login to set
+ */
+public void setLogin(Login login) {
+	this.login = login;
+}
 }

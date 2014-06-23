@@ -21,6 +21,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.EstadoVentaEnum;
 import co.innovate.rentavoz.model.almacen.Linea;
@@ -163,12 +164,13 @@ public class VentaLineaDaoImpl extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
-			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
+			Order order, String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
 		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
@@ -197,6 +199,7 @@ public class VentaLineaDaoImpl extends
 				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
 			}
 		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
 		crit.setMaxResults(maxResults);
 		crit.setFirstResult(firstResul);
 
@@ -209,13 +212,14 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
 		
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
 		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
@@ -245,6 +249,7 @@ public class VentaLineaDaoImpl extends
 				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
 			}
 		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
 		crit.setProjection(Projections.rowCount());
 		return  Long.valueOf( crit.list().get(0).toString()).intValue();
 	}
@@ -254,13 +259,14 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
 		Criteria crit = session.createCriteria(VentaLinea.class);
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
 		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
@@ -290,6 +296,7 @@ public class VentaLineaDaoImpl extends
 				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
 			}
 		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
 		crit.setProjection(Projections.sum("ventLinPrecio"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
 		
@@ -300,7 +307,7 @@ public class VentaLineaDaoImpl extends
 	 */
 	@Override
 	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
 
 		Session session = getEntityManager().unwrap(Session.class);
 
@@ -308,6 +315,7 @@ public class VentaLineaDaoImpl extends
 		crit.createAlias("lineaidLinea", "lineaidLinea");
 		crit.createAlias("lineaidLinea.plan", "plan");
 		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
 		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
 		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
 
@@ -338,8 +346,106 @@ public class VentaLineaDaoImpl extends
 				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
 			}
 		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
 		crit.setProjection(Projections.sum("plan.valorPlan"));
 		return  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.repositories.almacen.venta.VentaLineaDao#sumByCriterioUtilidad(java.lang.String, co.innovate.rentavoz.model.Tercero, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date, java.util.Date, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public double sumByCriterioUtilidad(String numeroLinea, Tercero cliente,
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,
+			Date fechaLim, String modoPago, String numeroFactura,List<Sucursal> sucursales) {
+
+		Session session = getEntityManager().unwrap(Session.class);
+
+		Criteria crit = session.createCriteria(VentaLinea.class);
+		crit.createAlias("lineaidLinea", "lineaidLinea");
+		crit.createAlias("lineaidLinea.plan", "plan");
+		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
+		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
+
+		Criterion criterion = Restrictions
+				.conjunction()
+				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
+				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
+						BigInteger.ZERO.intValue()) : Restrictions.eq(
+						"lineaidLinea.linCorte", corte));
+						
+
+		crit.add(criterion);
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
+		
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
+		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
+		crit.setProjection(Projections.sum("ventLinPrecio"));
+		
+		
+		double ventLinPrecio=  Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
+
+		
+		 session = getEntityManager().unwrap(Session.class);
+
+		 crit = session.createCriteria(VentaLinea.class);
+		crit.createAlias("lineaidLinea", "lineaidLinea");
+		crit.createAlias("lineaidLinea.plan", "plan");
+		crit.createAlias("ventaidVenta", "ventaidVenta");
+		crit.createAlias("ventaidVenta.sucursal", "ventaidVenta.sucursal");
+		crit.createAlias("ventaidVenta.numeroFactura", "ventaidVenta.numeroFactura");
+		crit.createAlias("ventaidVenta.tercero", "ventaidVenta.tercero");
+
+		 criterion = Restrictions
+				.conjunction()
+				.add(Restrictions.like("lineaidLinea.linNumero", numeroLinea,MatchMode.ANYWHERE))
+				.add(corte == 0 ? Restrictions.ne("lineaidLinea.linCorte",
+						BigInteger.ZERO.intValue()) : Restrictions.eq(
+						"lineaidLinea.linCorte", corte));
+						
+
+		crit.add(criterion);
+		if (cliente!=null) {
+			
+			crit.add(Restrictions.eq("ventaidVenta.tercero",cliente));
+		}
+		
+//		crit.add(Restrictions.eq("ventaidVenta.fechaFacturacion", fechaFacturacion));
+		if (numeroFactura!=null) {
+			if (!numeroFactura.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.numeroFactura.consecutivo", numeroFactura));
+			}
+		}
+		crit.add(Restrictions.between("ventaidVenta.venFecha", fecha,fechaLim));
+		crit.add(Restrictions.eq("ventaidVenta.estadoVenta", EstadoVentaEnum.ACTIVA));
+		if (modoPago!=null) {
+			if (!modoPago.equals(StringUtils.EMPTY)) {
+				crit.add(Restrictions.eq("ventaidVenta.modoPago", ModoPagoEnum.valueOf(modoPago)));
+			}
+		}
+		crit.add(Restrictions.in("ventaidVenta.sucursal", sucursales));
+		crit.setProjection(Projections.sum("plan.valorPlan"));
+		
+		
+		return ventLinPrecio-Double.valueOf( crit.list().get(0)==null?"0":crit.list().get(0).toString()).doubleValue();
+		
 	}
 
 }

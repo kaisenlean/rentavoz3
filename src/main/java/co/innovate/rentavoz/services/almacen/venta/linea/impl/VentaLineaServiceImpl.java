@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
@@ -78,8 +79,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	@Override
 	public List<VentaLinea> findByCriterio(int firstResul, int maxResults,
 			Order order, String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
-		return ventaLineaDao.findByCriterio(firstResul, maxResults, order, numeroLinea, cliente, corte, fechaFacturacion,fecha,fechaLim,modoPago,numeroFactura);
+			FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
+		return ventaLineaDao.findByCriterio(firstResul, maxResults, order, numeroLinea, cliente, corte, fechaFacturacion,fecha,fechaLim,modoPago,numeroFactura,sucursales);
 				
 	}
 
@@ -88,8 +89,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public int countdByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
-		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura);
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
+		return ventaLineaDao.countdByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura,sucursales);
 	}
 
 	/* (non-Javadoc)
@@ -97,8 +98,8 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public double sumByCriterio(String numeroLinea, Tercero cliente, int corte,
-			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
-		return ventaLineaDao.sumByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura);
+			FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
+		return ventaLineaDao.sumByCriterio(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura,sucursales);
 	}
 
 	/* (non-Javadoc)
@@ -106,7 +107,17 @@ public class VentaLineaServiceImpl extends GenericServiceImpl<VentaLinea, Intege
 	 */
 	@Override
 	public double sumByCriterioCompra(String numeroLinea, Tercero cliente,
-			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura) {
-		return ventaLineaDao.sumByCriterioCompra(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura);
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales) {
+		return ventaLineaDao.sumByCriterioCompra(numeroLinea, cliente, corte, fechaFacturacion, fecha,fechaLim,modoPago,numeroFactura,sucursales);
+	}
+
+	/* (non-Javadoc)
+	 * @see co.innovate.rentavoz.services.almacen.venta.linea.VentaLineaService#sumByCriterioUtilidad(java.lang.String, co.innovate.rentavoz.model.Tercero, int, co.innovate.rentavoz.model.facturacion.FechaFacturacion, java.util.Date, java.util.Date, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public double sumByCriterioUtilidad(String numeroLinea, Tercero cliente,
+			int corte, FechaFacturacion fechaFacturacion, Date fecha,
+			Date fechaLim, String modoPago, String numeroFactura,List<Sucursal> sucursales) {
+		return ventaLineaDao.sumByCriterioUtilidad(numeroLinea, cliente, corte, fechaFacturacion, fecha, fechaLim, modoPago, numeroFactura,sucursales);
 	}
 }

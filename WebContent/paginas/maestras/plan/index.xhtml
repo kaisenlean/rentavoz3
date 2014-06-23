@@ -40,10 +40,10 @@
 					<!--                     <p:message for="fechPlan"/> -->
 
 					<h:outputLabel value="Fecha de Vencimiento" />
-					<p:calendar id="fechaVencimiento" navigator="true" 
+					<p:calendar id="fechaVencimiento" navigator="true"
 						value="${planBean.objeto.plaFechaVenc}" required="true"
-						requiredMessage="Por favor digita una fecha de vencimiento" >
-						</p:calendar>
+						requiredMessage="Por favor digita una fecha de vencimiento">
+					</p:calendar>
 					<p:message for="fechaVencimiento" />
 
 
@@ -83,12 +83,17 @@
 					<p:message for="costoMinimo" />
 
 
-					                    <h:outputLabel value="Valor Plan"/>
-					                    <h:inputText  id="costoMinuto" value="${planBean.objeto.valorPlan}" >
-					                    </h:inputText>
-					                    <p:message for="costoMinuto"/>
+					<h:outputLabel value="Valor Compra Plan" />
+					<h:inputText id="costoMinuto" value="${planBean.objeto.valorPlan}">
+					</h:inputText>
+					<p:message for="costoMinuto" />
 
 
+
+					<h:outputLabel value="Valor Venta" />
+					<h:inputText id="valVenta" value="${planBean.objeto.valorVenta}">
+					</h:inputText>
+					<p:message for="valVenta" />
 
 
 				</h:panelGrid>
@@ -107,12 +112,13 @@
 			<h:commandButton rendered="${!planBean.form}"
 				value="Descargar en pdf" image="/imagenes/pdf.png"
 				actionListener="#{printerBean.exportXls('plan','informe_plan','xls')}"></h:commandButton>
-			<p:dataTable  paginator="true"  lazy="true" rows="#{opcionLoader.numRows}"
+			<p:dataTable paginator="true" lazy="true"
+				rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}" rendered="${!planBean.form}" style="width: 70%"
-				value="#{planBean.model}" var="item"
-				emptyMessage="No hay registros">
-				
+				rowsPerPageTemplate="#{opcionLoader.maxRegistrosPagina}"
+				rendered="${!planBean.form}" style="width: 70%"
+				value="#{planBean.model}" var="item" emptyMessage="No hay registros">
+
 				<p:column headerText="Nombre" styleClass="styleColumn"
 					filterBy="${item.plaNombre}" filterMatchMode="contains">
 					<p:outputLabel value="${item.plaNombre}" />

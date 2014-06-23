@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import co.innovate.rentavoz.model.Sucursal;
 import co.innovate.rentavoz.model.Tercero;
 import co.innovate.rentavoz.model.almacen.Linea;
 import co.innovate.rentavoz.model.almacen.venta.Venta;
@@ -65,7 +66,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @param corte
 	* @return
 	*/
-	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	List<VentaLinea> findByCriterio(int firstResul, int maxResults , Order order , String numeroLinea, Tercero cliente , int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales);
 	
 	/**
 	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -77,7 +78,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @param fecha
 	* @return
 	*/
-	int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	int countdByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales);
 	
 	
 	/**
@@ -90,7 +91,7 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @param fecha
 	* @return
 	*/
-	double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	double sumByCriterio(String numeroLinea, Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales);
 	
 	
 	
@@ -105,6 +106,22 @@ public interface VentaLineaService extends GenericService<VentaLinea, Integer> {
 	* @param fecha
 	* @return
 	*/
-	double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura);
+	double sumByCriterioCompra(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales);
+	 
+	/**
+	 * 
+	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	* @date 23/06/2014
+	* @param numeroLinea
+	* @param cliente
+	* @param corte
+	* @param fechaFacturacion
+	* @param fecha
+	* @param fechaLim
+	* @param modoPago
+	* @param numeroFactura
+	* @return
+	 */
+	double sumByCriterioUtilidad(String numeroLinea,Tercero cliente, int corte,FechaFacturacion fechaFacturacion,Date fecha,Date fechaLim,String modoPago,String numeroFactura,List<Sucursal> sucursales);
 	 
 }

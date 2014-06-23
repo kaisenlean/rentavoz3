@@ -371,7 +371,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		ventaLinea.setEstadoDevolucion(EstadoDevolucionEnum.PENDIENTE);
 		ventaLinea.setLineaidLinea(linea);
 		ventaLinea.setVentLinPrecio(BigDecimal.valueOf(linea.getPlan()
-				.getValorPlan()));
+				.getValorVenta()));
 		Opcion valorDeposito = null;
 	
 			valorDeposito = opcionService

@@ -79,6 +79,10 @@ public class Plan implements Serializable {
 	private Double valorPlan;
 	
 	
+	@Column(name="valor_venta")
+	private Double valorVenta;
+	
+	
 	public Plan() {
 	}
 
@@ -226,7 +230,25 @@ public class Plan implements Serializable {
 		}
 		return true;
 	}
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @return the valorVenta
+ */
+public Double getValorVenta() {
+	return valorVenta;
+}
 
+
+
+/**
+ * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @date 23/06/2014
+ * @param valorVenta the valorVenta to set
+ */
+public void setValorVenta(Double valorVenta) {
+	this.valorVenta = valorVenta;
+}
 	@Override
 	public String toString() {
 		return plaNombre;

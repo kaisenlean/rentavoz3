@@ -13,15 +13,17 @@
 
 
 			<p:panel style="width:100%" header="Cobertura de corte del dia">
-			<h:panelGrid columns="2">
-				<p:pieChart title="Lineas" 
-					value="#{beanLineaFacturacion.modelChart}" legendPosition="w"
-					id="salesChart" style="width:400px;height:200px"
-					showDataLabels="true"  />
-					
-					<p:barChart id="basic" value="#{beanLineaFacturacion.categoryModel}" legendPosition="ne"  
-                title="Lineas" min="0"  style="width:400px;height:200px" animate="true"/> 
-			</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:pieChart title="Lineas"
+						value="#{beanLineaFacturacion.modelChart}" legendPosition="w"
+						id="salesChart" style="width:400px;height:200px"
+						showDataLabels="true" />
+
+					<p:barChart id="basic"
+						value="#{beanLineaFacturacion.categoryModel}" legendPosition="ne"
+						title="Lineas" min="0" style="width:400px;height:200px"
+						animate="true" />
+				</h:panelGrid>
 
 			</p:panel>
 			<p:panel style="width:100%" header="Filtro" toggleable="true"
@@ -56,38 +58,48 @@
 
 					<h:outputText value="Fecha" />
 					<p:calendar value="#{beanLineaFacturacion.fecha}">
-					<p:ajax event="dateSelect" listener="#{beanLineaFacturacion.onDateSelect}" update="selPerFact" />
+						<p:ajax event="dateSelect"
+							listener="#{beanLineaFacturacion.onDateSelect}"
+							update="selPerFact" />
 					</p:calendar>
-					
-					
+
+
 					<h:outputText value="Fecha Fin" />
 					<p:calendar value="#{beanLineaFacturacion.fechaLim}"></p:calendar>
 
 
 					<h:outputText value="Modo Pago" />
-					<p:selectOneMenu
-						value="#{beanLineaFacturacion.modoPago}">
+					<p:selectOneMenu value="#{beanLineaFacturacion.modoPago}">
 						<f:selectItem itemLabel=" - - Todos - -" itemValue=""></f:selectItem>
 						<f:selectItem itemLabel="CONTADO" itemValue="CONTADO"></f:selectItem>
 						<f:selectItem itemLabel="CREDITO" itemValue="CUOTA"></f:selectItem>
 						<p:ajax event="change" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
-					
+
 					<h:outputText value="Numero Factura :" />
 					<p:inputText value="#{beanLineaFacturacion.numeroFactura}"></p:inputText>
+
+
+					<h:outputText value="Sucursal :" />
+					<p:selectOneMenu value="#{beanLineaFacturacion.selSucursal}">
+						<f:selectItem itemLabel=" - - Todas - -" itemValue="0"></f:selectItem>
+						<f:selectItems value="#{login.sucursalItems}"/>
+						<p:ajax event="change" partialSubmit="true"></p:ajax>
+					</p:selectOneMenu>
 
 				</h:panelGrid>
 				<h:panelGrid columns="2">
 					<p:commandButton value="Buscar" process="@all" update="@all"
 						onclick="tblFacturacion.filter();"></p:commandButton>
-					<p:commandButton value="Limpiar" process="@this" update="@all" actionListener="#{beanLineaFacturacion.init()}"></p:commandButton>
+					<p:commandButton value="Limpiar" process="@this" update="@all"
+						actionListener="#{beanLineaFacturacion.init()}"></p:commandButton>
 				</h:panelGrid>
 
 
 			</p:panel>
 
 			<br />
-			
+
 			<p:dataTable widgetVar="tblFacturacion" id="tblFacturacion"
 				paginator="true" lazy="true" rows="#{opcionLoader.numRows}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -102,11 +114,14 @@
 					styleClass="styleColumn"
 					sortBy="ventaidVenta.numeroFactura.consecutivo">
 
-						<p:commandButton value="${item.ventaidVenta.numeroFactura.consecutivo}"  actionListener="#{beanLineaFacturacion.loadFactura(item.ventaidVenta)}" process="@this" update="@this" oncomplete="endButton.jq.click();"  >
-						
-						</p:commandButton>
-						
-						
+					<p:commandButton
+						value="${item.ventaidVenta.numeroFactura.consecutivo}"
+						actionListener="#{beanLineaFacturacion.loadFactura(item.ventaidVenta)}"
+						process="@this" update="@this" oncomplete="endButton.jq.click();">
+
+					</p:commandButton>
+
+
 				</p:column>
 
 				<p:column style="width: 10%" headerText="Numero Linea"
@@ -118,27 +133,27 @@
 					styleClass="styleColumn" sortBy="lineaidLinea.linCorte">
 					<p:outputLabel value="${item.lineaidLinea.linCorte}" />
 				</p:column>
-					<p:column style="width: 10%" headerText="Cant. Minutos"
-					styleClass="styleColumn" >
+				<p:column style="width: 10%" headerText="Cant. Minutos"
+					styleClass="styleColumn">
 					<p:outputLabel value="${item.lineaidLinea.plan.plaCantidadMinutos}" />
 				</p:column>
 				<p:column headerText="Valor Venta">
-				<f:facet name="footer">
-				<h:outputText value="#{beanLineaFacturacion.totalPrecioVenta}" >
-				<f:convertNumber type="currency" currencySymbol="$"/>
-				</h:outputText>
-				</f:facet>
+					<f:facet name="footer">
+						<h:outputText value="#{beanLineaFacturacion.totalPrecioVenta}">
+							<f:convertNumber type="currency" currencySymbol="$" />
+						</h:outputText>
+					</f:facet>
 					<p:outputLabel value="#{item.ventLinPrecio}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</p:outputLabel>
 				</p:column>
 
-				<p:column headerText="Valor compra" >
-				<f:facet name="footer">
-				<h:outputText value="#{beanLineaFacturacion.totalPrecioCompra}" >
-				<f:convertNumber type="currency" currencySymbol="$"/>
-				</h:outputText>
-				</f:facet>
+				<p:column headerText="Valor compra">
+					<f:facet name="footer">
+						<h:outputText value="#{beanLineaFacturacion.totalPrecioCompra}">
+							<f:convertNumber type="currency" currencySymbol="$" />
+						</h:outputText>
+					</f:facet>
 					<p:outputLabel value="#{item.lineaidLinea.plan.valorPlan}">
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</p:outputLabel>
@@ -146,6 +161,12 @@
 				<p:column
 					style="background-color:${( item.ventLinPrecio -item.lineaidLinea.plan.valorPlan)>=0?'green':'red'}"
 					headerText="Utilidad">
+
+					<f:facet name="footer">
+						<h:outputText value="#{beanLineaFacturacion.totalUtilidad}">
+							<f:convertNumber type="currency" currencySymbol="$" />
+						</h:outputText>
+					</f:facet>
 					<p:outputLabel
 						value="${((item.ventLinPrecio) - item.lineaidLinea.plan.valorPlan)}">
 						<f:convertNumber type="currency" currencySymbol="$" />
@@ -154,11 +175,12 @@
 
 				</p:column>
 				<p:column headerText="Observación">
-				<p:outputLabel value="#{item.ventaidVenta.observacion}"></p:outputLabel>
+					<p:outputLabel value="#{item.ventaidVenta.observacion}"></p:outputLabel>
 				</p:column>
 
 				<p:column headerText="Modalidad Pago">
-					<h:outputLabel value="#{item.ventaidVenta.modoPago eq 'CUOTA' ? 'CREDITO' :item.ventaidVenta.modoPago }" />
+					<h:outputLabel
+						value="#{item.ventaidVenta.modoPago eq 'CUOTA' ? 'CREDITO' :item.ventaidVenta.modoPago }" />
 				</p:column>
 				<p:column headerText="Vendedor">
 					<p:outputLabel value="#{item.ventaidVenta.vendedor}"></p:outputLabel>
@@ -170,7 +192,7 @@
 					<p:outputLabel value="${item.ventaidVenta.tercero}" />
 				</p:column>
 
-				
+
 
 
 				<p:column headerText="Periodo" styleClass="styleColumn">
@@ -188,71 +210,78 @@
 
 
 			</p:dataTable>
-			<p:commandButton style="visibility:hidden;" id="endButton" widgetVar="endButton" process="@this" update="@this,dlgFactura" oncomplete="dlgFactura.show();"></p:commandButton>
-			<p:dialog appendTo="@(body)" widgetVar="dlgFactura" id="dlgFactura"  modal="true" visible="false">
+			<p:commandButton style="visibility:hidden;" id="endButton"
+				widgetVar="endButton" process="@this" update="@this,dlgFactura"
+				oncomplete="dlgFactura.show();"></p:commandButton>
+			<p:dialog appendTo="@(body)" widgetVar="dlgFactura" id="dlgFactura"
+				modal="true" visible="false">
 				<h:panelGrid columns="2">
-				
-				<p:outputLabel value="Codigo interno" />
-				<p:outputLabel value="#{beanLineaFacturacion.venta.idVenta}"></p:outputLabel>
-				
-				
-				<p:outputLabel value="Periodo Facturación" />
-				<p:outputLabel value="#{beanLineaFacturacion.venta.fechaFacturacion}"></p:outputLabel>
-				
-				
-				<p:outputLabel value="Observación" />
-				<p:outputLabel value="#{beanLineaFacturacion.venta.observacion}"></p:outputLabel>
-				
-				
-				
-				<p:outputLabel value="Sucursal Venta" />
-				<p:outputLabel value="#{beanLineaFacturacion.venta.sucursal}"></p:outputLabel>
-				
+
+					<p:outputLabel value="Codigo interno" />
+					<p:outputLabel value="#{beanLineaFacturacion.venta.idVenta}"></p:outputLabel>
+
+
+					<p:outputLabel value="Periodo Facturación" />
+					<p:outputLabel
+						value="#{beanLineaFacturacion.venta.fechaFacturacion}"></p:outputLabel>
+
+
+					<p:outputLabel value="Observación" />
+					<p:outputLabel value="#{beanLineaFacturacion.venta.observacion}"></p:outputLabel>
+
+
+
+					<p:outputLabel value="Sucursal Venta" />
+					<p:outputLabel value="#{beanLineaFacturacion.venta.sucursal}"></p:outputLabel>
+
 					<p:outputLabel value="Valor Total " />
-				<p:outputLabel value="#{beanLineaFacturacion.venta.venSaldo}">
-				<f:convertNumber  type="currency" currencySymbol="$"/>
-				</p:outputLabel>
-				
-				
-				
-				
+					<p:outputLabel value="#{beanLineaFacturacion.venta.venSaldo}">
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</p:outputLabel>
+
+
+
+
 				</h:panelGrid>
-				<div  align="center" style="width: 100%">
-				<h3>Lineas</h3>
-				<p:dataTable  value="#{beanLineaFacturacion.venta.ventaLineaList}" var="linea">
-				<p:column headerText="Linea">
-				<p:outputLabel value="#{linea.lineaidLinea.linNumero}"></p:outputLabel>
-				</p:column>
-				
-				<p:column headerText="Corte">
-				<p:outputLabel value="#{linea.lineaidLinea.linCorte}"></p:outputLabel>
-				</p:column>
-				
-					<p:column headerText="Plan">
-				<p:outputLabel value="#{linea.lineaidLinea.plan.plaNombre}"></p:outputLabel>
-				</p:column>
-				
-				</p:dataTable>
-				<h3>Cuotas</h3>
-				<p:dataTable  value="#{beanLineaFacturacion.venta.cuotas}" var="cuota">
-				<p:column headerText="Cuota">
-				<p:outputLabel value="#{cuota.valorCuota}">
-				<f:convertNumber type="currency" currencySymbol="$"/>
-				</p:outputLabel>
-				</p:column>
-				
-				<p:column headerText="Estado">
-				<p:outputLabel value="#{cuota.estadoCuota}"></p:outputLabel>
-				</p:column>
-				
-				<p:column headerText="Fecha de Cierre" style="background-color:${cuota.estadoCuotaAsString() eq 'PENDIENTE'?  now > cuota.fechaPago ?'red':'green':green}">
-				<p:outputLabel value="#{cuota.fechaPago}" >
-				<f:convertDateTime pattern="dd/MM/yyyy"/>
-				</p:outputLabel>
-				</p:column>
-				
-				
-				</p:dataTable>
+				<div align="center" style="width: 100%">
+					<h3>Lineas</h3>
+					<p:dataTable value="#{beanLineaFacturacion.venta.ventaLineaList}"
+						var="linea">
+						<p:column headerText="Linea">
+							<p:outputLabel value="#{linea.lineaidLinea.linNumero}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Corte">
+							<p:outputLabel value="#{linea.lineaidLinea.linCorte}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Plan">
+							<p:outputLabel value="#{linea.lineaidLinea.plan.plaNombre}"></p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+					<h3>Cuotas</h3>
+					<p:dataTable value="#{beanLineaFacturacion.venta.cuotas}"
+						var="cuota">
+						<p:column headerText="Cuota">
+							<p:outputLabel value="#{cuota.valorCuota}">
+								<f:convertNumber type="currency" currencySymbol="$" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Estado">
+							<p:outputLabel value="#{cuota.estadoCuota}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Fecha de Cierre"
+							style="background-color:${cuota.estadoCuotaAsString() eq 'PENDIENTE'?  now > cuota.fechaPago ?'red':'green':green}">
+							<p:outputLabel value="#{cuota.fechaPago}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+
+
+					</p:dataTable>
 				</div>
 			</p:dialog>
 		</h:form>
