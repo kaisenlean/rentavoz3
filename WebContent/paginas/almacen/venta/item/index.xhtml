@@ -74,6 +74,13 @@
 						<f:selectItems value="#{beanVentaItem.itemsSucursales}" />
 						<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
 					</p:selectOneMenu>
+					
+					
+					<h:outputText style="font-weight: bolder" value="Fecha de venta" id="fechaVenta" />
+					<p:calendar maxdate="now" widgetVar="selFechaVent" value="#{beanVentaItem.venta.fecha}" >
+					  <p:ajax event="dateSelect" listener="#{beanVentaItem.cambioFecha}" process="@this"  update="@all" />
+					</p:calendar>
+					
 				</h:panelGrid>
 				<p:spacer height="20px"></p:spacer>
 

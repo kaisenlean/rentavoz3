@@ -73,10 +73,18 @@ public class VentaControllerServiceImpl implements VentaControllerService {
 		List<Cuota> cuotas= new ArrayList<Cuota>();
 		cuotas=venta.getCuotas();
 		lineas = venta.getVentaLineaList();
+		try {
+			
+		
 		Talonario talonario= talonarioService.cargarConsecutivoFactura(venta.getSucursal());
 		talonario.setUsado(Boolean.TRUE);
 		talonario=talonarioService.save(talonario);
+		
 		venta.setNumeroFactura(talonario);
+		} catch (Exception e) {
+			throw new BaseException("Esta sucursal no tiene talonarios de venta : "+e);
+			
+		}
 		venta.setFecha(venta.getVenFecha());
 		venta = ventaService.save(venta);
 		int i = 0;

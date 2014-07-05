@@ -91,7 +91,6 @@ public class BeanLineaFacturacion extends StandardAbm<VentaLinea, Integer> {
 	private double totalPrecioCompra;
 	private double totalPrecioVenta;
 	private double totalUtilidad;
-	private List<Sucursal> sucursales=new ArrayList<Sucursal>();
 
 
 	private Venta venta;

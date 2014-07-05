@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
+
 import co.innovate.rentavoz.logic.venta.item.VentaItemEjb;
 import co.innovate.rentavoz.model.SucursalTercero;
 import co.innovate.rentavoz.model.Tercero;
@@ -420,8 +422,8 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		if (venta.getModoPago().equals(ModoPagoEnum.CONTADO)) {
 			VentaItemCuota cuota = new VentaItemCuota();
 			cuota.setEstado(EstadoVentaItemCuotaEnum.PAGADA);
-			cuota.setFechaCierre(new Date());
-			cuota.setFechaPago(new Date());
+			cuota.setFechaCierre(venta.getFecha());
+			cuota.setFechaPago(venta.getFecha());
 			cuota.setIdVenta(venta);
 			cuota.setValor(venta.getValorPagar());
 			venta.getCuotas().add(cuota);
@@ -625,6 +627,15 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 		}
 
 	}
+	
+	public void cambioFecha(SelectEvent event) {
+		try {
+			
+        selFechaFacturacion=fechaFacturacionService.findByFecha((Date)event.getObject()).getId();
+		} catch (Exception e) {
+			mensajeError("No se pudo encontrar el pediodo de facturación");
+		}
+    }
 
 	/**
 	 * Metodo que inicializa una venta con los datos claves
@@ -635,6 +646,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 	private void inicializarVenta() {
 		venta = new VentaItem();
 		venta.setFecha(new Date());
+		
 		venta.setEstado(EstadoVentaItemEnum.ACTIVO);
 		venta.setVendedor(login.getTercero());
 		venta.setCobrador(login.getTercero());
