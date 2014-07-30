@@ -202,17 +202,10 @@ public class LineaDaoImpl extends GenericJpaRepository<Linea, Integer> implement
 				
 				return (Linea) q.getSingleResult();
 			}else{
-				Linea linea2=logLineaDao.findByFecha(fechaFacturacion);
-				if (linea2==null) {
-					return linea;
-				}else{
-					return linea;
-					/**
-					 * temporal mientras cuadramos otros cambios
-					 */
-//					throw new BaseException("Esta linea ya ha sido facturada en este periodo de facturación");
+				linea.setFacturado(true);
+			return linea;
 				}
-			}
+			
 		} else {
 			return null;
 		}

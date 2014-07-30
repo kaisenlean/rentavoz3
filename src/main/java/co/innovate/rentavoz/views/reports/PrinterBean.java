@@ -1,5 +1,6 @@
 package co.innovate.rentavoz.views.reports;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.HashMap;
@@ -21,6 +22,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+
+import org.apache.log4j.Logger;
+
 import co.innovate.rentavoz.model.Opcion;
 import co.innovate.rentavoz.services.opcion.OpcionService;
 import co.innovate.rentavoz.views.BaseBean;
@@ -45,7 +49,7 @@ public class PrinterBean extends BaseBean {
 	 */
 	private static final String IMAGEN = "IMAGEN";
 
-
+	private Logger logger = Logger.getLogger(getClass());
 
 
 	@PostConstruct
@@ -73,7 +77,9 @@ public class PrinterBean extends BaseBean {
 			}
 			
 		} catch (Exception e) {
-		
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -131,7 +137,9 @@ public class PrinterBean extends BaseBean {
 					dts);
 
 		} catch (Exception e) {
-			System.err.println(e);
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -160,9 +168,17 @@ public class PrinterBean extends BaseBean {
 			JasperExportManager.exportReportToPdfStream(jasperPrint,
 					servletOutputStream);
 
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".pdf");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
+			
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -190,10 +206,18 @@ public class PrinterBean extends BaseBean {
 
 			JasperExportManager.exportReportToPdfStream(jasperPrint,
 					servletOutputStream);
+			
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".pdf");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
 
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -220,10 +244,15 @@ public class PrinterBean extends BaseBean {
 
 			JasperExportManager.exportReportToPdfStream(jasperPrint,
 					servletOutputStream);
-
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".pdf");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -263,10 +292,15 @@ public class PrinterBean extends BaseBean {
 					JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
 					Boolean.TRUE);
 			exporterXLS.exportReport();
-
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".xls");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -305,10 +339,15 @@ public class PrinterBean extends BaseBean {
 					JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
 					Boolean.TRUE);
 			exporterXLS.exportReport();
-
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".xls");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -349,9 +388,15 @@ public class PrinterBean extends BaseBean {
 					Boolean.TRUE);
 			exporterXLS.exportReport();
 
+			File file= new File(FacesContext.getCurrentInstance()
+					.getExternalContext()
+					.getRealPath("/")+outputName+".xls");
+			file.delete();
 			FacesContext.getCurrentInstance().responseComplete();
 		} catch (Exception e) {
-			e.printStackTrace();
+			mensajeError(e.toString());
+			logger.error(e);
+			
 		}
 	}
 
@@ -382,6 +427,8 @@ public class PrinterBean extends BaseBean {
 			connection.setAutoCommit(false);
 		} catch (Exception exception) {
 			mensajeError(exception.toString());
+			logger.error(exception);
+			
 		}
 		return connection;
 

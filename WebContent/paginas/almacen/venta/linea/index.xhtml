@@ -30,16 +30,16 @@
 
 					<h:outputText style="font-weight: bolder"
 						value="Periodo de facturacion : " />
-					<p:selectOneMenu id="selectFechaFact" value="#{beanVentaLinea.selFechaFacturacion}">
+					<h:selectOneMenu id="selectFechaFact" value="#{beanVentaLinea.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
 						<p:ajax event="change" partialSubmit="true" ></p:ajax>
-					</p:selectOneMenu>
+					</h:selectOneMenu>
 
 					<h:outputText style="font-weight: bolder" value="Cuenta" />
-					<p:selectOneMenu value="#{beanVentaLinea.selCuota}">
+					<h:selectOneMenu value="#{beanVentaLinea.selCuota}">
 						<f:selectItems value="#{selectorCuentas.items}" />
 						<p:ajax event="change" process="@this"></p:ajax>
-					</p:selectOneMenu>
+					</h:selectOneMenu>
 
 					<h:outputLabel style="font-weight: bolder" value="Vendedor" />
 
@@ -71,10 +71,10 @@
 
 
 					<h:outputText style="font-weight: bolder" value="Sucursal" />
-					<p:selectOneMenu value="#{beanVentaLinea.idSucursal}">
+					<h:selectOneMenu value="#{beanVentaLinea.idSucursal}">
 						<f:selectItems value="#{beanVentaLinea.itemsSucursales}" />
 						<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
-					</p:selectOneMenu>
+					</h:selectOneMenu>
 					
 					<h:outputText style="font-weight: bolder" value="Fecha de venta" id="fechaVenta" />
 					<p:calendar widgetVar="selFechaVent" value="#{beanVentaLinea.venta.venFecha}" >

@@ -103,6 +103,9 @@ public class Linea implements Serializable {
 	
 	@Transient
 	private StreamedContent barcode;
+	
+	@Transient
+	private boolean facturado;
 	/**
 	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -506,4 +509,21 @@ public class Linea implements Serializable {
 	public void setBarcode(StreamedContent barcode) {
 		this.barcode = barcode;
 	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/07/2014
+	 * @return the facturado
+	 */
+	public boolean isFacturado() {
+		return facturado;
+	}
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 14/07/2014
+	 * @param facturado the facturado to set
+	 */
+	public void setFacturado(boolean facturado) {
+		this.facturado = facturado;
+	}
+	
 }

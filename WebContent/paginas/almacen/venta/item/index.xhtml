@@ -29,16 +29,16 @@
 
 					<h:outputText style="font-weight: bolder"
 						value="Fecha de facturacion : " />
-					<p:selectOneMenu value="#{beanVentaItem.selFechaFacturacion}">
+					<h:selectOneMenu disabled="true" value="#{beanVentaItem.selFechaFacturacion}">
 						<f:selectItems value="#{selectorFechaFacturacion.items}"></f:selectItems>
 						<p:ajax event="change" process="@this" update="@this"></p:ajax>
-					</p:selectOneMenu>
+					</h:selectOneMenu>
 
 					<h:outputText style="font-weight: bolder" value="Cuenta" />
-					<p:selectOneMenu value="#{beanVentaItem.idCuenta}">
+					<h:selectOneMenu value="#{beanVentaItem.idCuenta}">
 						<f:selectItems value="#{selectorCuentas.items}" />
 						<p:ajax event="change" process="@this"></p:ajax>
-					</p:selectOneMenu>
+					</h:selectOneMenu>
 
 					<h:outputLabel style="font-weight: bolder" value="Vendedor" />
 
@@ -70,17 +70,20 @@
 
 
 					<h:outputText style="font-weight: bolder" value="Sucursal" />
-					<p:selectOneMenu value="#{beanVentaItem.idSucursal}">
+					<h:selectOneMenu value="#{beanVentaItem.idSucursal}">
 						<f:selectItems value="#{beanVentaItem.itemsSucursales}" />
 						<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
-					</p:selectOneMenu>
-					
-					
-					<h:outputText style="font-weight: bolder" value="Fecha de venta" id="fechaVenta" />
-					<p:calendar maxdate="now" widgetVar="selFechaVent" value="#{beanVentaItem.venta.fecha}" >
-					  <p:ajax event="dateSelect" listener="#{beanVentaItem.cambioFecha}" process="@this"  update="@all" />
+					</h:selectOneMenu>
+
+
+					<h:outputText style="font-weight: bolder" value="Fecha de venta"
+						id="fechaVenta" />
+					<p:calendar maxdate="now" widgetVar="selFechaVent"
+						value="#{beanVentaItem.venta.fecha}">
+						<p:ajax event="dateSelect" listener="#{beanVentaItem.cambioFecha}"
+							process="@this" update="@all" />
 					</p:calendar>
-					
+
 				</h:panelGrid>
 				<p:spacer height="20px"></p:spacer>
 
@@ -184,35 +187,37 @@
 
 				<p:panel header="Existencias">
 
-<h:panelGrid columns="2">
-<p:selectBooleanCheckbox value="#{beanVentaItem.ventaSinSerial}">
-<p:ajax event="change" process="@this" update="@all"></p:ajax>
-</p:selectBooleanCheckbox>
-<h:outputLabel value="Venta de items sin seriales" />
-</h:panelGrid>
+					<h:panelGrid columns="2">
+						<p:selectBooleanCheckbox value="#{beanVentaItem.ventaSinSerial}">
+							<p:ajax event="change" process="@this" update="@all"></p:ajax>
+						</p:selectBooleanCheckbox>
+						<h:outputLabel value="Venta de items sin seriales" />
+					</h:panelGrid>
 					<h:panelGrid columns="6" rendered="#{beanVentaItem.ventaSinSerial}">
-					<p:outputLabel value="Producto"></p:outputLabel>
-					<p:autoComplete size="50" style="width:200px"
-					id="buscadorItemExistencia" var="it" itemLabel="#{it}"
-					itemValue="#{it}"
-					converter="#{beanVentaItem.autocompleteItem.conversorClientes}"
-					value="#{beanVentaItem.autocompleteItem.seleccionado}"
-					completeMethod="#{beanVentaItem.autocompleteItem.completarBusqueda}">
-					<p:ajax event="itemSelect" update="@all" process="@this"
-						listener="#{beanVentaItem.autocompleteItem.seleccionar}"></p:ajax></p:autoComplete>
-					
-					
+						<p:outputLabel value="Producto"></p:outputLabel>
+						<p:autoComplete size="50" style="width:200px"
+							id="buscadorItemExistencia" var="it" itemLabel="#{it}"
+							itemValue="#{it}"
+							converter="#{beanVentaItem.autocompleteItem.conversorClientes}"
+							value="#{beanVentaItem.autocompleteItem.seleccionado}"
+							completeMethod="#{beanVentaItem.autocompleteItem.completarBusqueda}">
+							<p:ajax event="itemSelect" update="@all" process="@this"
+								listener="#{beanVentaItem.autocompleteItem.seleccionar}"></p:ajax>
+						</p:autoComplete>
+
+
 						<h:outputText style="font-weight: bolder" value="Cantidad :" />
 						<p:inputText id="txtpid1" value="#{beanVentaItem.cantidad}"
 							onkeypress="if (event.keyCode == 13) { aceptBtn1.jq.click();  return false; }"></p:inputText>
-						<p:commandButton id="aceptBtn1" widgetVar="aceptBtn1" value="Añadir"
-							actionListener="#{beanVentaItem.addExistencia1()}" process="@all"
-							update="@all"></p:commandButton>
+						<p:commandButton id="aceptBtn1" widgetVar="aceptBtn1"
+							value="Añadir" actionListener="#{beanVentaItem.addExistencia1()}"
+							process="@all" update="@all"></p:commandButton>
 						<p:focus for="txtpid1"></p:focus>
 					</h:panelGrid>
-					
-					
-					<h:panelGrid columns="4" rendered="#{!beanVentaItem.ventaSinSerial}">
+
+
+					<h:panelGrid columns="4"
+						rendered="#{!beanVentaItem.ventaSinSerial}">
 						<h:outputText style="font-weight: bolder" value="Producto ID :" />
 						<p:inputText id="txtpid" value="#{beanVentaItem.productoId}"
 							onkeypress="if (event.keyCode == 13) { aceptBtn.jq.click();  return false; }"></p:inputText>
@@ -266,7 +271,7 @@
 
 					</p:dataTable>
 
-					<p:dialog widgetVar="dialogo" appendToBody="true" modal="true"
+					<p:dialog widgetVar="dialogo" appendTo="@(body)" modal="true"
 						header="Nuevo precio">
 						<p:inputText value="#{beanVentaItem.item.valorItem}" id="txtValor"></p:inputText>
 						<p:commandButton actionListener="#{beanVentaItem.saveEditRow}"
@@ -337,12 +342,12 @@
 
 					</p:panel>
 				</p:panel>
-				<h:panelGrid columns="2">
-					<h:outputText style="font-weight: bolder"
-						value="Descuento por equipo : " />
-					<p:inputText value="#{beanVentaItem.venta.descuento}"
-						id="txtDescuento" />
-				</h:panelGrid>
+<!-- 				<h:panelGrid columns="2"> -->
+<!-- 					<h:outputText style="font-weight: bolder" -->
+<!-- 						value="Descuento por equipo : " /> -->
+<!-- 					<p:inputText value="#{beanVentaItem.venta.descuento}" -->
+<!-- 						id="txtDescuento" /> -->
+<!-- 				</h:panelGrid> -->
 
 				<h:panelGrid columns="2">
 					<h:outputText style="font-weight: bolder;;font-size: 18px;"
@@ -366,7 +371,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Guardar Venta" ajax="false"
 						actionListener="#{beanVentaItem.guardarVenta()}"
-						process="@this,txtDescuento" update="@all">
+						process="@this" update="@all">
 					</p:commandButton>
 
 					<p:commandButton ajax="false" value="Nueva Venta" rendered="true"

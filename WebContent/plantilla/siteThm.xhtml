@@ -12,14 +12,15 @@
 	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
 
 	<meta http-equiv="Pragma" content="nocache" />
-	
+
 	<h:outputStylesheet name="default.css" library="css" />
 	<h:outputStylesheet name="tableLayout.css" library="css" />
-	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/imagenes/favicon.ico"/>
- <f:metadata>
-        <f:event type="preRenderView" listener="#{login.validateSession()}"/>
-    </f:metadata>
-	<title>Rentavoz</title>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/imagenes/favicon.ico" />
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{login.validateSession()}" />
+	</f:metadata>
+	<title>Rentavoz Web</title>
 
 
 	<ui:insert name="head">
@@ -46,8 +47,8 @@
 			collapsible="true" footer="@Copyright Grupo Innovate">
 			<h:panelGrid>
 
-<!-- 				<h:graphicImage url="/imagenes/logo.png" -->
-<!-- 					style="width: 100%;height: 15%;float: left" /> -->
+				<!-- 				<h:graphicImage url="/imagenes/logo.png" -->
+				<!-- 					style="width: 100%;height: 15%;float: left" /> -->
 				<p:graphicImage url="/imagenes/#{opcionLoader.imagenEmpresa}"
 					style="width: 100%;height: 35%;float: left"></p:graphicImage>
 				<ui:insert name="left">
@@ -60,23 +61,78 @@
 
 		<h:form>
 			<p:layoutUnit position="center">
-			
-<!-- 			  <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="#{300000}" /> -->
-<!--             <p:dialog header="Sesión caducada" widgetVar="sessionTimeOutDialog" -->
-<!--              modal="true" fixedCenter="true" closable="false" width="400" visible="false" appendTo="@(body)"> -->
-<!--                  <h:outputText value="La sesion há caducado , por favor , pulse sobre el botón para volver a acceder a la aplicación" /> -->
-<!--                  <input id="confirmBackToLogin" type="button" value="Volver a acceder a la aplicación" -->
-<!--                     onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsf';" /> -->
-<!--             </p:dialog> -->
+
+				<!-- 			  <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="#{300000}" /> -->
+				<!--             <p:dialog header="Sesión caducada" widgetVar="sessionTimeOutDialog" -->
+				<!--              modal="true" fixedCenter="true" closable="false" width="400" visible="false" appendTo="@(body)"> -->
+				<!--                  <h:outputText value="La sesion há caducado , por favor , pulse sobre el botón para volver a acceder a la aplicación" /> -->
+				<!--                  <input id="confirmBackToLogin" type="button" value="Volver a acceder a la aplicación" -->
+				<!--                     onclick="window.location='#{facesContext.externalContext.requestContextPath}/index.jsf';" /> -->
+				<!--             </p:dialog> -->
 				<!-- 				<h:form> -->
 
 				<p:menubar style="float: right;height: 5%">
-					<p:menuitem value="Volver" title="Volver" action="/dashboard.jsf"
+			
+					<p:menuitem value="Dashboard" title="Dashboard" action="/dashboard.jsf"
 						immediate="true"></p:menuitem>
 					<p:menuitem title="#{login.user != null ? login.user.usuario : ''}"
 						value="#{login.user != null ? login.user.usuario : ''}" />
 					<p:menuitem title="Salir" value="Salir"
 						actionListener="#{login.logOut}" />
+							<p:menuitem>
+				
+					<p:themeSwitcher value="#{login.theme}"  id="advanced" style="width:165px" effect="fade"
+						var="t">
+						<p:ajax event="change" partialSubmit="true" process="@this" update="@all"></p:ajax>
+						<f:selectItem itemLabel="Choose Theme" itemValue="" />
+						<f:selectItem itemLabel="afterdark" itemValue="afterdark"/>
+						<f:selectItem itemLabel="afterwork" itemValue="afterwork"/>
+						<f:selectItem itemLabel="aristo" itemValue="aristo"/>
+						<f:selectItem itemLabel="black-tie" itemValue="black-tie"/>
+						<f:selectItem itemLabel="blitzer" itemValue="blitzer"/>
+						<f:selectItem itemLabel="bluesky" itemValue="bluesky"/>
+						<f:selectItem itemLabel="bootstrap" itemValue="bootstrap"/>
+						<f:selectItem itemLabel="casablanca" itemValue="casablanca"/>
+						<f:selectItem itemLabel="cupertino" itemValue="cupertino"/>
+						<f:selectItem itemLabel=" dark-hive" itemValue=" dark-hive"/>
+						<f:selectItem itemLabel="dot-luv" itemValue="dot-luv"/>
+						<f:selectItem itemLabel="eggplant" itemValue="eggplant"/>
+						<f:selectItem itemLabel="excite-bike" itemValue="excite-bike"/>
+						<f:selectItem itemLabel="flick" itemValue="flick"/>
+						<f:selectItem itemLabel="glass-x" itemValue="glass-x"/>
+						<f:selectItem itemLabel="home" itemValue="home"/>
+						<f:selectItem itemLabel="hot-sneaks" itemValue="hot-sneaks"/>
+						<f:selectItem itemLabel="humanity" itemValue="humanity"/>
+						<f:selectItem itemLabel="le-frog" itemValue="le-frog"/>
+						<f:selectItem itemLabel="metroui" itemValue="metroui"/>
+						<f:selectItem itemLabel="midnight" itemValue="midnight"/>
+						<f:selectItem itemLabel="mint-choc" itemValue="mint-choc"/>
+						<f:selectItem itemLabel="overcast" itemValue="overcast"/>
+						<f:selectItem itemLabel="pepper-grinder" itemValue="pepper-grinder"/>
+						<f:selectItem itemLabel="redmond" itemValue="redmond"/>
+						<f:selectItem itemLabel="rocket" itemValue="rocket"/>
+						<f:selectItem itemLabel="sam" itemValue="sam"/>
+						<f:selectItem itemLabel="smoothness" itemValue="smoothness"/>
+						<f:selectItem itemLabel="south-street" itemValue="south-street"/>
+						<f:selectItem itemLabel="sunny" itemValue="sunny"/>
+						<f:selectItem itemLabel="swanky-purse" itemValue="swanky-purse"/>
+						<f:selectItem itemLabel="trontastic" itemValue="trontastic"/>
+						<f:selectItem itemLabel="ui-darkness" itemValue="ui-darkness"/>
+						<f:selectItem itemLabel="ui-lightness" itemValue="ui-lightness"/>
+						<f:selectItem itemLabel="vader" itemValue="vader"/>
+						
+			
+
+						<p:column>
+							<h:outputText styleClass="ui-theme ui-theme-"
+								style="display-block" />
+						</p:column>
+
+						<p:column>
+
+						</p:column>
+					</p:themeSwitcher>
+				</p:menuitem>
 				</p:menubar>
 
 				<!-- 				</h:form> -->
@@ -106,7 +162,7 @@
 				<!-- 					</f:facet> -->
 				<!-- 				</p:ajaxStatus> -->
 
-				<p:ajaxStatus onstart="PF('statusDialog').show();" 
+				<p:ajaxStatus onstart="PF('statusDialog').show();"
 					onsuccess="PF('statusDialog').hide();" />
 
 				<p:dialog appendTo="@(body)" modal="true" widgetVar="statusDialog"

@@ -90,6 +90,8 @@ public class Login extends BaseBean implements Serializable {
 	private List<SelectItem> sucursalItems = new ArrayList<SelectItem>();
 
 	private double devolucionOtro;
+	
+	private String theme="redmond";
 
 	/**
 	 * 
@@ -592,5 +594,24 @@ public class Login extends BaseBean implements Serializable {
 	@Override
 	public String toString() {
 		return usuario;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 18/07/2014
+	 * @return the theme
+	 */
+	public String getTheme() {
+		return theme;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 18/07/2014
+	 * @param theme the theme to set
+	 */
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 }
