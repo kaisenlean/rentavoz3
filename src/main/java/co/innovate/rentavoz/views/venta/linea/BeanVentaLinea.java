@@ -3,6 +3,12 @@
  */
 package co.innovate.rentavoz.views.venta.linea;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,10 +21,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 
 import co.innovate.rentavoz.exception.BaseException;
@@ -54,6 +62,8 @@ import co.innovate.rentavoz.views.components.autocomplete.AutocompleteColaborado
 import co.innovate.rentavoz.views.components.autocomplete.AutocompleteTercero;
 import co.innovate.rentavoz.views.session.Login;
 import co.innovate.rentavoz.views.session.OpcionConstants;
+
+import com.sun.faces.context.ExternalContextImpl;
 
 
 /**
@@ -144,6 +154,11 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	@ManagedProperty(value="#{sucursalService}")
 	private SucursalService sucursalService;
 	
+	
+	private boolean loadCsv;
+	
+	private OutputStream out;
+	private BufferedReader br = null;
 
 
 	@PostConstruct
@@ -234,6 +249,75 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		
 		
 	}
+	
+	
+	public void cargarLineasCSV(FileUploadEvent event){
+		try {
+			
+		
+		InputStream in = event.getFile().getInputstream();
+		String fileName = event.getFile().getFileName();
+		fileName=event.getFile().getFileName().replace(" ", "").trim();
+
+		ExternalContextImpl request;
+		request = (ExternalContextImpl) FacesContext.getCurrentInstance()
+				.getExternalContext();
+		StringBuilder path = new StringBuilder( request.getRealPath("/"));
+		out = new FileOutputStream(path
+				+ fileName);
+		File f= new File(request.getRealPath(path
+				+ fileName));
+
+		if (in != null) {
+			int b = 0;
+			while (b != -1) {
+				b = in.read();
+				if (b != -1) {
+					out.write(b);
+
+				}
+
+			}
+		}
+		String line = "";
+		br=null;
+		String cvsSplitBy = ",";
+		try {
+			 
+			 
+			br = new BufferedReader(new FileReader(path
+					+ fileName));
+			while ((line = br.readLine()) != null) {
+	 
+				String[] consumo = line.split(cvsSplitBy);
+				if (consumo.length!=0) {
+				Linea linea= lineaService.findBNumeroObjeto(consumo[0]);
+				
+				if (linea!=null) {
+				numeroLinea=linea.getLinNumero();
+				buscarLinea();
+				}
+				}
+			}
+	 
+	 
+		} catch (Exception e) {
+			logger.error(e);
+		} finally {
+
+		}
+	 
+		
+		
+		
+		
+		
+		f.delete();
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+	
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -385,7 +469,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			mensajeError("Esta linea ya se encuentra en la lista");
 			return;
 		}
-		venta.getVentaLineaList().add(ventaLinea);
+		venta.getVentaLineaList().add(BigInteger.ZERO.intValue(), ventaLinea);
 		numeroLinea=StringUtils.EMPTY;
 		calcularPrecioVenta();
 		} catch (BaseException e1) {
@@ -873,6 +957,25 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	 */
 	public void setPlanPagoService(PlanPagoService planPagoService) {
 		this.planPagoService = planPagoService;
+	}
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/07/2014
+	 * @return the loadCsv
+	 */
+	public boolean isLoadCsv() {
+		return loadCsv;
+	}
+	
+	
+	/**
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 30/07/2014
+	 * @param loadCsv the loadCsv to set
+	 */
+	public void setLoadCsv(boolean loadCsv) {
+		this.loadCsv = loadCsv;
 	}
 	
 

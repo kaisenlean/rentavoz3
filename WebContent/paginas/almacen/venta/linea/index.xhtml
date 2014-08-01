@@ -12,8 +12,6 @@
 		<h:form>
 			<div style="font-size: 16px;">
 
-
-
 				<h:outputLabel value="Venta de Lineas" class="h1" />
 				<div align="right">
 
@@ -189,6 +187,17 @@
 
 				<p:panel header="Lineas">
 
+					<h:panelGrid columns="2">
+					<h:selectBooleanCheckbox value="#{beanVentaLinea.loadCsv}" >
+					<p:ajax event="change" process="@this"  update="@all"></p:ajax>
+					</h:selectBooleanCheckbox>
+					<h:outputText value="Importar lineas por CSV" />
+					
+					</h:panelGrid>
+					
+						<p:fileUpload auto="true" id="uploadCSV" rendered="#{beanVentaLinea.loadCsv}" update="@all" process="@this"
+				fileUploadListener="#{beanVentaLinea.cargarLineasCSV}"></p:fileUpload>
+			
 					<h:panelGrid columns="4">
 						<h:outputText style="font-weight: bolder" value="Producto ID :" />
 						<p:inputText id="txtpid" value="#{beanVentaLinea.numeroLinea}" widgetVar="txtpid"

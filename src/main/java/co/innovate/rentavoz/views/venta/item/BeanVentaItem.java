@@ -533,7 +533,7 @@ public class BeanVentaItem extends BaseBean implements Serializable {
 						"Este Producto ya está en la lista").toString());
 				return;
 			}
-			venta.getExistencias().add(detalle);
+			venta.getExistencias().add(BigInteger.ZERO.intValue(),detalle);
 			/* adicionamos su precio al valor a pagar de la venta */
 			if (tercero.getTipo().equals(TipoTerceroEnum.CLIENTE_MAYORISTA)) {
 
