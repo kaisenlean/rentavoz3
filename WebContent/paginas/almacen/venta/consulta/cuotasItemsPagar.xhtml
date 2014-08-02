@@ -50,6 +50,13 @@
 						<f:convertNumber type="currency" currencySymbol="$" />
 					</h:outputText>
 				</p:column>
+				
+				<p:column headerText="Abono">
+					<h:inputText value="#{cuota.abono}" onblur="submit();">
+					
+						<f:convertNumber type="currency" currencySymbol="$" />
+					</h:inputText>
+				</p:column>
 				<p:column>
 					<p:commandButton icon="ui-icon-shuffle" value="Efectuar pago"
 						process="@this" update="@all"

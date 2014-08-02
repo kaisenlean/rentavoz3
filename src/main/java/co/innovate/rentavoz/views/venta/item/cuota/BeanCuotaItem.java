@@ -5,6 +5,7 @@ package co.innovate.rentavoz.views.venta.item.cuota;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import co.innovate.rentavoz.model.Opcion;
+import co.innovate.rentavoz.model.venta.EstadoVentaItemCuotaEnum;
 import co.innovate.rentavoz.model.venta.VentaItem;
 import co.innovate.rentavoz.model.venta.VentaItemCuota;
 import co.innovate.rentavoz.services.opcion.OpcionService;
@@ -132,6 +134,32 @@ public class BeanCuotaItem extends BaseBean implements Serializable {
 		
 		
 		List<VentaItem> ventas= new ArrayList<VentaItem>();
+		
+		if (cuota.getAbono()==0) {
+			mensajeError("El valor del abono no puede ser 0");
+			return;
+		}else{
+			
+			if (cuota.getAbono()>cuota.getValor()) {
+				mensajeError("El valor de la cuota es menor al abono");
+				return;
+			}
+			
+			if (cuota.getAbono()<cuota.getValor()) {
+				double saldo = cuota.getValor()-cuota.getAbono();
+				VentaItemCuota ctemp= new VentaItemCuota();
+				ctemp.setEstado(EstadoVentaItemCuotaEnum.PENDIENTE);
+				Calendar c=Calendar.getInstance();
+				c.add(Calendar.DAY_OF_YEAR, 5);
+				ctemp.setFechaCierre(c.getTime());
+				ctemp.setValor(saldo);
+				ctemp.setIdVenta(cuota.getIdVenta());
+				ventaItemCuotaService.save(ctemp);
+				
+				cuota.setValor(cuota.getAbono());
+			}
+			
+		}
 		
 		VentaItem venta=facturaControllerService.pagarCuotaItem(cuota);
 		venta.setValorAbono(cuota.getValor());
