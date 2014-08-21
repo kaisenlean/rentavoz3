@@ -64,7 +64,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>#{login.theme}</param-value>
+		<param-value>#{login==null?'redmond':login.theme==null ?'redmond':login.theme}</param-value>
 		
 	</context-param>
 	<welcome-file-list>

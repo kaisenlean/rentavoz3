@@ -65,22 +65,22 @@ import co.innovate.rentavoz.views.session.OpcionConstants;
 
 import com.sun.faces.context.ExternalContextImpl;
 
-
 /**
-* @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-* @project rentavoz3
-* @class BeanVentaLinea
-* @date 7/02/2014
-*
-*/
+ * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+ * @project rentavoz3
+ * @class BeanVentaLinea
+ * @date 7/02/2014
+ *
+ */
 @ManagedBean
 @ViewScoped
 public class BeanVentaLinea extends BaseBean implements Serializable {
 
 	/**
 	 * 11/04/2014
+	 * 
 	 * @author <a href="mailto:elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	 * CUOTA
+	 *         CUOTA
 	 */
 	private static final String CUOTA = "CUOTA";
 
@@ -112,18 +112,18 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 
 	@ManagedProperty(value = "#{opcionService}")
 	private OpcionService opcionService;
-	
-	@ManagedProperty(value="#{ciudadService}")
+
+	@ManagedProperty(value = "#{ciudadService}")
 	private CiudadService ciudadService;
-	
-	@ManagedProperty(value="#{sucursalTerceroService}")
+
+	@ManagedProperty(value = "#{sucursalTerceroService}")
 	private SucursalTerceroService sucursalTerceroService;
-	
-	@ManagedProperty(value="#{planPagoService}")
+
+	@ManagedProperty(value = "#{planPagoService}")
 	private PlanPagoService planPagoService;
-	
+
 	private String modoPago;
-	
+
 	private Venta venta;
 
 	private Integer selFechaFacturacion;
@@ -139,27 +139,24 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 
 	private String selEstadoCuota;
 	private String numeroLinea;
-	private Tercero tercero=new Tercero();
+	private Tercero tercero = new Tercero();
 
-	private VentaLinea ventaItem=new VentaLinea();
-	@ManagedProperty(value="#{cuentasService}")
+	private VentaLinea ventaItem = new VentaLinea();
+	@ManagedProperty(value = "#{cuentasService}")
 	private CuentasService cuentasService;
-	private Logger logger= Logger.getLogger(BeanVentaLinea.class);
-	
-	private int idSucursal;
-	
-	private int planPago;
-	
+	private Logger logger = Logger.getLogger(BeanVentaLinea.class);
 
-	@ManagedProperty(value="#{sucursalService}")
+	private int idSucursal;
+
+	private int planPago;
+
+	@ManagedProperty(value = "#{sucursalService}")
 	private SucursalService sucursalService;
-	
-	
+
 	private boolean loadCsv;
-	
+
 	private OutputStream out;
 	private BufferedReader br = null;
-
 
 	@PostConstruct
 	public void init() {
@@ -191,26 +188,26 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 				return terceroService;
 			}
 		};
-		
-		autocompleteTercero=new AutocompleteTercero() {
-			
+
+		autocompleteTercero = new AutocompleteTercero() {
+
 			@Override
 			public void postSelect() {
 				venta.setTercero(seleccionado);
 			}
-			
+
 			@Override
 			public TerceroService getService() {
 				return terceroService;
 			}
 		};
-		autocompleteCiudad=new AutocompleteCiudad() {
-			
+		autocompleteCiudad = new AutocompleteCiudad() {
+
 			@Override
 			public void postSelect() {
 				tercero.setCiudad(seleccionado);
 			}
-			
+
 			@Override
 			public CiudadService getFacade() {
 				return ciudadService;
@@ -219,105 +216,98 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		inicializarValoresVenta();
 		login.updateValorCaja();
 	}
-	
-	
-	
-	public void cargarPlanPago(){
+
+	public void cargarPlanPago() {
 		PlanPago plan = planPagoService.findById(planPago);
-		if (plan==null) {
+		if (plan == null) {
 			mensajeError("No se pudo cargar el plan de pago seleccionado");
 			return;
 		}
-		modoPago=CUOTA;
+		modoPago = CUOTA;
 		venta.getCuotas().clear();
-		
-		double valorCuota = venta.getVenSaldo().doubleValue()/plan.getNumeroCuotas();
-		
-		Calendar cal= Calendar.getInstance();
+
+		double valorCuota = venta.getVenSaldo().doubleValue()
+				/ plan.getNumeroCuotas();
+
+		Calendar cal = Calendar.getInstance();
 		for (int i = 0; i < plan.getNumeroCuotas(); i++) {
-			Cuota c= new Cuota();
+			Cuota c = new Cuota();
 			c.setEstadoCuota(EstadoCuotaEnum.PENDIENTE);
 			c.setValorCuota(BigDecimal.valueOf(valorCuota));
 			cal.add(Calendar.DAY_OF_YEAR, plan.getDiasDiferencia());
-			if (cal.get(Calendar.DAY_OF_WEEK)== Calendar.SUNDAY) {
+			if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 				cal.add(Calendar.DAY_OF_YEAR, BigInteger.ONE.intValue());
 			}
 			c.setFechaPago(cal.getTime());
 			venta.getCuotas().add(c);
-			
+
 		}
-		
-		
+
 	}
-	
-	
-	public void cargarLineasCSV(FileUploadEvent event){
+
+	public void cargarLineasCSV(FileUploadEvent event) {
 		try {
-			
-		
-		InputStream in = event.getFile().getInputstream();
-		String fileName = event.getFile().getFileName();
-		fileName=event.getFile().getFileName().replace(" ", "").trim();
 
-		ExternalContextImpl request;
-		request = (ExternalContextImpl) FacesContext.getCurrentInstance()
-				.getExternalContext();
-		StringBuilder path = new StringBuilder( request.getRealPath("/"));
-		out = new FileOutputStream(path
-				+ fileName);
-		File f= new File(request.getRealPath(path
-				+ fileName));
+			InputStream in = event.getFile().getInputstream();
+			String fileName = event.getFile().getFileName();
+			fileName = event.getFile().getFileName().replace(" ", "").trim();
 
-		if (in != null) {
-			int b = 0;
-			while (b != -1) {
-				b = in.read();
-				if (b != -1) {
-					out.write(b);
+			ExternalContextImpl request;
+			request = (ExternalContextImpl) FacesContext.getCurrentInstance()
+					.getExternalContext();
+			StringBuilder path = new StringBuilder(request.getRealPath("/"));
+			out = new FileOutputStream(path + fileName);
+			File f = new File(request.getRealPath(path + fileName));
 
-				}
+			if (in != null) {
+				int b = 0;
+				while (b != -1) {
+					b = in.read();
+					if (b != -1) {
+						out.write(b);
 
-			}
-		}
-		String line = "";
-		br=null;
-		String cvsSplitBy = ",";
-		try {
-			 
-			 
-			br = new BufferedReader(new FileReader(path
-					+ fileName));
-			while ((line = br.readLine()) != null) {
-	 
-				String[] consumo = line.split(cvsSplitBy);
-				if (consumo.length!=0) {
-				Linea linea= lineaService.findBNumeroObjeto(consumo[0]);
-				
-				if (linea!=null) {
-				numeroLinea=linea.getLinNumero();
-				buscarLinea();
-				}
+					}
+
 				}
 			}
-	 
-	 
-		} catch (Exception e) {
-			logger.error(e);
-		} finally {
+			String line = "";
+			br = null;
+			String cvsSplitBy = ",";
+			try {
 
-		}
-	 
-		
-		
-		
-		
-		
-		f.delete();
+				br = new BufferedReader(new FileReader(path + fileName));
+				while ((line = br.readLine()) != null) {
+					try {
+
+						String[] consumo = line.split(cvsSplitBy);
+						if (consumo.length != 0) {
+
+							Linea linea = lineaService
+									.findBNumeroObjeto(consumo[0]);
+							Double valorLinea = consumo.length >1 ? Double.valueOf(consumo[1])
+									:null ;
+							Double valorDeposito = consumo.length > 2 ? Double.valueOf(consumo[2])	: null;
+							if (linea != null) {
+								numeroLinea = linea.getLinNumero();
+								buscarLinea(valorLinea, valorDeposito);
+							}
+						}
+					} catch (Exception e) {
+						logger.error(e);
+					}
+				}
+
+			} catch (Exception e) {
+				logger.error(e);
+			} finally {
+
+			}
+
+			f.delete();
 		} catch (Exception e) {
 			logger.error(e);
 		}
 	}
-	
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -336,37 +326,40 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		venta.setVenSaldo(BigDecimal.valueOf(BigInteger.ZERO.doubleValue()));
 
 		autocompleteCobrador.setSeleccionado(venta.getCobrador());
-		autocompleteCobrador.setQuery(venta.getCobrador()==null?StringUtils.EMPTY:venta.getCobrador().toString());
+		autocompleteCobrador
+				.setQuery(venta.getCobrador() == null ? StringUtils.EMPTY
+						: venta.getCobrador().toString());
 
 		autocompleteVendedor.setSeleccionado(venta.getVendedor());
-		autocompleteVendedor.setQuery(venta.getVendedor()==null?StringUtils.EMPTY:venta.getVendedor().toString());
+		autocompleteVendedor
+				.setQuery(venta.getVendedor() == null ? StringUtils.EMPTY
+						: venta.getVendedor().toString());
 
 	}
 
-	
-	private void calcularPrecioVenta(){
-		Double valorTotal= 0.0;
+	private void calcularPrecioVenta() {
+		Double valorTotal = 0.0;
 		for (VentaLinea vl : venta.getVentaLineaList()) {
-			valorTotal+=vl.getVentLinPrecio().doubleValue();
-			valorTotal+=vl.getVentLinDeposito().doubleValue();
+			valorTotal += vl.getVentLinPrecio().doubleValue();
+			valorTotal += vl.getVentLinDeposito().doubleValue();
 		}
 		venta.setVenSaldo(BigDecimal.valueOf(valorTotal));
-		
+
 	}
-	
-	public void guardarVenta(){
-		if (selFechaFacturacion==0) {
+
+	public void guardarVenta() {
+		if (selFechaFacturacion == 0) {
 			mensajeError("Selecciona un periodo de facturación");
 			return;
 		}
-		if (selCuota==0) {
+		if (selCuota == 0) {
 			mensajeError("Selecciona una cuenta");
 			return;
 		}
 		venta.setModoPago(ModoPagoEnum.valueOf(modoPago));
 		switch (ModoPagoEnum.valueOf(modoPago)) {
 		case CONTADO:
-			Cuota cuota=new Cuota();
+			Cuota cuota = new Cuota();
 			cuota.setEstadoCuota(EstadoCuotaEnum.PAGADA);
 			cuota.setFechaPago(venta.getVenFecha());
 			cuota.setValorCuota(venta.getVenSaldo());
@@ -376,26 +369,24 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 			break;
 
 		}
-		
+
 		try {
 			venta.setCuenta(cuentasService.findById(selCuota));
 			venta.setSucursal(sucursalService.findById(idSucursal));
-			venta.setFechaFacturacion(fechaFacturacionService.findById(selFechaFacturacion));
-		venta=ventaControllerService.guardarVentaLinea(venta);
-		addAttribute(SessionParams.ENTITY_BACK, venta);
-		login.updateValorCaja();
-		goTo("/paginas/almacen/venta/linea/respuesta.jsf");
+			venta.setFechaFacturacion(fechaFacturacionService
+					.findById(selFechaFacturacion));
+			venta = ventaControllerService.guardarVentaLinea(venta);
+			addAttribute(SessionParams.ENTITY_BACK, venta);
+			login.updateValorCaja();
+			goTo("/paginas/almacen/venta/linea/respuesta.jsf");
 		} catch (Exception e) {
 			logger.error(e);
 			mensajeError(e.toString());
 			return;
 		}
-		
-		
-		
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -418,17 +409,16 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		venta.setTercero(tercero);
 		runJavascript("dlgNewCliente.hide();");
 	}
-	
-	
+
 	public void cambioFecha(SelectEvent event) {
 		try {
-			
-        selFechaFacturacion=fechaFacturacionService.findByFecha((Date)event.getObject()).getId();
+
+			selFechaFacturacion = fechaFacturacionService.findByFecha(
+					(Date) event.getObject()).getId();
 		} catch (Exception e) {
 			mensajeError("No se pudo encontrar el pediodo de facturación");
 		}
-    }
-	
+	}
 
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
@@ -436,79 +426,127 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	 */
 	public void buscarLinea() {
 		try {
-		if (venta.getTercero()==null) {
-			mensajeError("Por favor selecciona un cliente para continuar");
-			return;
-		}
-		
-		Linea linea;
-			linea = lineaService.findByNumeroObjeto(numeroLinea,login.getSucursales(),fechaFacturacionService.findById(selFechaFacturacion));
-		if (linea == null) {
-			mensajeError("No se ha encontrado la linea ".concat(numeroLinea));
-			return;
-	
-		}
-		
+			if (venta.getTercero() == null) {
+				mensajeError("Por favor selecciona un cliente para continuar");
+				return;
+			}
 
-		
-		VentaLinea ventaLinea = new VentaLinea();
-		ventaLinea.setEstadoDevolucion(EstadoDevolucionEnum.PENDIENTE);
-		ventaLinea.setLineaidLinea(linea);
-		ventaLinea.setVentLinPrecio(BigDecimal.valueOf(linea.getPlan()
-				.getValorVenta()));
-		Opcion valorDeposito = null;
-	
+			Linea linea;
+			linea = lineaService.findByNumeroObjeto(numeroLinea,
+					login.getSucursales(),
+					fechaFacturacionService.findById(selFechaFacturacion));
+			if (linea == null) {
+				mensajeError("No se ha encontrado la linea "
+						.concat(numeroLinea));
+				return;
+
+			}
+
+			VentaLinea ventaLinea = new VentaLinea();
+			ventaLinea.setEstadoDevolucion(EstadoDevolucionEnum.PENDIENTE);
+			ventaLinea.setLineaidLinea(linea);
+			ventaLinea.setVentLinPrecio(BigDecimal.valueOf(linea.getPlan()
+					.getValorVenta()));
+			Opcion valorDeposito = null;
+
 			valorDeposito = opcionService
 					.findByClave(OpcionConstants.VALOR_DEPOSITO_LINEA);
 
-		
-		ventaLinea.setVentLinDeposito(BigDecimal
-				.valueOf(valorDeposito == null ? BigInteger.ZERO.doubleValue()
-						: Double.valueOf(valorDeposito.getValor())));
-		if (venta.getVentaLineaList().contains(ventaLinea)) {
-			mensajeError("Esta linea ya se encuentra en la lista");
-			return;
-		}
-		venta.getVentaLineaList().add(BigInteger.ZERO.intValue(), ventaLinea);
-		numeroLinea=StringUtils.EMPTY;
-		calcularPrecioVenta();
+			ventaLinea.setVentLinDeposito(BigDecimal
+					.valueOf(valorDeposito == null ? BigInteger.ZERO
+							.doubleValue() : Double.valueOf(valorDeposito
+							.getValor())));
+			if (venta.getVentaLineaList().contains(ventaLinea)) {
+				mensajeError("Esta linea ya se encuentra en la lista");
+				return;
+			}
+			venta.getVentaLineaList().add(BigInteger.ZERO.intValue(),
+					ventaLinea);
+			numeroLinea = StringUtils.EMPTY;
+			calcularPrecioVenta();
 		} catch (BaseException e1) {
 			mensajeError(e1.toString());
 		}
 
 	}
 
-	
-	public void deleteLinea(VentaLinea linea){
+	public void buscarLinea(Double valorLinea, Double valorDeposito) {
+		try {
+			if (venta.getTercero() == null) {
+				mensajeError("Por favor selecciona un cliente para continuar");
+				return;
+			}
+
+			Linea linea;
+			linea = lineaService.findByNumeroObjeto(numeroLinea,
+					login.getSucursales(),
+					fechaFacturacionService.findById(selFechaFacturacion));
+			if (linea == null) {
+				mensajeError("No se ha encontrado la linea "
+						.concat(numeroLinea));
+				return;
+
+			}
+
+			VentaLinea ventaLinea = new VentaLinea();
+			ventaLinea.setEstadoDevolucion(EstadoDevolucionEnum.PENDIENTE);
+			ventaLinea.setLineaidLinea(linea);
+			ventaLinea.setVentLinPrecio(valorLinea == null ? BigDecimal
+					.valueOf(linea.getPlan().getValorVenta()) : BigDecimal
+					.valueOf(valorLinea));
+
+			Opcion depo = null;
+
+			depo = opcionService
+					.findByClave(OpcionConstants.VALOR_DEPOSITO_LINEA);
+
+			ventaLinea.setVentLinDeposito(BigDecimal
+					.valueOf(valorDeposito == null ? Double.valueOf(
+							depo.getValor()).doubleValue() : valorDeposito));
+			if (venta.getVentaLineaList().contains(ventaLinea)) {
+				mensajeError("Esta linea ya se encuentra en la lista");
+				return;
+			}
+			venta.getVentaLineaList().add(BigInteger.ZERO.intValue(),
+					ventaLinea);
+			numeroLinea = StringUtils.EMPTY;
+			calcularPrecioVenta();
+		} catch (BaseException e1) {
+			mensajeError(e1.toString());
+		}
+
+	}
+
+	public void deleteLinea(VentaLinea linea) {
 		venta.getVentaLineaList().remove(linea);
 		calcularPrecioVenta();
-		
+
 	}
-	
-	public void loadItem(VentaLinea ventaItem){
-		this.ventaItem=ventaItem;
+
+	public void loadItem(VentaLinea ventaItem) {
+		this.ventaItem = ventaItem;
 		runJavascript("dialogo.show();");
-		
-		
+
 	}
-	public void loadItem2(VentaLinea ventaItem){
-		this.ventaItem=ventaItem;
+
+	public void loadItem2(VentaLinea ventaItem) {
+		this.ventaItem = ventaItem;
 		runJavascript("dialogo2.show();");
-		
-		
+
 	}
-	
-	public void saveEditRow(){
-		
+
+	public void saveEditRow() {
+
 		for (VentaLinea vl : venta.getVentaLineaList()) {
 			if (vl.equals(ventaItem)) {
-				vl=ventaItem;
+				vl = ventaItem;
 			}
 		}
-		ventaItem=new VentaLinea();
+		ventaItem = new VentaLinea();
 		calcularPrecioVenta();
 		runJavascript("dialogo.hide();");
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -518,16 +556,15 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 		venta.getCuotas().add(cuota);
 		cuota = new Cuota();
 		cuota.setFechaPago(new Date());
-		
 
 	}
-	
+
 	/**
-	* @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
-	* @date 7/02/2014
-	* @param cuota
-	*/
-	public void eliminarCuota(Cuota cuota){
+	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
+	 * @date 7/02/2014
+	 * @param cuota
+	 */
+	public void eliminarCuota(Cuota cuota) {
 		venta.getCuotas().remove(cuota);
 	}
 
@@ -728,6 +765,7 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public void setOpcionService(OpcionService opcionService) {
 		this.opcionService = opcionService;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -736,26 +774,27 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public AutocompleteTercero getAutocompleteTercero() {
 		return autocompleteTercero;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param autocompleteTercero the autocompleteTercero to set
+	 * @param autocompleteTercero
+	 *            the autocompleteTercero to set
 	 */
 	public void setAutocompleteTercero(AutocompleteTercero autocompleteTercero) {
 		this.autocompleteTercero = autocompleteTercero;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param ciudadService the ciudadService to set
+	 * @param ciudadService
+	 *            the ciudadService to set
 	 */
 	public void setCiudadService(CiudadService ciudadService) {
 		this.ciudadService = ciudadService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -764,16 +803,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public Tercero getTercero() {
 		return tercero;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param tercero the tercero to set
+	 * @param tercero
+	 *            the tercero to set
 	 */
 	public void setTercero(Tercero tercero) {
 		this.tercero = tercero;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -782,16 +822,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public AutocompleteCiudad getAutocompleteCiudad() {
 		return autocompleteCiudad;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param autocompleteCiudad the autocompleteCiudad to set
+	 * @param autocompleteCiudad
+	 *            the autocompleteCiudad to set
 	 */
 	public void setAutocompleteCiudad(AutocompleteCiudad autocompleteCiudad) {
 		this.autocompleteCiudad = autocompleteCiudad;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -800,16 +841,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public String getModoPago() {
 		return modoPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param modoPago the modoPago to set
+	 * @param modoPago
+	 *            the modoPago to set
 	 */
 	public void setModoPago(String modoPago) {
 		this.modoPago = modoPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -818,15 +860,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public Cuota getCuota() {
 		return cuota;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param cuota the cuota to set
+	 * @param cuota
+	 *            the cuota to set
 	 */
 	public void setCuota(Cuota cuota) {
 		this.cuota = cuota;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -835,15 +879,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public String getEstadoCuota() {
 		return estadoCuota;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param estadoCuota the estadoCuota to set
+	 * @param estadoCuota
+	 *            the estadoCuota to set
 	 */
 	public void setEstadoCuota(String estadoCuota) {
 		this.estadoCuota = estadoCuota;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -852,15 +898,17 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public VentaLinea getVentaItem() {
 		return ventaItem;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param ventaItem the ventaItem to set
+	 * @param ventaItem
+	 *            the ventaItem to set
 	 */
 	public void setVentaItem(VentaLinea ventaItem) {
 		this.ventaItem = ventaItem;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
@@ -869,43 +917,49 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public String getSelEstadoCuota() {
 		return selEstadoCuota;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param selEstadoCuota the selEstadoCuota to set
+	 * @param selEstadoCuota
+	 *            the selEstadoCuota to set
 	 */
 	public void setSelEstadoCuota(String selEstadoCuota) {
 		this.selEstadoCuota = selEstadoCuota;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 7/02/2014
-	 * @param cuentasService the cuentasService to set
+	 * @param cuentasService
+	 *            the cuentasService to set
 	 */
 	public void setCuentasService(CuentasService cuentasService) {
 		this.cuentasService = cuentasService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param sucursalTerceroService the sucursalTerceroService to set
+	 * @param sucursalTerceroService
+	 *            the sucursalTerceroService to set
 	 */
 	public void setSucursalTerceroService(
 			SucursalTerceroService sucursalTerceroService) {
 		this.sucursalTerceroService = sucursalTerceroService;
 	}
-	
-	public List<SelectItem> getItemsSucursales(){
-		List<SelectItem> lista=new ArrayList<SelectItem>();
-		for (SucursalTercero st : sucursalTerceroService.findByTercero(login.getTercero())) {
-			lista.add(new SelectItem(st.getSucursalidSucursal().getIdSucursal(),st.getSucursalidSucursal().getSucNombre()));
+
+	public List<SelectItem> getItemsSucursales() {
+		List<SelectItem> lista = new ArrayList<SelectItem>();
+		for (SucursalTercero st : sucursalTerceroService.findByTercero(login
+				.getTercero())) {
+			lista.add(new SelectItem(
+					st.getSucursalidSucursal().getIdSucursal(), st
+							.getSucursalidSucursal().getSucNombre()));
 		}
 		return lista;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
@@ -914,24 +968,27 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public int getIdSucursal() {
 		return idSucursal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param idSucursal the idSucursal to set
+	 * @param idSucursal
+	 *            the idSucursal to set
 	 */
 	public void setIdSucursal(int idSucursal) {
 		this.idSucursal = idSucursal;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 27/02/2014
-	 * @param sucursalService the sucursalService to set
+	 * @param sucursalService
+	 *            the sucursalService to set
 	 */
 	public void setSucursalService(SucursalService sucursalService) {
 		this.sucursalService = sucursalService;
 	}
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 11/04/2014
@@ -940,25 +997,27 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public int getPlanPago() {
 		return planPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 11/04/2014
-	 * @param planPago the planPago to set
+	 * @param planPago
+	 *            the planPago to set
 	 */
 	public void setPlanPago(int planPago) {
 		this.planPago = planPago;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 11/04/2014
-	 * @param planPagoService the planPagoService to set
+	 * @param planPagoService
+	 *            the planPagoService to set
 	 */
 	public void setPlanPagoService(PlanPagoService planPagoService) {
 		this.planPagoService = planPagoService;
 	}
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 30/07/2014
@@ -967,16 +1026,15 @@ public class BeanVentaLinea extends BaseBean implements Serializable {
 	public boolean isLoadCsv() {
 		return loadCsv;
 	}
-	
-	
+
 	/**
 	 * @author <a href="elmerdiazlazo@gmail.com">Elmer Jose Diaz Lazo</a>
 	 * @date 30/07/2014
-	 * @param loadCsv the loadCsv to set
+	 * @param loadCsv
+	 *            the loadCsv to set
 	 */
 	public void setLoadCsv(boolean loadCsv) {
 		this.loadCsv = loadCsv;
 	}
-	
 
 }

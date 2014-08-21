@@ -51,6 +51,7 @@ public class PrinterBean extends BaseBean {
 
 	private Logger logger = Logger.getLogger(getClass());
 
+	
 
 	@PostConstruct
 	public void init() {
